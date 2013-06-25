@@ -52,7 +52,15 @@ function ninja_forms_mp_nav( $form_id ){
 		}
 
 		$page_count = count($pages);
-
+		$x = 2;
+		$show_next = false;
+		while( $x <= $page_count ){
+			if( ninja_forms_mp_check_page_conditional( $form_id, $x ) ){
+				$show_next = true;
+				break;
+			}
+			$x++;
+		}
 
 		?>
 		<input type="hidden" name="_sub_id" value="<?php echo $sub_id;?>">
@@ -63,6 +71,9 @@ function ninja_forms_mp_nav( $form_id ){
 				if( $current_page == 1 AND $current_page < $page_count ){
 					$prev_style = 'display:none;';
 					$next_style = '';
+					if( !$show_next ){
+						$next_style = 'display:none;';
+					}
 				}else if( $current_page > 1 AND $current_page < $page_count ){
 					$prev_style = '';
 					$next_style = '';
@@ -75,7 +86,7 @@ function ninja_forms_mp_nav( $form_id ){
 				<input type="submit" name="_next" class="ninja-forms-mp-nav ninja-forms-mp-next" id="ninja_forms_form_<?php echo $form_id;?>_mp_next" value="<?php _e( 'Next', 'ninja-forms' );?>" style="<?php echo $next_style;?>">	
 				<?php
 			}else{
-				if( $current_page != 1 ){
+				if( $current_page != 1 AND $next_style ){
 					?>
 					<input type="submit" name="_prev" class="ninja-forms-mp-nav ninja-forms-mp-prev" id="ninja_forms_form_<?php echo $form_id;?>_mp_prev" value="<?php _e( 'Previous', 'ninja-forms' );?>">
 					<?php

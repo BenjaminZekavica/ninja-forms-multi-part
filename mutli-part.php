@@ -57,9 +57,11 @@ require_once(NINJA_FORMS_MP_DIR."/includes/display/progress-bar.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/page-title.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/scripts.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/output-divs.php");
+require_once(NINJA_FORMS_MP_DIR."/includes/display/form/confirm.php");
 
 require_once(NINJA_FORMS_MP_DIR."/includes/display/processing/before-pre-process.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/processing/post-process.php");
+require_once(NINJA_FORMS_MP_DIR."/includes/display/processing/confirm.php");
 
 require_once(NINJA_FORMS_MP_DIR."/includes/fields/page-divider.php");
 

@@ -2,11 +2,44 @@ jQuery(document).ready(function(jQuery){
 
 	jQuery(".ninja-forms-form").each(function(){
 		var form_id = this.id.replace("ninja_forms_form_", "");
+		ninja_forms_register_response_function( form_id, 'ninja_forms_mp_confirm_error_check' );		
 		ninja_forms_register_response_function( form_id, 'ninja_forms_error_change_page' );
+
 		ninja_forms_register_before_submit_function( form_id, 'ninja_forms_before_submit_update_progressbar' );
 	});
 
-	jQuery(".ninja-forms-mp-nav").click(function(e){
+	jQuery(".ninja-forms-mp-confirm-nav").live("click", function(e){
+		var form_id = ninja_forms_get_form_id( this );
+		jQuery("#ninja_forms_form_" + form_id + "_all_fields_wrap").show();
+		jQuery("#ninja_forms_form_" + form_id + "_mp_breadcrumbs").show();
+
+		var settings = window['ninja_forms_form_' + form_id + '_settings'];
+		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
+		ajax = settings.ajax;
+		if( ajax == 1 ){
+			e.preventDefault();
+			var current_page = jQuery("[name='_current_page']").val();
+			current_page = parseInt(current_page);
+			var page_count = mp_settings.page_count;
+			var effect = mp_settings.effect;
+			
+			var new_page = jQuery(this).attr("rel");
+			var dir = '';
+
+			//Check to see if the new page should be shown
+			new_page = ninja_forms_mp_page_loop( form_id, new_page, current_page, dir );
+
+			if( current_page != new_page ){
+
+				ninja_forms_mp_change_page( form_id, current_page, new_page, effect );
+				ninja_forms_update_progressbar( form_id, new_page );				
+			}
+		}
+		jQuery("#ninja_forms_form_" + form_id + "_confirm_response").remove();
+		jQuery("#ninja_forms_form_" + form_id + "_mp_confirm").val(0);
+	});	
+
+	jQuery(".ninja-forms-mp-nav").live( "click", function(e){
 		var form_id = ninja_forms_get_form_id(this);
 		var settings = window['ninja_forms_form_' + form_id + '_settings'];
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
@@ -20,22 +53,29 @@ jQuery(document).ready(function(jQuery){
 			
 			if( this.name == '_next' ){
 				var new_page = current_page + 1;
+				var dir = 'next';
 			}else if( this.name == '_prev' ){
 				var new_page = current_page - 1;
+				var dir = 'prev';
 			}else{
 				var new_page = jQuery(this).attr("rel");
 			}
 
+			//Check to see if the new page should be shown
+			new_page = ninja_forms_mp_page_loop( form_id, new_page, current_page, dir );
+
 			if( current_page != new_page ){
+
 				ninja_forms_mp_change_page( form_id, current_page, new_page, effect );
 				ninja_forms_update_progressbar( form_id, new_page );				
 			}
 		}
 	});
+
+
 });
 
 function ninja_forms_error_change_page(response){
-
 	var form_id = response.form_id;
 	var errors = response.errors;
 	if( errors != false ){
@@ -52,6 +92,7 @@ function ninja_forms_error_change_page(response){
 		}
 		ninja_forms_update_progressbar( form_id, error_page );
 	}
+	return true;
 }
 
 function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
@@ -118,10 +159,19 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 	}
 
 
-	jQuery(".ninja-forms-mp-breadcrumb-active").addClass("ninja-forms-mp-breadcrumb-inactive");
-	jQuery(".ninja-forms-mp-breadcrumb-active").removeClass("ninja-forms-mp-breadcrumb-active");
-	jQuery("[name='_mp_page_" + new_page + "']").addClass("ninja-forms-mp-breadcrumb-active");
-	jQuery("[name='_mp_page_" + new_page + "']").removeClass("ninja-forms-mp-breadcrumb-inactive");
+	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-active").addClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive");
+	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-active").addClass("ninja-forms-mp-breadcrumb-inactive");
+	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive").removeClass(".ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
+	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive").removeClass(".ninja-forms-mp-breadcrumb-active");
+
+	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").addClass("ninja-forms-form-" + form_id + "-mp-page-list-inactive");
+	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").removeClass("ninja-forms-form-" + form_id + "-mp-page-list-active");
+	
+	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-inactive[rel=" + new_page + "]").addClass("ninja-forms-form-" + form_id + "-mp-page-list-active");
+	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-inactive[rel=" + new_page + "]").removeClass("ninja-forms-form-" + form_id + "-mp-page-list-inactive");
+
+	jQuery("[name='_mp_page_" + new_page + "']").addClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
+	jQuery("[name='_mp_page_" + new_page + "']").removeClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive");
 }
 
 function ninja_forms_before_submit_update_progressbar(formData, jqForm, options){
@@ -146,4 +196,135 @@ function ninja_forms_update_progressbar( form_id, current_page ){
 	}
 
 	jQuery("#ninja_forms_form_" + form_id + "_progress_bar").find("span").css( "width", percent + "%" );
+}
+
+function ninja_forms_hide_mp_page( pass, target_field, element ){
+	var form_id = ninja_forms_get_form_id(element);
+	var page = jQuery("#ninja_forms_field_" + target_field).attr("rel");	
+	if( pass ){
+		//Hide the breadcrumb button for this page.
+		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).hide();
+		//Set the page visibility value to hidden, or 0.
+		jQuery("#ninja_forms_field_" + target_field).val(0);
+	}else{
+		//Show the breadcrumb button for this page.
+		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).show();
+		//Set the page visiblity value to visible, or 1.
+		jQuery("#ninja_forms_field_" + target_field).val(1);
+	}
+	ninja_forms_toggle_nav(element);
+
+}
+
+function ninja_forms_show_mp_page( pass, target_field, element ){
+	var form_id = ninja_forms_get_form_id(element);
+	var page = jQuery("#ninja_forms_field_" + target_field).attr("rel");
+	if( pass ){
+		//Show the breadcrumb button for this page.
+		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb" ).show();
+		//Set the page visiblity value to visible, or 1.
+		jQuery("#ninja_forms_field_" + target_field).val(1);
+	}else{
+		//Hide the breadcrumb button for this page.
+		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb").hide();
+		//Set the page visibility value to hidden, or 0.
+		jQuery("#ninja_forms_field_" + target_field).val(0);
+	}
+	ninja_forms_toggle_nav( form_id, target_field );
+}
+
+function ninja_forms_toggle_nav( form_id, target_field ){
+
+	if(jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-inactive").length == 0){
+		//Hide both the next and previous buttons
+		jQuery("#ninja_forms_form_" + form_id + "_mp_next").hide();
+		jQuery("#ninja_forms_form_" + form_id + "_mp_prev").hide();
+	}else{
+		//Check to see if all the breadcrumbs before this one have been disabled. If they have, remove the previous button.
+		if( jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").parent().prevAll().find(".ninja-forms-form-" + form_id + "-mp-page-list-inactive[value=1]").length == 0){
+			jQuery("#ninja_forms_form_" + form_id + "_mp_prev").hide();
+		}else{
+			jQuery("#ninja_forms_form_" + form_id + "_mp_prev").show();
+		}
+		
+		//Check to see if all the breadcrumbs after this one have been disabled. If they have, remove the next button.
+		if( jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").parent().nextAll().find(".ninja-forms-form-" + form_id + "-mp-page-list-inactive[value=1]").length == 0){
+			jQuery("#ninja_forms_form_" + form_id + "_mp_next").hide();
+		}else{
+			jQuery("#ninja_forms_form_" + form_id + "_mp_next").show();
+		}
+	}
+}
+
+//Function to check whether or not a page should be shown.
+function ninja_forms_mp_check_page_conditional( form_id, page ){
+	if(jQuery(".ninja-forms-form-" + form_id + "-mp-page-show[rel=" + page + "]").val() == 1 ){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+//Function to set the hidden page visibilty element 1
+function ninja_forms_mp_set_page_show( form_id, page ){
+	jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + page + "_show").val(1);
+}
+
+//Function to set the hidden page visibilty element to 0
+function ninja_forms_mp_set_page_hide( form_id, page ){
+	jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + page + "_show").val(0);
+}
+
+
+//Function to get the page number by element
+function ninja_forms_mp_get_page( element ){
+	var page = jQuery(element).closest('.ninja-forms-mp-page').attr("rel");
+	return page
+}
+
+//Function that loops through all the pages until it finds one that should be shown.
+function ninja_forms_mp_page_loop( form_id, new_page, current_page, dir ){
+	if( typeof window['ninja_forms_form_' + form_id + '_page_loop'] === 'undefined'){
+		window['ninja_forms_form_' + form_id + '_page_loop'] = 1;
+	}
+	var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
+	var show = ninja_forms_mp_check_page_conditional( form_id, new_page );
+	if( !show && window['ninja_forms_form_' + form_id + '_page_loop'] <= mp_settings.page_count ){
+		if( new_page == mp_settings.page_count ){
+			dir = 'prev';
+		}
+		//If our new page is less than the page count, increase it by one and check for visibility.
+		if( mp_settings.page_count > 1 ){
+			if( dir == 'next' ){
+				if( new_page < mp_settings.page_count ){
+					current_page++;
+					new_page++;
+				}
+			}else{
+				current_page--;
+				new_page = current_page;
+			}	
+			window['ninja_forms_form_' + form_id + '_page_loop']++;
+			//This page shouldn't be shown, so loop through the rest of the pages until we find one that should be shown.
+			new_page = ninja_forms_mp_page_loop( form_id, new_page, current_page, dir );
+
+		}else{
+			new_page = 1;
+		}
+
+	}
+
+	window['ninja_forms_form_' + form_id + '_page_loop'] = 1;
+
+	return new_page;
+}
+
+function ninja_forms_mp_confirm_error_check(response){
+	if(typeof response.errors['confirm-submit'] !== 'undefined'){
+		jQuery("#ninja_forms_form_" + response.form_id + "_all_fields_wrap").hide();
+		jQuery("#ninja_forms_form_" + response.form_id + "_mp_breadcrumbs").hide();
+		jQuery("#ninja_forms_form_" + response.form_id + "_mp_confirm").val(1);
+		jQuery("#ninja_forms_form_" + response.form_id).prepend('<div id="ninja_forms_form_' + response.form_id + '_confirm_response">' + response.errors['confirm-submit-msg']['msg'] + '</div>');
+	}
+	return true;
 }

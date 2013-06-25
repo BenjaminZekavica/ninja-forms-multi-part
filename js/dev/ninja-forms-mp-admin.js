@@ -123,6 +123,31 @@ jQuery(document).ready(function($) {
 		}
     });
 
+	$(".ninja-forms-mp-copy-page").live("click", function(e){
+		e.preventDefault();
+		var form_id = $("#_form_id").val();
+    	var current_page = $(".mp-page.active").attr("title");
+    	var page_count = $(".mp-page").length;
+    	var field_data = {};
+
+    	if(page_count > 1){
+    		$("#ninja_forms_field_list_" + current_page).find(".page-divider").removeClass("not-sortable");
+    	}
+
+    	var fields = $("#ninja_forms_field_list_" + current_page).sortable("toArray");
+
+    	if(fields != ''){
+    		for (var i = fields.length - 1; i >= 0; i--) {
+				var field_id = fields[i].replace("ninja_forms_field_", "");
+				field_data[i] = ninja_forms_mp_serialize_data( field_id );
+    		};
+    		$(".spinner").show();
+
+			$.post( ajaxurl, { form_id: form_id, field_data: field_data, action:"ninja_forms_mp_copy_page"}, ninja_forms_mp_add_page);
+
+		}
+	});
+
 	/* * * End Multi-Part Forms Settings JS * * */
 
 });
@@ -227,4 +252,10 @@ function ninja_forms_mp_page_added(){
 
 function ninja_forms_mp_hide_spinner(){
 	jQuery(".spinner").hide();
+}
+
+function ninja_forms_mp_serialize_data( field_id ){
+	var data = jQuery("#ninja_forms_field_" + field_id).find(":input[name^=ninja_forms_field_" + field_id + "]");
+	var field_data = jQuery(data).serializeFullArray();
+	return field_data;
 }

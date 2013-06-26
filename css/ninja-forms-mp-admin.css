@@ -1,5 +1,5 @@
 #ninja-forms-viewport {
-	max-width: 722px;
+	max-width: 530px;
 	min-height: 250px;
 	position: relative;
 	overflow: hidden;
@@ -62,4 +62,7 @@
 ul.ninja-forms-field-list {
 	float: left;
 	margin-right: 78px;
+}
+#post-body-content .page-divider .menu-item-handle {
+	width: 490px;
 }

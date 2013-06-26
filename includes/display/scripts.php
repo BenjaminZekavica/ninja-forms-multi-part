@@ -29,7 +29,7 @@ function ninja_forms_mp_display_js( $form_id ){
 	if( isset( $form_data['multi_part'] ) AND $form_data['multi_part'] == 1 ){
 
 		wp_enqueue_script( 'ninja-forms-mp-display',
-			NINJA_FORMS_MP_URL .'/js/dev/ninja-forms-mp-display.js',
+			NINJA_FORMS_MP_URL .'/js/min/ninja-forms-mp-display.min.js',
 			array( 'jquery', 'ninja-forms-display' ) );
 
 		if( $ajax == 1 ){

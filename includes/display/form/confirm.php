@@ -102,7 +102,6 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 				foreach( $page as $field ){
 					$field_id = $field['id'];
 					$field_type = $field['type'];
-					$show_breadcrumb = true;
 					if( isset( $ninja_forms_fields[$field_type] ) ){
 						$reg_field = $ninja_forms_fields[$field_type];
 						$display_function = $reg_field['display_function'];
@@ -115,12 +114,12 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 					if( $field_type == '_page_divider' ){
 						$divider_id = $field['id'];
 						$page_name = $field['data']['page_name'];
-						$page_title = '<h4>'.$page_name.'</h4>';
+						$breadcrumb = '<input type="submit" id="ninja_forms_field_'.$divider_id.'_breadcrumb" name="_mp_page_'.$num.'" value="'.__( 'Edit', 'ninja-forms-mp' ).' '.$page_name.'" class="ninja-forms-mp-confirm-nav" rel="'.$num.'" style="">';
+						$page_title = '<h4>'.$page_name.' - '.$breadcrumb.'</h4>';
 						$page_title = apply_filters( 'ninja_forms_mp_confirm_page_title', $page_title, $field_id );
 						$html .= $page_title;
 					}else if( $field_type == '_submit' ){
-						$html .= ninja_forms_return_echo( $display_function, $field_id, $field['data'] );
-						$show_breadcrumb = false;
+						$submit = ninja_forms_return_echo( $display_function, $field_id, $field['data'] );
 					}else{
 						$user_value = $ninja_forms_processing->get_field_value( $field_id );
 						$user_value = apply_filters( 'ninja_forms_mp_confirm_user_value', $user_value, $field_id );
@@ -130,11 +129,9 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 						}					
 					}
 				}
-				if( $show_breadcrumb ){
-					$html .= '<p><input type="submit" id="ninja_forms_field_'.$divider_id.'_breadcrumb" name="_mp_page_'.$num.'" value="'.$page_name.'" class="ninja-forms-mp-confirm-nav" rel="'.$num.'" style=""></p>';
-				}
 			}
 		}
+		$html .= $submit;
 		if ( !isset( $form_row['data']['ajax'] ) OR $form_row['data']['ajax'] != 1 ) {
 			$html .= '<input type="hidden" name="_mp_confirm" value="1">';
 		}

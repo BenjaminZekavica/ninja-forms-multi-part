@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 
 License: GPLv2 or later
 
@@ -29,6 +29,17 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.0.3 =
+
+*Features:*
+
+* Multi-Part Forms will now allow you to hide or show an entire page when used in conjunction with the Conditionals extension.
+* A new "Confirmation Page" option has been added. If this is selected, the user will be presented with a page showing all of their entered data, separated by page.
+
+*Changes:*
+
+* Changed the way that MP forms CSS is laid out to make it compatiable with version 2.2.18 of Ninja Forms.
 
 = 1.0.2 =
 

@@ -26,7 +26,7 @@ function ninja_forms_edit_field_open_div( $form_id ){
 
 	$tmp = $current_page - 1;
 
-	$offset = $tmp * -799.8182067871094;
+	$offset = $tmp * -599.8182067871094;
 ?>
 	<div id="ninja-forms-viewport">
 		<input class="button-primary menu-save ninja-forms-save-data" id="ninja_forms_save_data_top" type="submit" value="<?php _e('Save Field Settings', 'ninja-forms'); ?>" />

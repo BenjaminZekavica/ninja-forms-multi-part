@@ -92,40 +92,48 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 			$html = '';	
 		}
 
-		foreach( $pages as $num => $page ){
+		foreach ( $pages as $num => $page ) {
 			if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
 				$show = ninja_forms_mp_check_page_conditional( $form_id, $num );
-			}else{
+			} else {
 				$show = true;
 			}
-			if( $show ){
-				foreach( $page as $field ){
+			if ( $show ) {
+				foreach ( $page as $field ) {
 					$field_id = $field['id'];
 					$field_type = $field['type'];
-					if( isset( $ninja_forms_fields[$field_type] ) ){
+					if ( isset( $ninja_forms_fields[$field_type] ) ) {
 						$reg_field = $ninja_forms_fields[$field_type];
 						$display_function = $reg_field['display_function'];
 						$process_field = $reg_field['process_field'];
-					}else{
+					} else {
 						$reg_field = '';
 						$display_function = '';
 						$process_field = false;
 					}
-					if( $field_type == '_page_divider' ){
+					if ( $field_type == '_page_divider' ) {
 						$divider_id = $field['id'];
 						$page_name = $field['data']['page_name'];
 						$breadcrumb = '<input type="submit" id="ninja_forms_field_'.$divider_id.'_breadcrumb" name="_mp_page_'.$num.'" value="'.__( 'Edit', 'ninja-forms-mp' ).' '.$page_name.'" class="ninja-forms-mp-confirm-nav" rel="'.$num.'" style="">';
 						$page_title = '<h4>'.$page_name.' - '.$breadcrumb.'</h4>';
 						$page_title = apply_filters( 'ninja_forms_mp_confirm_page_title', $page_title, $field_id );
 						$html .= $page_title;
-					}else if( $field_type == '_submit' ){
+					} else if ( $field_type == '_submit' ) {
 						$submit = ninja_forms_return_echo( $display_function, $field_id, $field['data'] );
-					}else{
+					} else {
 						$user_value = $ninja_forms_processing->get_field_value( $field_id );
 						$user_value = apply_filters( 'ninja_forms_mp_confirm_user_value', $user_value, $field_id );
 						$label = $field['data']['label'];
-						if( $display_function != '' AND $process_field ){
-							$html .= '<p>'.$label.' - '.$user_value.'</p>';
+						if ( $display_function != '' AND $process_field ) {
+							if( is_array( $user_value ) ){
+								$html .= '<p>'.$label.' - <ul>';
+								foreach ( $user_value as $value ) {
+									$html .= '<li>'.$value.'</li>';
+								}
+								$html .= '</ul></p>';
+							} else {
+								$html .= '<p>'.$label.' - '.$user_value.'</p>';
+							}
 						}					
 					}
 				}

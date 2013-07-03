@@ -12,18 +12,20 @@ function ninja_forms_mp_check_page_conditional_before_pre_process(){
 	global $ninja_forms_processing;
 	$form_id = $ninja_forms_processing->get_form_ID();
 	$form_row = ninja_forms_get_form_by_id( $form_id );
-	if( isset( $form_row['data']['ajax'] ) AND $form_row['data']['ajax'] == 1 ){
-		if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
-			
-			$pages = ninja_forms_mp_get_pages( $form_id );
-			if( is_array( $pages ) AND !empty( $pages ) ){
-				foreach( $pages as $page => $fields ){
-					$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
-					if( !$show ){
-						ninja_forms_mp_conditional_remove_page( $form_id, $page );
+	if ( isset ( $form_row['data']['multi_part'] ) AND $form_row['data']['multi_part'] == 1 ) {
+		if( isset( $form_row['data']['ajax'] ) AND $form_row['data']['ajax'] == 1 ){
+			if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
+				
+				$pages = ninja_forms_mp_get_pages( $form_id );
+				if( is_array( $pages ) AND !empty( $pages ) ){
+					foreach( $pages as $page => $fields ){
+						$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
+						if( !$show ){
+							ninja_forms_mp_conditional_remove_page( $form_id, $page );
+						}
 					}
 				}
-			}
+			}		
 		}		
 	}
 }

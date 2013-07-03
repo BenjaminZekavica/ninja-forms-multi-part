@@ -158,12 +158,6 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 		jQuery("#ninja_forms_form_" + form_id + "_mp_next").hide();
 	}
 
-
-	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-active").addClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive");
-	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-active").addClass("ninja-forms-mp-breadcrumb-inactive");
-	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive").removeClass(".ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
-	jQuery(".ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive").removeClass(".ninja-forms-mp-breadcrumb-active");
-
 	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").addClass("ninja-forms-form-" + form_id + "-mp-page-list-inactive");
 	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").removeClass("ninja-forms-form-" + form_id + "-mp-page-list-active");
 	
@@ -171,7 +165,14 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-inactive[rel=" + new_page + "]").removeClass("ninja-forms-form-" + form_id + "-mp-page-list-inactive");
 
 	jQuery("[name='_mp_page_" + new_page + "']").addClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
+	jQuery("[name='_mp_page_" + new_page + "']").addClass("ninja-forms-mp-breadcrumb-active");
 	jQuery("[name='_mp_page_" + new_page + "']").removeClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive");
+	jQuery("[name='_mp_page_" + new_page + "']").removeClass("ninja-forms-mp-breadcrumb-inactive");
+
+	jQuery("[name='_mp_page_" + current_page + "']").addClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-inactive");
+	jQuery("[name='_mp_page_" + current_page + "']").addClass("ninja-forms-mp-breadcrumb-inactive");
+	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
+	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-mp-breadcrumb-active");
 }
 
 function ninja_forms_before_submit_update_progressbar(formData, jqForm, options){

@@ -30,6 +30,13 @@ For help and video tutorials, please visit our website: [Ninja Forms Documentati
 
 == Changelog ==
 
+= 1.0.5 =
+
+*Bugs:*
+
+* Fixed a php warning caused by a function running even if Multi-Part forms weren't enabled.
+* Fixed a bug that was causing breadcrumb navigation to have the incorrect classes applied.
+
 = 1.0.4 =
 
 *Bugs:*

@@ -34,7 +34,12 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 		foreach( $all_fields as $field ){
 			if( $field['type'] == '_page_divider' ){
 				$x++;
-				$pages[$x]['page_title'] = $field['data']['page_name'];
+				if ( isset( $field['data']['page_name'] ) ) {
+					$page_name = $field['data']['page_name'];
+				} else {
+					$page_name = '';
+				}
+				$pages[$x]['page_title'] = $page_name;
 				$pages[$x]['id'] = $field['id'];
 			}
 		}

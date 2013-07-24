@@ -113,7 +113,11 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 					}
 					if ( $field_type == '_page_divider' ) {
 						$divider_id = $field['id'];
-						$page_name = $field['data']['page_name'];
+						if ( isset( $field['data']['page_name'] ) ) {
+							$page_name = $field['data']['page_name'];
+						} else {
+							$page_name = '';
+						}
 						$breadcrumb = '<input type="submit" id="ninja_forms_field_'.$divider_id.'_breadcrumb" name="_mp_page_'.$num.'" value="'.__( 'Edit', 'ninja-forms-mp' ).' '.$page_name.'" class="ninja-forms-mp-confirm-nav" rel="'.$num.'" style="">';
 						$page_title = '<h4>'.$page_name.' - '.$breadcrumb.'</h4>';
 						$page_title = apply_filters( 'ninja_forms_mp_confirm_page_title', $page_title, $field_id );

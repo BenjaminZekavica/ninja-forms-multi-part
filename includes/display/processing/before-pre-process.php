@@ -154,6 +154,7 @@ function ninja_forms_mp_save_page(){
 			}
 		}
 
+
 		ninja_forms_mp_nav_update_current_page();
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
 
@@ -165,6 +166,7 @@ function ninja_forms_mp_save_page(){
 			}
 	    	
 	    	if( $show ){
+	    		/*
 	    		foreach( $fields as $field ){
 					if( isset( $field['type'] ) ){
 		    			$field_type = $field['type'];
@@ -185,11 +187,12 @@ function ninja_forms_mp_save_page(){
 		    			}
 		    		}
 	    		}
+	    		*/
 	    	}else{
 	    		ninja_forms_mp_conditional_remove_page( $form_id, $page );
 	    	}
 	    }
-		
+
 		$field_data = $ninja_forms_processing->get_all_fields();
 
 		$sub_data = array();
@@ -237,6 +240,8 @@ function ninja_forms_mp_save_page(){
 
 			$ninja_forms_processing->add_error( '_mp_save', '' );
 		}
+
+
 	}
 }
 

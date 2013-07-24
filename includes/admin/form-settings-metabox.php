@@ -1,5 +1,4 @@
 <?php
-add_action( 'init', 'ninja_forms_register_mp_settings_metabox', 11 );
 
 function ninja_forms_register_mp_settings_metabox(){
 
@@ -98,8 +97,9 @@ function ninja_forms_register_mp_settings_metabox(){
 	if( function_exists( 'ninja_forms_register_tab_metabox' ) ){
 		ninja_forms_register_tab_metabox($args);
 	}
-
 }
+
+add_action( 'admin_init', 'ninja_forms_register_mp_settings_metabox', 11 );
 
 function ninja_forms_mp_save_form( $form_id, $data ){
 	$form_row = ninja_forms_get_form_by_id( $form_id );

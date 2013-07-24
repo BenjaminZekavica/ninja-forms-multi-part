@@ -29,7 +29,7 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 		$pages = ninja_forms_mp_get_pages( $form_id );
 		foreach( $pages as $page => $fields ){
 			// Check to see if our current field is the first field on the page. If it is, output our opening MP div just before it.
-			if( $fields[1]['id'] == $field_id ){
+			if ( isset( $fields[1]['id'] ) AND $fields[1]['id'] == $field_id ) {
 				$divider_id = $fields[0]['id'];
 
 				if( is_object( $ninja_forms_processing ) ){

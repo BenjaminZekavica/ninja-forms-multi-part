@@ -12,6 +12,8 @@ jQuery(document).ready(function(jQuery){
 		var form_id = ninja_forms_get_form_id( this );
 		jQuery("#ninja_forms_form_" + form_id + "_all_fields_wrap").show();
 		jQuery("#ninja_forms_form_" + form_id + "_mp_breadcrumbs").show();
+		jQuery("#ninja_forms_form_" + form_id + "_progress_bar").show();		
+		jQuery("#ninja_forms_form_" + form_id + "_save_progress").show();		
 
 		var settings = window['ninja_forms_form_' + form_id + '_settings'];
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
@@ -65,7 +67,6 @@ jQuery(document).ready(function(jQuery){
 			new_page = ninja_forms_mp_page_loop( form_id, new_page, current_page, dir );
 
 			if( current_page != new_page ){
-
 				ninja_forms_mp_change_page( form_id, current_page, new_page, effect );
 				ninja_forms_update_progressbar( form_id, new_page );				
 			}
@@ -141,6 +142,7 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 	}
 
    	// run the effect
+    // alert( 'show' + new_page );
 	jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + current_page).hide( effect, { direction: direction_out }, 300, function(){
 		jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + new_page).show( effect, { direction: direction_in }, 200 );
 	});
@@ -324,6 +326,8 @@ function ninja_forms_mp_confirm_error_check(response){
 	if(typeof response.errors['confirm-submit'] !== 'undefined'){
 		jQuery("#ninja_forms_form_" + response.form_id + "_all_fields_wrap").hide();
 		jQuery("#ninja_forms_form_" + response.form_id + "_mp_breadcrumbs").hide();
+		jQuery("#ninja_forms_form_" + response.form_id + "_progress_bar").hide();
+		jQuery("#ninja_forms_form_" + response.form_id + "_save_progress").hide();
 		jQuery("#ninja_forms_form_" + response.form_id + "_mp_confirm").val(1);
 		jQuery("#ninja_forms_form_" + response.form_id).prepend('<div id="ninja_forms_form_' + response.form_id + '_confirm_response">' + response.errors['confirm-submit-msg']['msg'] + '</div>');
 	}

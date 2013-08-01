@@ -8,7 +8,7 @@ jQuery(document).ready(function(jQuery){
 		ninja_forms_register_before_submit_function( form_id, 'ninja_forms_before_submit_update_progressbar' );
 	});
 
-	jQuery(".ninja-forms-mp-confirm-nav").live("click", function(e){
+	jQuery(document).on( 'click', '.ninja-forms-mp-confirm-nav', function(e){
 		var form_id = ninja_forms_get_form_id( this );
 		jQuery("#ninja_forms_form_" + form_id + "_all_fields_wrap").show();
 		jQuery("#ninja_forms_form_" + form_id + "_mp_breadcrumbs").show();
@@ -41,7 +41,7 @@ jQuery(document).ready(function(jQuery){
 		jQuery("#ninja_forms_form_" + form_id + "_mp_confirm").val(0);
 	});	
 
-	jQuery(".ninja-forms-mp-nav").live( "click", function(e){
+	jQuery(document).on( 'click', '.ninja-forms-mp-nav', function(e){
 		var form_id = ninja_forms_get_form_id(this);
 		var settings = window['ninja_forms_form_' + form_id + '_settings'];
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];

@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
 
 	/* * * Begin Multi-Part Forms Settings JS * * */
 
-	$(".mp-page").live("click", function(e){
+	$(document).on( 'click', '.mp-page', function(e){
 		var page_number = this.title;
 		var current_page = $(".mp-page.active").attr("title");
 		if(page_number != current_page){
@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
 		}
     });
 
-	$(".ninja-forms-mp-copy-page").live("click", function(e){
+	$(document).on( 'click', '.ninja-forms-mp-copy-page', function(e){
 		e.preventDefault();
 		var form_id = $("#_form_id").val();
     	var current_page = $(".mp-page.active").attr("title");

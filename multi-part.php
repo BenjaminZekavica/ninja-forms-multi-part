@@ -3,14 +3,14 @@
 Plugin Name: Ninja Forms - Multi-Part Forms
 Plugin URI: http://wpninjas.com/ninja-forms/
 Description: Multi-Part Forms add-on for Ninja Forms.
-Version: 1.0.6
+Version: 1.0.7
 Author: The WP Ninjas
 Author URI: http://wpninjas.com
 */
 
 define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR."/ninja-forms-multi-part");
 define("NINJA_FORMS_MP_URL", plugins_url()."/ninja-forms-multi-part");
-define("NINJA_FORMS_MP_VERSION", "1.0.6");
+define("NINJA_FORMS_MP_VERSION", "1.0.7");
 
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 define( 'NINJA_FORMS_MP_EDD_SL_STORE_URL', 'http://wpninjas.com' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system

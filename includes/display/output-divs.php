@@ -1,12 +1,5 @@
 <?php
 
-add_action( 'init', 'ninja_forms_add_mp_divs' );
-
-function ninja_forms_add_mp_divs(){
-	add_action( 'ninja_forms_display_before_field', 'ninja_forms_open_mp_div', 10, 2 );
-	add_action( 'ninja_forms_display_after_field', 'ninja_forms_close_mp_div', 10, 2 );
-}
-
 function ninja_forms_open_mp_div( $field_id, $data ){
 	global $ninja_forms_processing;
 	$form_row = ninja_forms_get_form_by_field_id( $field_id );
@@ -27,6 +20,7 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 
 	if( $multi_part == 1 ){
 		$pages = ninja_forms_mp_get_pages( $form_id );
+
 		foreach( $pages as $page => $fields ){
 			// Check to see if our current field is the first field on the page. If it is, output our opening MP div just before it.
 			if ( isset( $fields[1]['id'] ) AND $fields[1]['id'] == $field_id ) {
@@ -56,8 +50,6 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 					$show = 0;
 				}
 
-
-
 				if( $page == $current_page ){
 					$class = 'ninja-forms-form-'.$form_id.'-mp-page-list-active';
 				}else{
@@ -73,6 +65,8 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 		}
 	}
 }
+
+add_action( 'ninja_forms_display_before_field', 'ninja_forms_open_mp_div', 10, 2 );
 
 function ninja_forms_close_mp_div( $field_id, $data ){
 	$form_row = ninja_forms_get_form_by_field_id( $field_id );
@@ -106,3 +100,5 @@ function ninja_forms_close_mp_div( $field_id, $data ){
 		}
 	}
 }
+
+add_action( 'ninja_forms_display_after_field', 'ninja_forms_close_mp_div', 10, 2 );

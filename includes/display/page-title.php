@@ -3,10 +3,6 @@
  * Outputs the HTML for the Multi-Part Form Page Title.
  *
 **/
-add_action( 'init', 'ninja_forms_register_mp_display_page_title' );
-function ninja_forms_register_mp_display_page_title(){
-	add_action( 'ninja_forms_display_before_fields', 'ninja_forms_mp_check_page_title', 9 );	
-}
 
 function ninja_forms_mp_check_page_title( $form_id ){
 	global $ninja_forms_processing;
@@ -30,7 +26,7 @@ function ninja_forms_mp_check_page_title( $form_id ){
 
 function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 	global $ninja_forms_processing;
-	if( (isset( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'processing_complete' ) != 1 ) OR !isset( $ninja_forms_processing ) ){
+	if( ( isset( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'processing_complete' ) != 1 ) OR !isset ( $ninja_forms_processing ) ){
 		if( $page != '' ){
 			$current_page = $page;
 		}else{
@@ -71,6 +67,8 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 	$title = apply_filters( 'ninja_forms_display_mp_page_title', $title, $form_id, $current_page );
 	echo $title;
 }
+
+add_action( 'ninja_forms_display_before_fields', 'ninja_forms_mp_check_page_title', 9 );
 
 function ninja_forms_mp_display_page_req_items( $form_id, $page ){
 

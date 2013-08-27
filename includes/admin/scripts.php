@@ -1,5 +1,5 @@
 <?php
-add_action( 'admin_init', 'ninja_forms_mp_admin_js' );
+
 function ninja_forms_mp_admin_js(){
 	if( isset( $_REQUEST['form_id'] ) ){
 		$form_id = $_REQUEST['form_id'];
@@ -24,8 +24,8 @@ function ninja_forms_mp_admin_js(){
 		}
 	}
 }
+add_action( 'admin_init', 'ninja_forms_mp_admin_js' );
 
-add_action( 'admin_init', 'ninja_forms_mp_admin_css' );
 function ninja_forms_mp_admin_css(){
 	if( isset( $_REQUEST['form_id'] ) ){
 		$form_id = $_REQUEST['form_id'];
@@ -48,3 +48,4 @@ function ninja_forms_mp_admin_css(){
 		}
 	}
 }
+add_action( 'admin_init', 'ninja_forms_mp_admin_css' );

@@ -1,8 +1,8 @@
 <?php
 
-add_action( 'ninja_forms_display_after_fields', 'ninja_forms_mp_nav' );
 function ninja_forms_mp_nav( $form_id ){
 	global $ninja_forms_processing;
+
 	$form_row = ninja_forms_get_form_by_id( $form_id );
 	$form_data = $form_row['data'];
 	$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
@@ -37,6 +37,12 @@ function ninja_forms_mp_nav( $form_id ){
 			$sub_id = '';
 		}
 
+		if ( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_error( 'confirm-submit' ) !== false ) {
+			$confirm = true;
+		} else {
+			$confirm = false;
+		}
+
 		$pages = array();
 
 		if( is_array( $all_fields ) AND !empty( $all_fields ) ){
@@ -62,10 +68,16 @@ function ninja_forms_mp_nav( $form_id ){
 			$x++;
 		}
 
+		if ( !$confirm ) {
+			$style = '';
+		} else {
+			$style = 'style="display:none;"';
+		}
+
 		?>
 		<input type="hidden" name="_sub_id" value="<?php echo $sub_id;?>">
 		<input type="hidden" name="_current_page" value="<?php echo $current_page;?>">
-		<div id="ninja_forms_mp_nav_wrap" class="ninja-forms-mp-nav-wrap">
+		<div id="ninja_forms_form_<?php echo $form_id;?>_mp_nav_wrap" class="ninja-forms-mp-nav-wrap" <?php echo $style;?>>
 			<?php
 			if( $ajax == 1 ){
 				if( $current_page == 1 AND $current_page < $page_count ){
@@ -102,3 +114,5 @@ function ninja_forms_mp_nav( $form_id ){
 		<?php
 	}
 }
+
+add_action( 'ninja_forms_display_after_fields', 'ninja_forms_mp_nav', 20 );

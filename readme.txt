@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 1.0.7
+Stable tag: 1.0.9
 
 License: GPLv2 or later
 
@@ -29,6 +29,22 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.0.9 =
+
+*Features:*
+
+* When creating a multi-part form, page numbers can now be dragged and dropped to re-arrange the pages of your form.
+
+*Bugs:*
+
+* Minor bug-fixes.
+
+= 1.0.8 =
+
+*Changes:*
+
+* Changed the Javascript methods used in order to be compatible with Ninja Forms 2.2.37.
 
 = 1.0.7 =
 

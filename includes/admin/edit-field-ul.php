@@ -42,7 +42,7 @@ function ninja_forms_edit_field_output_mp_ul( $form_id ){
 		if( is_array( $pages ) AND !empty( $pages ) ){
 			foreach( $pages as $page => $fields ){
 				?>
-				<ul class="menu ninja-forms-field-list" id="ninja_forms_field_list_<?php echo $page;?>">
+				<ul class="menu ninja-forms-field-list" id="ninja_forms_field_list_<?php echo $page;?>" data-order="<?php echo $page;?>">
 			  		<?php
 						if( is_array( $fields ) AND !empty( $fields ) ){
 							foreach( $fields as $field_id ){

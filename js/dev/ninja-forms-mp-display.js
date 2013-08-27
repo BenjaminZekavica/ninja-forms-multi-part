@@ -1,11 +1,15 @@
 jQuery(document).ready(function(jQuery){
 
-	jQuery(".ninja-forms-form").each(function(){
-		var form_id = this.id.replace("ninja_forms_form_", "");
-		ninja_forms_register_response_function( form_id, 'ninja_forms_mp_confirm_error_check' );		
-		ninja_forms_register_response_function( form_id, 'ninja_forms_error_change_page' );
+	jQuery(".ninja-forms-form").on("submitResponse", function(e, response){
+		return ninja_forms_mp_confirm_error_check( response );
+	});
 
-		ninja_forms_register_before_submit_function( form_id, 'ninja_forms_before_submit_update_progressbar' );
+	jQuery(".ninja-forms-form").on("submitResponse", function(e, response){
+		return ninja_forms_error_change_page( response );
+	});
+
+	jQuery(".ninja-forms-form").on("beforeSubmit", function(e, formData, jqForm, options){
+		return ninja_forms_before_submit_update_progressbar( formData, jqForm, options );
 	});
 
 	jQuery(document).on( 'click', '.ninja-forms-mp-confirm-nav', function(e){
@@ -79,7 +83,7 @@ jQuery(document).ready(function(jQuery){
 function ninja_forms_error_change_page(response){
 	var form_id = response.form_id;
 	var errors = response.errors;
-	if( errors != false ){
+	if( errors != false && typeof response.errors['confirm-submit'] === 'undefined'){
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
 		var extras = response.extras;
 		var error_page = extras["_current_page"];
@@ -178,11 +182,15 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 }
 
 function ninja_forms_before_submit_update_progressbar(formData, jqForm, options){
-	var form_id = formData[1].value;
-	var current_page = jQuery("[name='_current_page']").val();
-	current_page = parseInt(current_page);
-	current_page++;
-	ninja_forms_update_progressbar( form_id, current_page );
+	var form_id = jQuery(jqForm).prop("id").replace("ninja_forms_form_", "" );
+	var settings = window['ninja_forms_form_' + form_id + '_settings'];
+	ajax = settings.ajax
+	if ( ajax == 1 ) {
+		var current_page = jQuery("[name='_current_page']").val();
+		current_page = parseInt(current_page);
+		current_page++;
+		ninja_forms_update_progressbar( form_id, current_page );
+	}
 }
 
 function ninja_forms_update_progressbar( form_id, current_page ){
@@ -203,15 +211,28 @@ function ninja_forms_update_progressbar( form_id, current_page ){
 
 function ninja_forms_hide_mp_page( pass, target_field, element ){
 	var form_id = ninja_forms_get_form_id(element);
-	var page = jQuery("#ninja_forms_field_" + target_field).attr("rel");	
+	var page = jQuery("#ninja_forms_field_" + target_field).attr("rel");
 	if( pass ){
-		//Hide the breadcrumb button for this page.
-		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).hide();
+		// Check to see if we are on the confirmation page. If we are, show or hide the page rather than the breadcrumb.
+		if ( jQuery("#mp_confirm_page").val() == 1 ) {
+			// This is the confirm page, hide the whole page.
+			jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + page).hide();
+		} else {
+			//Hide the breadcrumb button for this page.
+			jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).hide();			
+		}
+
 		//Set the page visibility value to hidden, or 0.
 		jQuery("#ninja_forms_field_" + target_field).val(0);
 	}else{
-		//Show the breadcrumb button for this page.
-		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).show();
+		// Check to see if we are on the confirmation page. If we are, show or hide the page rather than the breadcrumb.
+		if ( jQuery("#mp_confirm_page").val() == 1 ) {
+			// This is the confirm page, hide the whole page.
+			jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + page).show();
+		} else {
+			//Show the breadcrumb button for this page.
+			jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).show();			
+		}
 		//Set the page visiblity value to visible, or 1.
 		jQuery("#ninja_forms_field_" + target_field).val(1);
 	}
@@ -223,13 +244,25 @@ function ninja_forms_show_mp_page( pass, target_field, element ){
 	var form_id = ninja_forms_get_form_id(element);
 	var page = jQuery("#ninja_forms_field_" + target_field).attr("rel");
 	if( pass ){
-		//Show the breadcrumb button for this page.
-		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb" ).show();
+		// Check to see if we are on the confirmation page. If we are, show or hide the page rather than the breadcrumb.
+		if ( jQuery("#mp_confirm_page").val() == 1 ) {
+			// This is the confirm page, hide the whole page.
+			jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + page).show();
+		} else {
+			//Hide the breadcrumb button for this page.
+			jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).show();			
+		}
 		//Set the page visiblity value to visible, or 1.
 		jQuery("#ninja_forms_field_" + target_field).val(1);
 	}else{
-		//Hide the breadcrumb button for this page.
-		jQuery("#ninja_forms_field_" + target_field + "_breadcrumb").hide();
+		// Check to see if we are on the confirmation page. If we are, show or hide the page rather than the breadcrumb.
+		if ( jQuery("#mp_confirm_page").val() == 1 ) {
+			// This is the confirm page, hide the whole page.
+			jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + page).hide();
+		} else {
+			//Hide the breadcrumb button for this page.
+			jQuery("#ninja_forms_field_" + target_field + "_breadcrumb"  ).hide();			
+		}
 		//Set the page visibility value to hidden, or 0.
 		jQuery("#ninja_forms_field_" + target_field).val(0);
 	}
@@ -324,10 +357,11 @@ function ninja_forms_mp_page_loop( form_id, new_page, current_page, dir ){
 
 function ninja_forms_mp_confirm_error_check(response){
 	if(typeof response.errors['confirm-submit'] !== 'undefined'){
-		jQuery("#ninja_forms_form_" + response.form_id + "_all_fields_wrap").hide();
+		jQuery("#ninja_forms_form_" + response.form_id + "_all_fields_wrap").remove();
 		jQuery("#ninja_forms_form_" + response.form_id + "_mp_breadcrumbs").hide();
 		jQuery("#ninja_forms_form_" + response.form_id + "_progress_bar").hide();
 		jQuery("#ninja_forms_form_" + response.form_id + "_save_progress").hide();
+		jQuery("#ninja_forms_form_" + response.form_id + "_mp_nav_wrap").hide();
 		jQuery("#ninja_forms_form_" + response.form_id + "_mp_confirm").val(1);
 		jQuery("#ninja_forms_form_" + response.form_id).prepend('<div id="ninja_forms_form_' + response.form_id + '_confirm_response">' + response.errors['confirm-submit-msg']['msg'] + '</div>');
 	}

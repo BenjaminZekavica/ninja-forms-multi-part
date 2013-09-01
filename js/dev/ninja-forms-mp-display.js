@@ -236,7 +236,7 @@ function ninja_forms_hide_mp_page( pass, target_field, element ){
 		//Set the page visiblity value to visible, or 1.
 		jQuery("#ninja_forms_field_" + target_field).val(1);
 	}
-	ninja_forms_toggle_nav(element);
+	ninja_forms_toggle_nav( form_id, target_field );
 
 }
 

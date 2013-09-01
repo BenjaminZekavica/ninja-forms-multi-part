@@ -1,19 +1,19 @@
 <?php
 /*
 Plugin Name: Ninja Forms - Multi-Part Forms
-Plugin URI: http://wpninjas.com/ninja-forms/
+Plugin URI: http://ninjaforms.com/downloads/multi-part-forms/
 Description: Multi-Part Forms add-on for Ninja Forms.
-Version: 1.0.9
+Version: 1.0.10
 Author: The WP Ninjas
-Author URI: http://wpninjas.com
+Author URI: http://ninjaforms.com
 */
 
 define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR."/ninja-forms-multi-part");
 define("NINJA_FORMS_MP_URL", plugins_url()."/ninja-forms-multi-part");
-define("NINJA_FORMS_MP_VERSION", "1.0.9");
+define("NINJA_FORMS_MP_VERSION", "1.0.10");
 
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
-define( 'NINJA_FORMS_MP_EDD_SL_STORE_URL', 'http://wpninjas.com' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
+define( 'NINJA_FORMS_MP_EDD_SL_STORE_URL', 'http://ninjaforms.com' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
 
 // the name of your product. This is the title of your product in EDD and should match the download title in EDD exactly
 define( 'NINJA_FORMS_MP_EDD_SL_ITEM_NAME', 'Multi-Part Forms' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system

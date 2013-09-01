@@ -4,16 +4,12 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 
 License: GPLv2 or later
 
 == Description ==
 The Ninja Forms Multi-Part Extension allows you to break forms up into multiple pages. This can be very helpful for long or complex forms.
-
-== Screenshots ==
-
-To see up to date screenshots, visit the [Ninja Forms](http://wpninjas.com/ninja-forms/) page.
 
 == Installation ==
 
@@ -29,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.0.10 =
+
+*Changes:*
+
+* Updated references to wpninjas.com with the new ninjaforms.com.
 
 = 1.0.9 =
 

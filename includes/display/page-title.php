@@ -16,7 +16,7 @@ function ninja_forms_mp_check_page_title( $form_id ){
 		}
 		if( $ajax == 1 ){
 			add_action( 'ninja_forms_display_mp_page_before_fields', 'ninja_forms_mp_display_page_title', 10, 2 );
-			remove_action( 'ninja_forms_display_before_fields', 'ninja_forms_display_req_items' );
+			remove_action( 'ninja_forms_display_before_fields', 'ninja_forms_display_req_items', 12 );
 			add_action( 'ninja_forms_display_mp_page_before_fields', 'ninja_forms_mp_display_page_req_items', 10, 2 );
 		}else{
 			ninja_forms_mp_display_page_title( $form_id );
@@ -34,7 +34,7 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 				$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
 			}else{
 				$current_page = 1;
-			}			
+			}
 		}
 
 		$all_fields = ninja_forms_get_fields_by_form_id( $form_id );

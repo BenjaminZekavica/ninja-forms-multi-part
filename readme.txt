@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 1.0.11
+Stable tag: 1.0.12
 
 License: GPLv2 or later
 
@@ -25,6 +25,13 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.0.12 =
+
+*Bugs:*
+
+* Fixed a bug that could cause Multi-Part forms to work incorrectly with the Save Progress extension.
+* Fixed a bug that prevented form settings from being carried from Multi-Part page to Multi-Part page.
 
 = 1.0.11 =
 

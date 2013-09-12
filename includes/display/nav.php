@@ -74,8 +74,14 @@ function ninja_forms_mp_nav( $form_id ){
 			$style = 'style="display:none;"';
 		}
 
+		if ( $sub_id != '' ) {
+			?>
+			<input type="hidden" name="_sub_id" value="<?php echo $sub_id;?>">
+			<?php
+		}
+
 		?>
-		<input type="hidden" name="_sub_id" value="<?php echo $sub_id;?>">
+		
 		<input type="hidden" name="_current_page" value="<?php echo $current_page;?>">
 		<div id="ninja_forms_form_<?php echo $form_id;?>_mp_nav_wrap" class="ninja-forms-mp-nav-wrap" <?php echo $style;?>>
 			<?php

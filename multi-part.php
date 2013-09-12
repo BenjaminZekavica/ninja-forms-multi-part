@@ -8,8 +8,8 @@ Author: The WP Ninjas
 Author URI: http://ninjaforms.com
 */
 
-define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR."/ninja-forms-multi-part");
-define("NINJA_FORMS_MP_URL", plugins_url()."/ninja-forms-multi-part");
+define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR."/".basename( dirname( __FILE__ ) ) );
+define("NINJA_FORMS_MP_URL", plugins_url()."/".basename( dirname( __FILE__ ) ) );
 define("NINJA_FORMS_MP_VERSION", "1.0.12");
 
 // this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed

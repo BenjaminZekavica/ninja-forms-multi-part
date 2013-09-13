@@ -61,11 +61,10 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 		}else{
 			$page_title = '';
 		}
+		$title = '<h4>'.$page_title.'</h4>';
+		$title = apply_filters( 'ninja_forms_display_mp_page_title', $title, $form_id, $current_page );
+		echo $title;	
 	}
-
-	$title = '<h4>'.$page_title.'</h4>';
-	$title = apply_filters( 'ninja_forms_display_mp_page_title', $title, $form_id, $current_page );
-	echo $title;
 }
 
 add_action( 'ninja_forms_display_before_fields', 'ninja_forms_mp_check_page_title', 9 );

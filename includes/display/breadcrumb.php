@@ -117,4 +117,6 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 	
 }
 
-add_action( 'ninja_forms_display_after_open_form_tag', 'ninja_forms_mp_display_breadcrumb', 8 );
+if ( !is_admin() ) {
+	add_action( 'ninja_forms_display_after_open_form_tag', 'ninja_forms_mp_display_breadcrumb', 8 );
+}

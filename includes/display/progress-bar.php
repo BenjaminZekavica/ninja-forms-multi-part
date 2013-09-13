@@ -55,5 +55,6 @@ function ninja_forms_mp_display_progress_bar( $form_id ){
 		<?php
 	}
 }
-
-add_action( 'ninja_forms_display_before_form_wrap', 'ninja_forms_mp_display_progress_bar', 5 );
+if ( !is_admin() ) {
+	add_action( 'ninja_forms_display_before_form_wrap', 'ninja_forms_mp_display_progress_bar', 5 );	
+}

@@ -35,7 +35,9 @@ function ninja_forms_mp_confirm_page_check_visibility( $form_id ){
 	}
 }
 
-add_action( 'ninja_forms_display_after_open_form_tag', 'ninja_forms_mp_confirm_page_check_visibility', 7 );
+if ( !is_admin() ) {
+	add_action( 'ninja_forms_display_after_open_form_tag', 'ninja_forms_mp_confirm_page_check_visibility', 7 );	
+}
 
 /*
  *
@@ -52,8 +54,9 @@ function ninja_forms_mp_output_hidden_confirm( $form_id ){
 	}
 }
 
-add_action( 'ninja_forms_display_close_form_tag', 'ninja_forms_mp_output_hidden_confirm', 5 );
-
+if ( !is_admin() ) {
+	add_action( 'ninja_forms_display_close_form_tag', 'ninja_forms_mp_output_hidden_confirm', 5 );	
+}
 
 /*
  *

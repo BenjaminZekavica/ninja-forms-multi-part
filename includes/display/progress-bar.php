@@ -49,7 +49,7 @@ function ninja_forms_mp_display_progress_bar( $form_id ){
 			$style = '';
 		}
 		?>
-		<div class="meter nostripes progressbar <?php echo $hidden;?>" id="ninja_forms_form_<?php echo $form_id;?>_progress_bar" <?php echo $style;?>>
+		<div class="meter nostripes progressbar" id="ninja_forms_form_<?php echo $form_id;?>_progress_bar" <?php echo $style;?>>
 			<span style="width: <?php echo $percent;?>%"></span>
 		</div>
 		<?php

@@ -2,13 +2,14 @@
 
 add_action( 'init', 'ninja_forms_register_mp_filter_fields' );
 function ninja_forms_register_mp_filter_fields(){
-	add_filter( 'ninja_forms_display_fields_array', 'ninja_forms_mp_filter_fields', 10, 2 );
+	//add_filter( 'ninja_forms_display_fields_array', 'ninja_forms_mp_filter_fields', 10, 2 );
 }
 
 function ninja_forms_mp_filter_fields( $field_results, $form_id ){
 	global $ninja_forms_processing;
 
 	$form_row = ninja_forms_get_form_by_id( $form_id );
+	$form_row = apply_filters( 'ninja_forms_display_form_form_data', $form_row );
 	$form_data = $form_row['data'];
 
 	if( isset( $form_data['ajax'] ) ){

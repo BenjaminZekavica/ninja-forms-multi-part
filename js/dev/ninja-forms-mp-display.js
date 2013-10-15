@@ -163,6 +163,7 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 		jQuery("#ninja_forms_form_" + form_id + "_mp_prev").show();
 		jQuery("#ninja_forms_form_" + form_id + "_mp_next").hide();
 	}
+	
 
 	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").addClass("ninja-forms-form-" + form_id + "-mp-page-list-inactive");
 	jQuery(".ninja-forms-form-" + form_id + "-mp-page-list-active").removeClass("ninja-forms-form-" + form_id + "-mp-page-list-active");
@@ -179,6 +180,11 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 	jQuery("[name='_mp_page_" + current_page + "']").addClass("ninja-forms-mp-breadcrumb-inactive");
 	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
 	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-mp-breadcrumb-active");
+	var field_id = jQuery(".ninja-forms-form-" + form_id + "-mp-page-show[rel=" + new_page + "]").prop("id");
+	ninja_forms_toggle_nav( form_id, field_id );
+	jQuery('html, body').animate({
+        scrollTop: jQuery("#ninja_forms_form_" + form_id + "_wrap").offset().top - 300
+    }, 1000);
 }
 
 function ninja_forms_before_submit_update_progressbar(formData, jqForm, options){
@@ -243,6 +249,7 @@ function ninja_forms_hide_mp_page( pass, target_field, element ){
 function ninja_forms_show_mp_page( pass, target_field, element ){
 	var form_id = ninja_forms_get_form_id(element);
 	var page = jQuery("#ninja_forms_field_" + target_field).attr("rel");
+	//console.log('page: ' + page + ' pass: ' + pass );
 	if( pass ){
 		// Check to see if we are on the confirmation page. If we are, show or hide the page rather than the breadcrumb.
 		if ( jQuery("#mp_confirm_page").val() == 1 ) {

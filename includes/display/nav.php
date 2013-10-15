@@ -18,7 +18,7 @@ function ninja_forms_mp_nav( $form_id ){
 	}else{
 		$ajax = 0;
 	}
-
+	$ajax = 1;
 	if( $multi_part == 1 ){
 
 		if( isset( $_REQUEST['_current_page'] ) ){
@@ -58,7 +58,7 @@ function ninja_forms_mp_nav( $form_id ){
 		}
 
 		$page_count = count($pages);
-		$x = 2;
+		$x = $current_page + 1;
 		$show_next = false;
 		while( $x <= $page_count ){
 			if( ninja_forms_mp_check_page_conditional( $form_id, $x ) ){
@@ -67,6 +67,7 @@ function ninja_forms_mp_nav( $form_id ){
 			}
 			$x++;
 		}
+		
 
 		if ( !$confirm ) {
 			$style = '';
@@ -86,6 +87,7 @@ function ninja_forms_mp_nav( $form_id ){
 		<div id="ninja_forms_form_<?php echo $form_id;?>_mp_nav_wrap" class="ninja-forms-mp-nav-wrap" <?php echo $style;?>>
 			<?php
 			if( $ajax == 1 ){
+
 				if( $current_page == 1 AND $current_page < $page_count ){
 					$prev_style = 'display:none;';
 					$next_style = '';
@@ -95,6 +97,9 @@ function ninja_forms_mp_nav( $form_id ){
 				}else if( $current_page > 1 AND $current_page < $page_count ){
 					$prev_style = '';
 					$next_style = '';
+					if( !$show_next ){
+						$next_style = 'display:none;';
+					}
 				}else if( $current_page == $page_count ){
 					$prev_style = '';
 					$next_style = 'display:none;';

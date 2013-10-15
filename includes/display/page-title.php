@@ -61,9 +61,9 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 		}else{
 			$page_title = '';
 		}
-		$title = '<h4>'.$page_title.'</h4>';
+		$title = '<h3 class="ninja-forms-mp-page-title">'.$page_title.'</h3>';
 		$title = apply_filters( 'ninja_forms_display_mp_page_title', $title, $form_id, $current_page );
-		echo $title;	
+		echo $title;
 	}
 }
 

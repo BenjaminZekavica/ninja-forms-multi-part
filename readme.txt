@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 1.0.13
+Stable tag: 1.0.14
 
 License: GPLv2 or later
 
@@ -25,6 +25,16 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.0.14 =
+
+*Changes:*
+
+* Added a class to the page title on each multi-part page so that it can be styled with Layout & Styles.
+
+*Bugs:*
+
+* Fixed bugs that could prevent the previous and next buttons from displaying correctly.
 
 = 1.0.13 =
 

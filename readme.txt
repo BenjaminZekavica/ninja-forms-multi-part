@@ -26,6 +26,13 @@ For help and video tutorials, please visit our website: [Ninja Forms Documentati
 
 == Changelog ==
 
+= 1.1 =
+
+*Bugs:*
+
+* Fixed a bug that could cause Multi-Part Javascript to run, even if the form wasn't a Multi-Part form.
+* Fixed a bug that could cause initial page load to be incorrect with a Multi-Part form.
+
 = 1.0.14 =
 
 *Changes:*

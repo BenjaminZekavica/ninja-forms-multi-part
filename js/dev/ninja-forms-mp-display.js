@@ -1,15 +1,30 @@
 jQuery(document).ready(function(jQuery){
 
 	jQuery(".ninja-forms-form").on("submitResponse", function(e, response){
-		return ninja_forms_mp_confirm_error_check( response );
+		var form_id = response.form_id;
+		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
+		if ( typeof mp_settings !== 'undefined' ) {
+			return ninja_forms_mp_confirm_error_check( response );
+		}
+		return true;
 	});
 
 	jQuery(".ninja-forms-form").on("submitResponse", function(e, response){
-		return ninja_forms_error_change_page( response );
+		var form_id = response.form_id;
+		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
+		if ( typeof mp_settings !== 'undefined' ) {
+			return ninja_forms_error_change_page( response );
+		}
+		return true;
 	});
 
 	jQuery(".ninja-forms-form").on("beforeSubmit", function(e, formData, jqForm, options){
-		return ninja_forms_before_submit_update_progressbar( formData, jqForm, options );
+		var form_id = jQuery(jqForm).find("#_form_id").val();
+		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
+		if ( typeof mp_settings !== 'undefined' ) {
+			return ninja_forms_before_submit_update_progressbar( formData, jqForm, options );
+		}
+		return true;		
 	});
 
 	jQuery(document).on( 'click', '.ninja-forms-mp-confirm-nav', function(e){

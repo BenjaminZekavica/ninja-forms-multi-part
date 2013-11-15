@@ -13,9 +13,17 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 	}
 	$ajax = 1;
 	if( is_object( $ninja_forms_processing ) ){
-		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
+		$current_page = absint( $ninja_forms_processing->get_extra_value( '_current_page' ) );
 	}else{
 		$current_page = 1;
+	}
+
+	if ( $current_page < 1 ) {
+		$current_page = 1;
+	}
+
+	if ( is_object ( $ninja_forms_processing ) ) {
+		$ninja_forms_processing->update_extra_value( '_current_page', $current_page );
 	}
 
 	if( isset( $form_data['multi_part'] ) ){
@@ -28,11 +36,10 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 		$pages = ninja_forms_mp_get_pages( $form_id );
 
 		foreach( $pages as $page => $fields ){
-			
+
 			// Check to see if our current field is the first field on the page. If it is, output our opening MP div just before it.
 			if ( isset( $fields[1]['id'] ) AND $fields[1]['id'] == $field_id ) {
 				$divider_id = $fields[0]['id'];
-				
 				if( $page == $current_page ){
 					$style = '';
 				}else{

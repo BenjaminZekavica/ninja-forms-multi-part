@@ -91,9 +91,18 @@ jQuery(document).ready(function(jQuery){
 			}
 		}
 	});
-
+	
+	jQuery(document).on( 'mp_page_change.scroll', function( e, form_id, new_page, old_page ) {
+		ninja_forms_scroll_to_top( form_id );
+	});
 
 });
+
+function ninja_forms_scroll_to_top( form_id ) {
+	jQuery('html, body').animate({
+    	scrollTop: jQuery("#ninja_forms_form_" + form_id + "_wrap").offset().top - 300
+	}, 1000);
+}
 
 function ninja_forms_error_change_page(response){
 	var form_id = response.form_id;
@@ -163,7 +172,9 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
    	// run the effect
     // alert( 'show' + new_page );
 	jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + current_page).hide( effect, { direction: direction_out }, 300, function(){
-		jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + new_page).show( effect, { direction: direction_in }, 200 );
+		jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + new_page).show( effect, { direction: direction_in }, 200, function() {
+			jQuery(document).triggerHandler( 'mp_page_change', [ form_id, new_page, current_page ] );		 
+		});
 	});
 	
 	jQuery("[name='_current_page']").val(new_page);
@@ -197,9 +208,6 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-mp-breadcrumb-active");
 	var field_id = jQuery(".ninja-forms-form-" + form_id + "-mp-page-show[rel=" + new_page + "]").prop("id");
 	ninja_forms_toggle_nav( form_id, field_id );
-	jQuery('html, body').animate({
-        scrollTop: jQuery("#ninja_forms_form_" + form_id + "_wrap").offset().top - 300
-    }, 1000);
 }
 
 function ninja_forms_before_submit_update_progressbar(formData, jqForm, options){

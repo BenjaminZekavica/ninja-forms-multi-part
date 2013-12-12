@@ -105,18 +105,18 @@ function ninja_forms_mp_nav( $form_id ){
 					$next_style = 'display:none;';
 				}
 				?>
-				<input type="submit" name="_prev" class="ninja-forms-mp-nav ninja-forms-mp-prev" id="ninja_forms_form_<?php echo $form_id;?>_mp_prev" value="<?php _e( 'Previous', 'ninja-forms' );?>" style="<?php echo $prev_style;?>">
-				<input type="submit" name="_next" class="ninja-forms-mp-nav ninja-forms-mp-next" id="ninja_forms_form_<?php echo $form_id;?>_mp_next" value="<?php _e( 'Next', 'ninja-forms' );?>" style="<?php echo $next_style;?>">	
+				<input type="submit" name="_prev" class="ninja-forms-mp-nav ninja-forms-mp-prev" id="ninja_forms_form_<?php echo $form_id;?>_mp_prev" value="<?php _e( 'Previous', 'ninja-forms-mp' );?>" style="<?php echo $prev_style;?>">
+				<input type="submit" name="_next" class="ninja-forms-mp-nav ninja-forms-mp-next" id="ninja_forms_form_<?php echo $form_id;?>_mp_next" value="<?php _e( 'Next', 'ninja-forms-mp' );?>" style="<?php echo $next_style;?>">	
 				<?php
 			}else{
 				if( $current_page != 1 AND $next_style ){
 					?>
-					<input type="submit" name="_prev" class="ninja-forms-mp-nav ninja-forms-mp-prev" id="ninja_forms_form_<?php echo $form_id;?>_mp_prev" value="<?php _e( 'Previous', 'ninja-forms' );?>">
+					<input type="submit" name="_prev" class="ninja-forms-mp-nav ninja-forms-mp-prev" id="ninja_forms_form_<?php echo $form_id;?>_mp_prev" value="<?php _e( 'Previous', 'ninja-forms-mp' );?>">
 					<?php
 				}
 				if( $current_page < $page_count ){
 					?>
-					<input type="submit" name="_next" class="ninja-forms-mp-nav ninja-forms-mp-next" id="ninja_forms_form_<?php echo $form_id;?>_mp_next" value="<?php _e( 'Next', 'ninja-forms' );?>">
+					<input type="submit" name="_next" class="ninja-forms-mp-nav ninja-forms-mp-next" id="ninja_forms_form_<?php echo $form_id;?>_mp_next" value="<?php _e( 'Next', 'ninja-forms-mp' );?>">
 					<?php
 				}				
 			}

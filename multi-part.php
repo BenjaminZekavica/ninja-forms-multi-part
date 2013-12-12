@@ -20,6 +20,35 @@ function ninja_forms_mp_setup_license() {
 
 add_action( 'admin_init', 'ninja_forms_mp_setup_license' );
 
+/**
+ * Load translations for add-on.
+ * First, look in WP_LANG_DIR subfolder, then fallback to add-on plugin folder.
+ */
+function ninja_forms_mp_load_translations() {
+
+	/** Set our unique textdomain string */
+	$textdomain = 'ninja-forms-mp';
+
+	/** The 'plugin_locale' filter is also used by default in load_plugin_textdomain() */
+	$locale = apply_filters( 'plugin_locale', get_locale(), $textdomain );
+
+	/** Set filter for WordPress languages directory */
+	$wp_lang_dir = apply_filters(
+		'ninja_forms_mp_wp_lang_dir',
+		trailingslashit( WP_LANG_DIR ) . 'ninja-forms-multi-part/' . $textdomain . '-' . $locale . '.mo'
+	);
+
+	/** Translations: First, look in WordPress' "languages" folder = custom & update-secure! */
+	load_textdomain( $textdomain, $wp_lang_dir );
+
+	/** Translations: Secondly, look in plugin's "lang" folder = default */
+	$plugin_dir = trailingslashit( basename( dirname( __FILE__ ) ) );
+	$lang_dir = apply_filters( 'ninja_forms_mp_lang_dir', $plugin_dir . 'languages/' );
+	load_plugin_textdomain( $textdomain, FALSE, $lang_dir );
+
+}
+add_action( 'plugins_loaded', 'ninja_forms_mp_load_translations' );
+
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/open-div.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/close-div.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/edit-field-ul.php");

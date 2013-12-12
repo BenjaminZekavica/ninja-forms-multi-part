@@ -57,7 +57,7 @@ function ninja_forms_field_page_divider_edit( $field_id, $data ){
 					<span class="item-title ninja-forms-field-title" id="ninja_forms_field_<?php echo $field_id;?>_title"><?php _e( 'Page Settings', 'ninja-forms-mp' );?></span>
 					<span class="item-controls">
 						<span class="item-type"><?php echo $type_name;?></span>
-						<a class="item-edit" id="ninja_forms_field_<?php echo $field_id;?>_toggle" title="<?php _e('Edit Menu Item', 'ninja-forms'); ?>" href="#"><?php _e( 'Edit Menu Item' , 'ninja-forms'); ?></a>
+						<a class="item-edit" id="ninja_forms_field_<?php echo $field_id;?>_toggle" title="<?php _e('Edit Menu Item', 'ninja-forms-mp'); ?>" href="#"><?php _e( 'Edit Menu Item' , 'ninja-forms-mp'); ?></a>
 					</span>
 				</dt>
 			</dl>

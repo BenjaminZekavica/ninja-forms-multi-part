@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 1.1
+Stable tag: 1.1.1
 
 License: GPLv2 or later
 
@@ -25,6 +25,19 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.1.1 =
+
+*Bugs:*
+
+* Fixed translation issues by adding a default language folder, fixing several bad text domains, and adding a proper translation loader.
+
+*Changes:*
+
+* Added a jQuery event for ‘mp_change_page’ that fires after the page has successfully changed.
+* Added some CSS for WP 3.8 compatability.
+* Admin scripts should now load the min or dev versions based on the NINJA_FORMS_JS_DEBUG constant.
+* Removed old licensing file.
 
 = 1.1 =
 

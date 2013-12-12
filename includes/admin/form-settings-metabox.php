@@ -93,7 +93,7 @@ function ninja_forms_register_mp_settings_metabox(){
 		),
 		'save_function' => 'ninja_forms_mp_save_form',
 	);
-
+	
 	if( function_exists( 'ninja_forms_register_tab_metabox' ) ){
 		ninja_forms_register_tab_metabox($args);
 	}

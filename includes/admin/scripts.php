@@ -17,8 +17,15 @@ function ninja_forms_mp_admin_js(){
 		
 		if( $multi_part == 1 ){
 			if( isset( $_REQUEST['page'] ) AND $_REQUEST['page'] == 'ninja-forms' ){
+				if ( defined( 'NINJA_FORMS_JS_DEBUG' ) && NINJA_FORMS_JS_DEBUG ) {
+					$suffix = '';
+					$src = 'dev';
+				} else {
+					$suffix = '.min';
+					$src = 'min';
+				}
 				wp_enqueue_script( 'ninja-forms-mp-admin',
-					NINJA_FORMS_MP_URL .'/js/min/ninja-forms-mp-admin.min.js',
+					NINJA_FORMS_MP_URL .'/js/' . $src .'/ninja-forms-mp-admin' . $suffix . '.js',
 					array( 'jquery', 'ninja-forms-admin', 'jquery-ui-droppable' ) );
 			}
 		}

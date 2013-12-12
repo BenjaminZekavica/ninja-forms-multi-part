@@ -69,3 +69,7 @@ ul.ninja-forms-field-list {
 #post-body-content .page-divider .menu-item-settings {
 	width: 480px;
 }
+
+.branch-3-9 #post-body-content .page-divider .menu-item-settings .description-wide {
+	width: 480px;
+}

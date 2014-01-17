@@ -1,11 +1,17 @@
 <?php
 
 function ninja_forms_mp_nav( $form_id ){
-	global $ninja_forms_processing;
+	global $ninja_forms_loading, $ninja_forms_processing;
 
-	$form_row = ninja_forms_get_form_by_id( $form_id );
-	$form_data = $form_row['data'];
-	$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_data = $ninja_forms_loading->get_all_form_settings();
+		$all_fields = $ninja_forms_loading->get_all_fields();
+		$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
+	} else {
+		$form_data = $ninja_forms_processing->get_all_form_settings();
+		$all_fields = $ninja_forms_processing->get_all_fields();
+		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
+	}
 
 	if( isset( $form_data['multi_part'] ) ){
 		$multi_part = $form_data['multi_part'];
@@ -43,22 +49,10 @@ function ninja_forms_mp_nav( $form_id ){
 			$confirm = false;
 		}
 
-		$pages = array();
-
-		if( is_array( $all_fields ) AND !empty( $all_fields ) ){
-
-			$this_page = array();
-			$x = 0;
-			foreach( $all_fields as $field ){
-				if( $field['type'] == '_page_divider' ){
-					$x++;
-				}
-				$pages[$x][] = $field['id'];
-			}
-		}
-
 		$page_count = count($pages);
+
 		$x = $current_page + 1;
+
 		$show_next = false;
 		while( $x <= $page_count ){
 			if( ninja_forms_mp_check_page_conditional( $form_id, $x ) ){
@@ -68,7 +62,6 @@ function ninja_forms_mp_nav( $form_id ){
 			$x++;
 		}
 		
-
 		if ( !$confirm ) {
 			$style = '';
 		} else {

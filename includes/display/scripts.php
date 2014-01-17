@@ -7,9 +7,16 @@ function ninja_forms_register_mp_display_js_css(){
 }
 
 function ninja_forms_mp_display_js( $form_id ){
-	$form_row = ninja_forms_get_form_by_id( $form_id );
-	$form_data = $form_row['data'];
-	$pages = ninja_forms_mp_get_pages( $form_id );
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_data = $ninja_forms_loading->get_all_form_settings();
+		$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
+	} else {
+		$form_data = $ninja_forms_processing->get_all_form_settings();
+		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );		
+	}
+
 	$page_count = count( $pages );
 	if( isset( $form_data['ajax'] ) ){
 		$ajax = $form_data['ajax'];

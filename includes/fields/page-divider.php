@@ -76,10 +76,14 @@ function ninja_forms_field_page_divider_edit( $field_id, $data ){
 }
 
 function ninja_forms_field_page_divider_display( $field_id, $data ){
-	global $ninja_forms_processing;
-	$form_row = ninja_forms_get_form_by_field_id( $field_id );
-	$form_id = $form_row['id'];
-	$form_data = $form_row['data'];	
+	global $ninja_forms_loading, $ninja_forms_processing;
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_id = $ninja_forms_loading->get_form_ID();
+		$form_data = $ninja_forms_loading->get_all_form_settings();
+	} else {
+		$form_id = $ninja_forms_processing->get_form_ID();
+		$form_data = $ninja_forms_processing->get_all_form_settings();
+	}
 
 	if( isset( $data['page_name'] ) ){
 		$page_name = $data['page_name'];

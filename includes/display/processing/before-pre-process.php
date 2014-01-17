@@ -16,9 +16,9 @@ function ninja_forms_mp_check_page_conditional_before_pre_process(){
 		if( isset( $form_row['data']['ajax'] ) AND $form_row['data']['ajax'] == 1 ){
 			if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
 				
-				$pages = ninja_forms_mp_get_pages( $form_id );
+				$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 				if( is_array( $pages ) AND !empty( $pages ) ){
-					foreach( $pages as $page => $fields ){
+					foreach( $pages as $page => $vars ){
 						$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
 						if( !$show ){
 							ninja_forms_mp_conditional_remove_page( $form_id, $page );
@@ -61,7 +61,7 @@ function ninja_forms_mp_register_save_page(){
 	global $ninja_forms_processing;
 
 	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'ajax' ) != 1 ){
-		add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_save_page', 12 );
+		add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_save_page', 15 );
 		add_action( 'ninja_forms_edit_sub_pre_process', 'ninja_forms_mp_save_page', 1001 );		
 	}
 	add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_error_change_page', 20 );
@@ -69,29 +69,18 @@ function ninja_forms_mp_register_save_page(){
 
 function ninja_forms_mp_error_change_page(){
 	global $ninja_forms_processing;
-	//print_r( $ninja_forms_processing->get_all_fields() );
+
 	if( $ninja_forms_processing->get_action() == 'submit'AND $ninja_forms_processing->get_form_setting( 'multi_part' ) == 1 ){
 		
 		if( $ninja_forms_processing->get_all_errors() ){
 			$form_id = $ninja_forms_processing->get_form_ID();
-			$pages = ninja_forms_mp_get_pages( $form_id );
-			$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
+			$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
+			$all_fields = $ninja_forms_processing->get_all_fields();
 			$error_page = '';
-			foreach( $all_fields as $field ){
-				$field_id = $field['id'];
+			foreach( $all_fields as $field_id => $user_value ){
 				if( $ninja_forms_processing->get_errors_by_location( $field_id ) ){
-					for( $x=1; $x <= count( $pages ); $x++ ) {
-						for( $y = 1; $y <= count( $pages[$x] ); $y++ ){
-							if( isset( $pages[$x][$y]['id'] ) AND 
-								$field_id == $pages[$x][$y]['id'] ){
-								if( $error_page == '' ){
-									$error_page = $x;
-									break 3;
-								}
-							}							
-						}
-
-					}
+					$error_page = $ninja_forms_processing->get_field_setting( $field_id, 'page' );
+					break;
 				}
 			}
 		$ninja_forms_processing->update_extra_value( '_current_page', $error_page );
@@ -105,7 +94,8 @@ function ninja_forms_mp_save_page(){
 	if( $ninja_forms_processing->get_form_setting( 'multi_part' ) ){
 
 		$form_id = $ninja_forms_processing->get_form_ID();
-		$pages = ninja_forms_mp_get_pages( $form_id );
+		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
+
 		$page_count = count( $pages );
 		$ninja_forms_processing->update_extra_value( '_page_count', $page_count );
 
@@ -113,7 +103,7 @@ function ninja_forms_mp_save_page(){
 		$user_id = $ninja_forms_processing->get_user_ID();
 		$form_id = $ninja_forms_processing->get_form_ID();
 
-		$field_data = $ninja_forms_processing->get_all_fields();
+		$field_data = $ninja_forms_processing->get_all_submitted_fields();
 
 		if( $sub_id != '' ){
 			$sub_row = ninja_forms_get_sub_by_id( $sub_id );
@@ -130,9 +120,8 @@ function ninja_forms_mp_save_page(){
 			}
 		}
 
-		$sub_data = array_values( $sub_data );
-
 		foreach( $sub_data as $row ){
+
 			$ninja_forms_processing->update_field_value( $row['field_id'], $row['user_value'] );
 			if( !$ninja_forms_processing->get_field_settings( $row['field_id'] ) ){
 				$field_row = ninja_forms_get_field_by_id( $row['field_id'] );
@@ -141,15 +130,13 @@ function ninja_forms_mp_save_page(){
 			}
 		}
 
-		$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
-		foreach( $all_fields as $field ){
-			$field_id = $field['id'];
+		$all_fields = $ninja_forms_processing->get_all_fields();
+		foreach( $all_fields as $field_id => $user_value ){
+			$field = $ninja_forms_processing->get_field_settings( $field_id );
 			$field_type = $field['type'];
-			//if( isset( $ninja_forms_fields[$field_type] ) AND $ninja_forms_fields[$field_type]['process_field'] ){
 			if( isset( $ninja_forms_fields[$field_type] ) ) {
-				if( $ninja_forms_processing->get_field_value( $field_id ) === false ){
-					$ninja_forms_processing->update_field_value( $field_id, false );
-					if ( $ninja_forms_processing->get_field_settings( $field_id ) === false ) {
+				if( $user_value === false ){
+					if ( $user_value === false ) {
 						$ninja_forms_processing->update_field_settings( $field_id, $field );
 					}
 				}
@@ -159,43 +146,19 @@ function ninja_forms_mp_save_page(){
 		ninja_forms_mp_nav_update_current_page();
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
 
-		foreach( $pages as $page => $fields ){
+		foreach( $pages as $page => $vars ){
 			if ( function_exists( 'ninja_forms_conditionals_field_filter' ) ) {
 				$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
 			}else{
 				$show = true;
 			}
-	    	
-	    	if( $show ){
-	    		/*
-	    		foreach( $fields as $field ){
-					if( isset( $field['type'] ) ){
-		    			$field_type = $field['type'];
-		    		}else{
-		    			$field_type = '';
-		    		}
 
-		    		//if( $field_type != '_page_divider' AND isset( $ninja_forms_fields[$field_type] ) AND $ninja_forms_fields[$field_type]['process_field'] ){
-		    		if( $field_type != '_page_divider' AND isset( $ninja_forms_fields[$field_type] ) ) {
-		    			$user_value = $ninja_forms_processing->get_field_value( $field['id'] );
-		    			if( $user_value === false ){ // This page should be shown, but this field isn't present in the $ninja_forms_processing.
-		    				// Update the $ninja_forms_processing to include the field with an empty string value.
-		    				$ninja_forms_processing->update_field_value( $field['id'], '' );
-
-		    				// Update the $ninja_forms_processing with the field settings for the field we just added.
-		    				$field_row = ninja_forms_get_field_by_id( $field['id'] );
-		    				$ninja_forms_processing->update_field_settings( $field['id'], $field_row );
-		    			}
-		    		}
-	    		}
-	    		*/
-	    	}else{
+	    	if( !$show ){
 	    		ninja_forms_mp_conditional_remove_page( $form_id, $page );
 	    	}
 	    }
 
 		$field_data = $ninja_forms_processing->get_all_fields();
-
 		$sub_data = array();
 
 		if(is_array($field_data) AND !empty($field_data)){
@@ -203,7 +166,6 @@ function ninja_forms_mp_save_page(){
 				array_push( $sub_data, array( 'field_id' => $field_id, 'user_value' => $user_value ) );
 			}
 		}
-
 
 		if( $ninja_forms_processing->get_action() == 'submit' ){
 			
@@ -296,8 +258,9 @@ function ninja_forms_mp_nav_update_current_page(){
 	}
 
 	if( $nav != '' ){
+
 		$show = ninja_forms_mp_check_page_conditional( $form_id, $current_page );
-		
+
 		$ninja_forms_processing->update_extra_value( '_current_page', $current_page );
 
 		if( ( $current_page <= $page_count ) AND !$show ){
@@ -346,23 +309,28 @@ function ninja_forms_mp_breadcrumb_update_current_page(){
  */
 
 function ninja_forms_mp_check_page_conditional( $form_id = '', $current_page = '' ){
-	global $ninja_forms_processing;
+	global $ninja_forms_loading, $ninja_forms_processing;
 
-	if( $form_id == '' ){
-		$form_id = $ninja_forms_processing->get_form_ID();
+	if ( function_exists ( 'ninja_forms_conditionals_field_filter' ) ) {
+		ninja_forms_conditionals_field_filter( $form_id );
 	}
-	
+
 	if( $current_page == '' ){
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );		
 	}
 
 	// Check to see if the next page has been rendered "hidden" by conditional logic.
 	$page_divider_id = ninja_forms_mp_get_divider_by_page( $form_id, $current_page );
-	$data = ninja_forms_get_field_by_id( $page_divider_id );
-	$data = $data['data'];
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$field = $ninja_forms_loading->get_field_settings( $page_divider_id );
+	} else {
+		$field = $ninja_forms_processing->get_field_settings( $page_divider_id );		
+	}
+
+	$data = $field['data'];
 	$show = true;
 	if( function_exists( 'ninja_forms_conditionals_field_filter' ) ){
-		$data = ninja_forms_conditionals_field_filter( $data, $page_divider_id );
 		if( isset( $data['conditional_action'] ) ){
 			switch( $data['conditional_action'] ){
 				case 'ninja_forms_show_mp_page':
@@ -390,14 +358,15 @@ function ninja_forms_mp_check_page_conditional( $form_id = '', $current_page = '
  */
 
 function ninja_forms_mp_conditional_remove_page( $form_id, $page ){
-	global $ninja_forms_processing;
+	global $ninja_forms_loading, $ninja_forms_processing;
 
-	$pages = ninja_forms_mp_get_pages( $form_id );
-	if( is_array( $pages[$page] ) AND !empty( $pages[$page] ) ){
-		foreach( $pages[$page] as $field ){
-			if( $field['type'] != '_page_divider' ){
-				$ninja_forms_processing->remove_field_value( $field['id'] );
-			}
-		}
+	if ( isset ( $ninja_forms_loading ) ) {
+		$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
+		$page_divider_id = $pages[$page]['id'];
+		$ninja_forms_loading->remove_field_value( $page_divider_id );
+	} else {
+		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
+		$page_divider_id = $pages[$page]['id'];
+		$ninja_forms_processing->remove_field_value( $page_divider_id );
 	}
 }

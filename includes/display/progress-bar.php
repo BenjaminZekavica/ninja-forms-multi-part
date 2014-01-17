@@ -16,9 +16,14 @@ function ninja_forms_register_mp_display_progress_bar(){
 }
 
 function ninja_forms_mp_display_progress_bar( $form_id ){
-	global $ninja_forms_processing;
-	$form_row = ninja_forms_get_form_by_id( $form_id );
-	$form_data = $form_row['data'];
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_data = $ninja_forms_loading->get_all_form_settings();
+	} else {
+		$form_data = $ninja_forms_processing->get_all_form_settings();
+	}
+
 	if( isset( $form_data['mp_progress_bar'] ) AND $form_data['mp_progress_bar'] == 1 ){
 		if( is_object( $ninja_forms_processing ) ){
 			if( $ninja_forms_processing->get_form_setting( 'processing_complete' ) == 1 ){

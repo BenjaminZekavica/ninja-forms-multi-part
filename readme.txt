@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 1.1.1
+Stable tag: 1.2
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.2 =
+
+*Changes:*
+
+* Added support for the new Ninja Forms loading system. This should significantly improve loading speed for forms that use multi-part forms.
 
 = 1.1.1 =
 

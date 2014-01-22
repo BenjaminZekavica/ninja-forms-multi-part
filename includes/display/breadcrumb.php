@@ -5,9 +5,16 @@
 **/
 
 function ninja_forms_mp_display_breadcrumb( $form_id ){
-	global $ninja_forms_processing;
-	$form_row = ninja_forms_get_form_by_id( $form_id );
-	$form_data = $form_row['data'];
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_data = $ninja_forms_loading->get_all_form_settings();
+		$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
+	} else { 
+		$form_data = $ninja_forms_processing->get_all_form_settings();
+		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
+	}
+
 	if ( isset ( $form_data['multi_part'] ) AND $form_data['multi_part'] == 1 ) {
 		$display = 1;
 
@@ -17,26 +24,6 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 			$display = '';
 		}else{
 			$display = 'display:none;';
-		}
-
-		$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
-
-		if( is_array( $all_fields ) AND !empty( $all_fields ) ){
-			$pages = array();
-			$this_page = array();
-			$x = 0;
-			foreach( $all_fields as $field ){
-				if( $field['type'] == '_page_divider' ){
-					$x++;
-					if ( isset( $field['data']['page_name'] ) ) {
-						$page_name = $field['data']['page_name'];
-					} else {
-						$page_name = '';
-					}
-					$pages[$x]['page_title'] = $page_name;
-					$pages[$x]['id'] = $field['id'];
-				}
-			}
 		}
 
 		$page_count = count($pages);
@@ -79,7 +66,8 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 		<ul style="display:none;">
 		<?php
 		if( is_array( $pages ) AND !empty( $pages ) ){
-			foreach( $pages as $page => $fields ){
+			foreach( $pages as $page => $vars ){
+				$field_id = $vars['id'];
 				//Figure out if this page should be hidden.
 				if( function_exists( 'ninja_forms_mp_check_page_conditional' ) ){
 					$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
@@ -93,8 +81,6 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 					$show = 0;
 				}
 
-				$field_id = $fields['id'];
-				
 				if( $page == $current_page ){
 					$class = 'ninja-forms-form-'.$form_id.'-mp-page-list-active';
 				}else{
@@ -107,7 +93,6 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 					<input type="hidden" id="ninja_forms_field_<?php echo $field_id;?>_type" value="_page_divider">
 				</li>
 				<?php
-
 			}
 		}
 		?>

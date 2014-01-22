@@ -48,8 +48,15 @@ if ( !is_admin() ) {
  */
 
 function ninja_forms_mp_output_hidden_confirm( $form_id ){
-	$form_row = ninja_forms_get_form_by_id( $form_id );
-	if ( isset( $form_row['data']['ajax'] ) AND $form_row['data']['ajax'] == 1 ) {
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_data = $ninja_forms_loading->get_all_form_settings();
+	} else {
+		$form_data = $ninja_forms_processing->get_all_form_settings();
+	}
+
+	if ( isset( $form_data['ajax'] ) AND $form_data['ajax'] == 1 ) {
 		echo '<input type="hidden" id="ninja_forms_form_'.$form_id.'_mp_confirm" name="_mp_confirm" value="0">';
 	}
 }
@@ -94,7 +101,6 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
  	global $ninja_forms_processing, $ninja_forms_fields;
  	// Get the pages for the current form.
  	$pages = ninja_forms_mp_get_pages( $form_id );
- 	$form_row = ninja_forms_get_form_by_id( $form_id );
 
 	if( is_array( $pages ) ){
 		if( is_object( $ninja_forms_processing ) ){
@@ -189,8 +195,6 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 							}
 
 							do_action( 'ninja_forms_display_before_field', $field_id, $data );
-							remove_action( 'ninja_forms_display_before_field', 'my_test_function', 10.5 );
-							
 							
 							//Check to see if display_wrap has been disabled. If it hasn't, show the wrapping DIV.
 							if($display_wrap){
@@ -247,14 +251,10 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 					}
 				}
 				$ninja_forms_processing->update_extra_value( '_current_page', $current_page );
-
-			//}
 		}
-		//if ( !isset( $form_row['data']['ajax'] ) OR $form_row['data']['ajax'] != 1 ) {
 			?>
 			<input type="hidden" id="mp_confirm_page" name="_mp_confirm" value="1">
 			<?php
-		//}
 	}
 }
 

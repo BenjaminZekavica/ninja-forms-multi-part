@@ -5,9 +5,14 @@
 **/
 
 function ninja_forms_mp_check_page_title( $form_id ){
-	global $ninja_forms_processing;
-	$form_row = ninja_forms_get_form_by_id( $form_id );
-	$form_data = $form_row['data'];
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_data = $ninja_forms_loading->get_all_form_settings();
+	} else {
+		$form_data = $ninja_forms_processing->get_all_form_settings();
+	}
+
 	if( isset( $form_data['mp_display_titles'] ) AND $form_data['mp_display_titles'] == 1 ){
 		if( isset( $form_data['ajax'] ) ){
 			$ajax = $form_data['ajax'];
@@ -25,7 +30,8 @@ function ninja_forms_mp_check_page_title( $form_id ){
 }
 
 function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
-	global $ninja_forms_processing;
+	global $ninja_forms_loading, $ninja_forms_processing;
+
 	if( ( isset( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'processing_complete' ) != 1 ) OR !isset ( $ninja_forms_processing ) ){
 		if( $page != '' ){
 			$current_page = $page;
@@ -37,14 +43,30 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 			}
 		}
 
-		$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
+		if ( isset ( $ninja_forms_loading ) ) {
+			$all_fields = $ninja_forms_loading->get_all_fields();
+		} else {
+			$all_fields = $ninja_forms_processing->get_all_fields();
+		}
 
 		if( is_array( $all_fields ) AND !empty( $all_fields ) ){
 			$pages = array();
 			$this_page = array();
 			$x = 0;
-			foreach( $all_fields as $field ){
-				if( $field['type'] == '_page_divider' ){
+			foreach( $all_fields as $field_id => $user_value ){
+				if ( isset ( $ninja_forms_loading ) ) {
+					$field = $ninja_forms_loading->get_field_settings( $field_id );
+				} else {
+					$field = $ninja_forms_processing->get_field_settings( $field_id );
+				}
+
+				if ( isset ( $field['type'] ) ) {
+					$field_type = $field['type'];
+				} else {
+					$field_type = '';
+				}
+
+				if( $field_type == '_page_divider' ){
 					$x++;
 					if ( isset( $field['data']['page_name'] ) ) {
 						$page_name = $field['data']['page_name'];
@@ -70,13 +92,23 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 add_action( 'ninja_forms_display_before_fields', 'ninja_forms_mp_check_page_title', 9 );
 
 function ninja_forms_mp_display_page_req_items( $form_id, $page ){
+	global $ninja_forms_loading, $ninja_forms_processing;
 
-	$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
+	if ( isset ( $ninja_forms_loading ) ) {
+		$all_fields = $ninja_forms_loading->get_all_fields();
+	} else {
+		$all_fields = $ninja_forms_processing->get_all_fields();
+	}
 
 	if( is_array( $all_fields ) AND !empty( $all_fields ) ){
 		$pages = array();
 		$x = 0;
-		foreach( $all_fields as $field ){
+		foreach( $all_fields as $field_id => $user_value ){
+			if ( isset ( $ninja_forms_loading ) ) {
+				$field = $ninja_forms_loading->get_field_settings( $field_id );
+			} else {
+				$field = $ninja_forms_processing->get_field_settings( $field_id );
+			}
 			if( $field['type'] == '_page_divider' ){
 				$x++;
 			}else{

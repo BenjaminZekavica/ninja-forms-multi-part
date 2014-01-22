@@ -21,6 +21,7 @@
 
 .ninja-forms-form .ninja-forms-mp-breadcrumbs {
 	list-style: none;
+	margin: 0 0 10px 0;
 }
 .ninja-forms-form .ninja-forms-mp-breadcrumbs:after {
 	clear: both;
@@ -29,8 +30,6 @@
 }
 .ninja-forms-form .ninja-forms-mp-breadcrumbs li {
 	float: left;
+	list-style: none;
 	margin: 0 5px;
 }
-
-
-

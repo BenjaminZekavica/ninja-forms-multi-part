@@ -73,8 +73,6 @@ function ninja_forms_mp_error_change_page(){
 	if( $ninja_forms_processing->get_action() == 'submit'AND $ninja_forms_processing->get_form_setting( 'multi_part' ) == 1 ){
 		
 		if( $ninja_forms_processing->get_all_errors() ){
-			$form_id = $ninja_forms_processing->get_form_ID();
-			$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 			$all_fields = $ninja_forms_processing->get_all_fields();
 			$error_page = '';
 			foreach( $all_fields as $field_id => $user_value ){
@@ -146,15 +144,13 @@ function ninja_forms_mp_save_page(){
 		ninja_forms_mp_nav_update_current_page();
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
 
-		foreach( $pages as $page => $vars ){
-			if ( function_exists( 'ninja_forms_conditionals_field_filter' ) ) {
+		if ( function_exists( 'ninja_forms_conditionals_field_filter' ) ) {
+			ninja_forms_conditionals_field_filter( $form_id );
+			foreach( $pages as $page => $vars ){
 				$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
-			}else{
-				$show = true;
-			}
-
-	    	if( !$show ){
-	    		ninja_forms_mp_conditional_remove_page( $form_id, $page );
+				if( !$show ){
+		    		ninja_forms_mp_conditional_remove_page( $form_id, $page );
+		    	}
 	    	}
 	    }
 
@@ -258,7 +254,7 @@ function ninja_forms_mp_nav_update_current_page(){
 	}
 
 	if( $nav != '' ){
-
+		ninja_forms_conditionals_field_filter( $form_id );
 		$show = ninja_forms_mp_check_page_conditional( $form_id, $current_page );
 
 		$ninja_forms_processing->update_extra_value( '_current_page', $current_page );
@@ -310,10 +306,6 @@ function ninja_forms_mp_breadcrumb_update_current_page(){
 
 function ninja_forms_mp_check_page_conditional( $form_id = '', $current_page = '' ){
 	global $ninja_forms_loading, $ninja_forms_processing;
-
-	if ( function_exists ( 'ninja_forms_conditionals_field_filter' ) ) {
-		ninja_forms_conditionals_field_filter( $form_id );
-	}
 
 	if( $current_page == '' ){
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );		

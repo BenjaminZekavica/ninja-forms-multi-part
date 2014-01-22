@@ -26,12 +26,6 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 			$display = 'display:none;';
 		}
 
-		if ( isset ( $ninja_forms_loading ) ) {
-			$all_fields = $ninja_forms_loading->get_all_fields();
-		} else {
-			$all_fields = $ninja_forms_processing->get_all_fields();
-		}
-
 		$page_count = count($pages);
 
 		if( is_object( $ninja_forms_processing ) ){

@@ -11,12 +11,6 @@ function ninja_forms_mp_get_pages( $form_id = '' ){
 	$last_field = '';
 	foreach( $field_results as $field ){
 
-		// if ( isset ( $ninja_forms_loading ) ) {
-		// 	$field = $ninja_forms_loading->get_field_settings( $field_id );
-		// } else {
-		// 	$field = $ninja_forms_processing->get_field_settings( $field_id );
-		// }
-
 		if( $field['type'] == '_page_divider' ){
 			$x++;
 			$y = 0;
@@ -29,7 +23,7 @@ function ninja_forms_mp_get_pages( $form_id = '' ){
 			}
 		}
 
-		$pages[$x]['fields'][] = $field;
+		$pages[$x]['fields'][] = $field['id'];
 	
 		if ( isset ( $ninja_forms_loading ) ) {
 			$ninja_forms_loading->update_field_setting( $field['id'], 'page', $x );
@@ -40,7 +34,7 @@ function ninja_forms_mp_get_pages( $form_id = '' ){
 
 	foreach ( $pages as $num => $vars ) {
 		$last_field = end( $vars['fields'] );
-		$pages[$num]['last_field'] = $last_field['id'];
+		$pages[$num]['last_field'] = $last_field;
 	}
 
 	return $pages;

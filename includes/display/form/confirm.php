@@ -100,7 +100,7 @@ function ninja_forms_mp_hide_page_titles( $title, $form_id, $current_page ){
 function ninja_forms_mp_output_confirm_page( $form_id ){
  	global $ninja_forms_processing, $ninja_forms_fields;
  	// Get the pages for the current form.
- 	$pages = ninja_forms_mp_get_pages( $form_id );
+ 	$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 
 	if( is_array( $pages ) ){
 		if( is_object( $ninja_forms_processing ) ){
@@ -111,18 +111,17 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 			$html = '';	
 		}
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
-		foreach ( $pages as $num => $page ) {
+		foreach ( $pages as $num => $vars ) {
 			if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
 				$show = ninja_forms_mp_check_page_conditional( $form_id, $num );
 			} else {
 				$show = true;
 			}
 
-			
-
 			//if ( $show ) {
 				$show_title = true;
-				foreach ( $page as $field ) {
+				foreach ( $vars['fields'] as $field_id ) {
+					$field = $ninja_forms_processing->get_field_settings( $field_id );
 					if ( $show ) {
 						$ninja_forms_processing->update_extra_value( '_current_page', $num );
 					} else {
@@ -133,7 +132,6 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 						$field_type = $field['type'];
 						$type = $ninja_forms_fields[$field['type']];
 
-						$field_id = $field['id'];
 						if(isset($field['data']['req'])){
 							$req = $field['data']['req'];
 						}else{
@@ -142,7 +140,7 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 
 						if ( isset ( $field['data']['page_name'] ) AND $field['data']['page_name'] != '' ) {
 							$page_title = $field['data']['page_name'];
-							add_action( 'ninja_forms_display_before_field', 'my_test_function', 10.5, 2 );
+							add_action( 'ninja_forms_display_before_field', 'ninja_forms_mp_output_confirm_page_titles', 10.5, 2 );
 						}
 	
 						$default_label_pos = $type['default_label_pos'];
@@ -258,7 +256,7 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 	}
 }
 
-function my_test_function( $field_id, $data ){
+function ninja_forms_mp_output_confirm_page_titles( $field_id, $data ){
 	$field = ninja_forms_get_field_by_id( $field_id );
 	$form_id = $field['form_id'];
 	$page = ninja_forms_mp_get_page_by_field_id( $field_id );

@@ -77,8 +77,7 @@ function ninja_forms_mp_hide_form( $display, $form_id ){
 	return 0;
 }
 
- /*
-  *
+ /**
   * Function that filters the page title visibility by returning an empty string.
   * 
   * @since 1.0.3
@@ -89,8 +88,7 @@ function ninja_forms_mp_hide_page_titles( $title, $form_id, $current_page ){
  	return '';
 }
 
- /*
-  *
+ /**
   * Function that outputs the HTML of the confirm page.
   *
   * @since 1.0.3
@@ -98,7 +96,7 @@ function ninja_forms_mp_hide_page_titles( $title, $form_id, $current_page ){
   */
 
 function ninja_forms_mp_output_confirm_page( $form_id ){
- 	global $ninja_forms_processing, $ninja_forms_fields;
+ 	global $nf_mp_confirm_title, $ninja_forms_processing, $ninja_forms_fields;
  	// Get the pages for the current form.
  	$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 
@@ -120,6 +118,11 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 
 			//if ( $show ) {
 				$show_title = true;
+				if ( isset ( $vars['page_title'] ) AND $vars['page_title'] != '' ) {
+					$first_field = $vars['first_field'];
+					$nf_mp_confirm_title[$first_field] = $vars['page_title'];
+					add_action( 'ninja_forms_display_before_field', 'ninja_forms_mp_output_confirm_page_titles', 10.5, 2 );
+				}
 				foreach ( $vars['fields'] as $field_id ) {
 					$field = $ninja_forms_processing->get_field_settings( $field_id );
 					if ( $show ) {
@@ -138,11 +141,6 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 							$req = '';
 						}
 
-						if ( isset ( $field['data']['page_name'] ) AND $field['data']['page_name'] != '' ) {
-							$page_title = $field['data']['page_name'];
-							add_action( 'ninja_forms_display_before_field', 'ninja_forms_mp_output_confirm_page_titles', 10.5, 2 );
-						}
-	
 						$default_label_pos = $type['default_label_pos'];
 						$display_wrap = $type['display_wrap'];
 						$display_label = $type['display_label'];
@@ -192,6 +190,13 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 								$label_pos = $default_label_pos;
 							}
 
+							if( isset( $data['visible'] ) ){
+								$visible = $data['visible'];
+							}else{
+								$visible = true;
+							}
+
+
 							do_action( 'ninja_forms_display_before_field', $field_id, $data );
 							
 							//Check to see if display_wrap has been disabled. If it hasn't, show the wrapping DIV.
@@ -200,7 +205,7 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 								$field_wrap_class = apply_filters( 'ninja_forms_field_wrap_class', $field_wrap_class, $field_id );
 								do_action( 'ninja_forms_display_before_opening_field_wrap', $field_id, $data );
 								?>
-								<div class="<?php echo $field_wrap_class;?>" style="<?php echo $display_style;?>" id="ninja_forms_field_<?php echo $field_id;?>_div_wrap">
+								<div class="<?php echo $field_wrap_class;?>" style="<?php echo $display_style;?>" id="ninja_forms_field_<?php echo $field_id;?>_div_wrap" data-visible="<?php echo $visible;?>">
 								<?php
 								do_action( 'ninja_forms_display_after_opening_field_wrap', $field_id, $data );
 							}
@@ -257,13 +262,9 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 }
 
 function ninja_forms_mp_output_confirm_page_titles( $field_id, $data ){
-	$field = ninja_forms_get_field_by_id( $field_id );
-	$form_id = $field['form_id'];
-	$page = ninja_forms_mp_get_page_by_field_id( $field_id );
-	$divider_id = ninja_forms_mp_get_divider_by_page( $form_id, $page );
-	$divider = ninja_forms_get_field_by_id( $divider_id );
-	if ( isset ( $divider['data']['page_name'] ) AND $divider['data']['page_name'] != '' ) {
-		$page_title = '<h4>'.$divider['data']['page_name'].'</h4>';
-		echo apply_filters( 'ninja_forms_mp_confirm_page_title', $page_title, $divider_id );
+	global $nf_mp_confirm_title, $ninja_forms_processing;
+
+	if ( isset ( $nf_mp_confirm_title[$field_id] ) ) {
+		echo apply_filters( 'ninja_forms_mp_confirm_page_title', '<h4>'.$nf_mp_confirm_title[$field_id].'</h4>', $field_id );
 	}
 }

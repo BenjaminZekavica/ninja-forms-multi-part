@@ -254,7 +254,9 @@ function ninja_forms_mp_nav_update_current_page(){
 	}
 
 	if( $nav != '' ){
-		ninja_forms_conditionals_field_filter( $form_id );
+		if ( function_exists( 'ninja_forms_conditionals_field_filter' ) ) {
+			ninja_forms_conditionals_field_filter( $form_id );
+		}
 		$show = ninja_forms_mp_check_page_conditional( $form_id, $current_page );
 
 		$ninja_forms_processing->update_extra_value( '_current_page', $current_page );

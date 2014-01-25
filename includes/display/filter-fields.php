@@ -3,6 +3,9 @@
 function ninja_forms_mp_filter_fields( $field_results, $form_id ){
 	global $ninja_forms_processing;
 
+	if ( isset ( $ninja_forms_processing ) and $ninja_forms_processing->get_error( 'confirm-submit' ) )
+		return $field_results;
+
 	$form_row = ninja_forms_get_form_by_id( $form_id );
 	$form_data = $form_row['data'];
 

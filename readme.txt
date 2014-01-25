@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 License: GPLv2 or later
 
@@ -25,6 +25,13 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.2.2 =
+
+*Bugs:*
+
+* Fixed a bug with confirmation pages and the conditional logic extension.
+* Fixed a bug that could cause php errors without the conditional logic extension present.
 
 = 1.2.1 =
 

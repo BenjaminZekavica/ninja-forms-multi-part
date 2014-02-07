@@ -21,6 +21,8 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 		$ajax = 0;
 	}
 
+	$ajax = 1;
+
 	if( is_object( $ninja_forms_processing ) ){
 		$current_page = absint( $ninja_forms_processing->get_extra_value( '_current_page' ) );
 	}else{
@@ -111,6 +113,8 @@ function ninja_forms_close_mp_div( $field_id, $data ){
 	}else{
 		$ajax = 0;
 	}
+
+	$ajax = 1;
 
 	if( is_object( $ninja_forms_processing ) ){
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );

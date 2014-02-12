@@ -17,6 +17,8 @@ function ninja_forms_mp_filter_fields( $field_results, $form_id ){
 		$ajax = 0;
 	}
 
+	$ajax = 1;
+
 	if( $ajax != 1 ){
 		if( isset( $_REQUEST['_current_page'] ) ){
 			$current_page = $_REQUEST['_current_page'];

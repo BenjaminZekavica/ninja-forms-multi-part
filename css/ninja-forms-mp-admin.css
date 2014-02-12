@@ -51,7 +51,7 @@
 }
 #ninja-forms-slide {
 	margin-left: 0;
-	width: 9999px;
+	width: 9999999px;
 	position: relative;
 }
 #ninja-forms-slide:after {
@@ -61,7 +61,7 @@
 }
 ul.ninja-forms-field-list {
 	float: left;
-	margin-right: 78px;
+	margin-right: 73px;
 }
 #post-body-content .page-divider .menu-item-handle {
 	width: 490px;

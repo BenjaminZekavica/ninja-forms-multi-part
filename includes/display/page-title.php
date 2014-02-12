@@ -44,38 +44,9 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 		}
 
 		if ( isset ( $ninja_forms_loading ) ) {
-			$all_fields = $ninja_forms_loading->get_all_fields();
+			$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
 		} else {
-			$all_fields = $ninja_forms_processing->get_all_fields();
-		}
-
-		if( is_array( $all_fields ) AND !empty( $all_fields ) ){
-			$pages = array();
-			$this_page = array();
-			$x = 0;
-			foreach( $all_fields as $field_id => $user_value ){
-				if ( isset ( $ninja_forms_loading ) ) {
-					$field = $ninja_forms_loading->get_field_settings( $field_id );
-				} else {
-					$field = $ninja_forms_processing->get_field_settings( $field_id );
-				}
-
-				if ( isset ( $field['type'] ) ) {
-					$field_type = $field['type'];
-				} else {
-					$field_type = '';
-				}
-
-				if( $field_type == '_page_divider' ){
-					$x++;
-					if ( isset( $field['data']['page_name'] ) ) {
-						$page_name = $field['data']['page_name'];
-					} else {
-						$page_name = '';
-					}
-					$pages[$x]['page_title'] = $page_name;
-				}
-			}
+			$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 		}
 
 		if( isset( $pages[$current_page]['page_title'] ) ){
@@ -83,6 +54,7 @@ function ninja_forms_mp_display_page_title( $form_id, $page = '' ){
 		}else{
 			$page_title = '';
 		}
+		
 		$title = '<h3 class="ninja-forms-mp-page-title">'.$page_title.'</h3>';
 		$title = apply_filters( 'ninja_forms_display_mp_page_title', $title, $form_id, $current_page );
 		echo $title;

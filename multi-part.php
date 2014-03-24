@@ -3,14 +3,14 @@
 Plugin Name: Ninja Forms - Multi-Part Forms
 Plugin URI: http://ninjaforms.com/downloads/multi-part-forms/
 Description: Multi-Part Forms add-on for Ninja Forms.
-Version: 1.2.3
+Version: 1.2.4
 Author: The WP Ninjas
 Author URI: http://ninjaforms.com
 */
 
 define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR."/".basename( dirname( __FILE__ ) ) );
 define("NINJA_FORMS_MP_URL", plugins_url()."/".basename( dirname( __FILE__ ) ) );
-define("NINJA_FORMS_MP_VERSION", "1.2.3");
+define("NINJA_FORMS_MP_VERSION", "1.2.4");
 
 function ninja_forms_mp_setup_license() {
 	if ( class_exists( 'NF_Extension_Updater' ) ) {

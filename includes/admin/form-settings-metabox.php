@@ -83,12 +83,14 @@ function ninja_forms_register_mp_settings_metabox(){
 			array(
 				'name' => 'mp_confirm',
 				'type' => 'checkbox',
-				'label' => __( 'Show Confirmation Page', 'ninja-forms-mp' ),
+				'label' => __( 'Show Review Page', 'ninja-forms-mp' ),
+				'desc' => __( 'This page will allow your users to review and modify their fields on one page before they submit the form.', 'ninja-forms' ),
 			),
 			array(
 				'name' => 'mp_confirm_msg',
 				'type' => 'rte',
-				'label' => __( 'Confirmation Page Message', 'ninja-forms-mp' )
+				'label' => __( 'Review Page Message', 'ninja-forms-mp' ),
+				'desc' => __( 'This message will be shown to users at the top of the review page.', 'ninja-forms' ),
 			),
 		),
 		'save_function' => 'ninja_forms_mp_save_form',

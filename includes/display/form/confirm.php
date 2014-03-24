@@ -158,7 +158,7 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 						}
 
 						if($sub_id != '' AND $sub_edit_function != ''){
-							$display_function = $sub_edit_function;
+							//$display_function = $sub_edit_function;
 						}
 
 						$process_field = $type['process_field'];

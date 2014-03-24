@@ -26,6 +26,16 @@ For help and video tutorials, please visit our website: [Ninja Forms Documentati
 
 == Changelog ==
 
+= 1.2.4 =
+
+*Changes:*
+
+* Changed the name of the "Confirmation Page" to "Review Page" to make the option's purpose more clear.
+
+*Bugs:*
+
+* Fixed a bug on the review page that caused hidden fields to sometimes be shown as textboxes that could be manipulated.
+
 = 1.2.3 =
 
 *Bugs:*

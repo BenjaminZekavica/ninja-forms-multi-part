@@ -167,7 +167,7 @@ function ninja_forms_mp_save_page(){
 			if( isset( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] ) ){
 				foreach( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] as $setting => $value ){
 					if( $value != '' ){
-						$ninja_forms_processing->update_form_setting( $setting, $value );
+						//$ninja_forms_processing->update_form_setting( $setting, $value );
 					}
 				}
 			}
@@ -181,7 +181,7 @@ function ninja_forms_mp_save_page(){
 			if( isset( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] ) ){
 				foreach( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] as $setting => $value ){
 					if( $value != '' ){
-						$ninja_forms_processing->update_form_setting( $setting, $value );
+						//$ninja_forms_processing->update_form_setting( $setting, $value );
 					}
 				}
 			}

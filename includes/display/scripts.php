@@ -35,8 +35,16 @@ function ninja_forms_mp_display_js( $form_id ){
 	}
 	if( isset( $form_data['multi_part'] ) AND $form_data['multi_part'] == 1 ){
 
+		if ( defined( 'NINJA_FORMS_JS_DEBUG' ) && NINJA_FORMS_JS_DEBUG ) {
+			$suffix = '';
+			$src = 'dev';
+		} else {
+			$suffix = '.min';
+			$src = 'min';
+		}
+
 		wp_enqueue_script( 'ninja-forms-mp-display',
-			NINJA_FORMS_MP_URL .'/js/min/ninja-forms-mp-display.min.js',
+			NINJA_FORMS_MP_URL .'/js/' . $src . '/ninja-forms-mp-display' . $suffix . '.js',
 			array( 'jquery', 'ninja-forms-display' ) );
 
 		if( $ajax == 1 ){

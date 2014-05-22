@@ -19,6 +19,10 @@ jQuery(document).ready(function(jQuery){
 	});
 
 	jQuery(".ninja-forms-form").on("beforeSubmit", function(e, formData, jqForm, options){
+		if ( jQuery( document ).data( 'mp_submit' ) == 1 ) {
+			jQuery( document ).data( 'submit_action', 'mp_submit' );
+			jQuery( document ).data( 'mp_submit', 0 );
+		}
 		var form_id = jQuery(jqForm).find("#_form_id").val();
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
 		if ( typeof mp_settings !== 'undefined' ) {
@@ -60,7 +64,8 @@ jQuery(document).ready(function(jQuery){
 		jQuery("#ninja_forms_form_" + form_id + "_mp_confirm").val(0);
 	});	
 
-	jQuery(document).on( 'click', '.ninja-forms-mp-nav', function(e){
+	jQuery( document ).on( 'click', '.ninja-forms-mp-nav', function( e ){
+		jQuery( document ).data( 'mp_submit', 1 );
 		var form_id = ninja_forms_get_form_id(this);
 		var settings = window['ninja_forms_form_' + form_id + '_settings'];
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];

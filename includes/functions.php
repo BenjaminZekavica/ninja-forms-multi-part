@@ -15,7 +15,13 @@ function ninja_forms_mp_get_pages( $form_id = '' ){
 			$x++;
 			$y = 0;
 			$pages[$x]['id'] = $field['id'];
-			$pages[$x]['page_title'] = $field['data']['page_name'];
+			if ( isset ( $field['data']['page_name'] ) ) {
+				$page_name = $field['data']['page_name'];
+			} else {
+				$page_name = '';
+			}
+			$pages[$x]['page_title'] = $page_name;
+
 		} else {
 			if ( $y == 0 ) {
 				$pages[$x]['first_field'] = $field['id'];

@@ -30,7 +30,7 @@ function ninja_forms_mp_check_page_conditional_before_pre_process(){
 	}
 }
 
-add_action( 'ninja_forms_before_pre_process', 'ninja_forms_mp_check_page_conditional_before_pre_process' );
+add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_check_page_conditional_before_pre_process', 11 );
 
 
 function ninja_forms_mp_remove_save(){
@@ -119,7 +119,6 @@ function ninja_forms_mp_save_page(){
 		}
 
 		foreach( $sub_data as $row ){
-
 			$ninja_forms_processing->update_field_value( $row['field_id'], $row['user_value'] );
 			if( !$ninja_forms_processing->get_field_settings( $row['field_id'] ) ){
 				$field_row = ninja_forms_get_field_by_id( $row['field_id'] );
@@ -168,7 +167,7 @@ function ninja_forms_mp_save_page(){
 			if( isset( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] ) ){
 				foreach( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] as $setting => $value ){
 					if( $value != '' ){
-						$ninja_forms_processing->update_form_setting( $setting, $value );
+						//$ninja_forms_processing->update_form_setting( $setting, $value );
 					}
 				}
 			}
@@ -182,7 +181,7 @@ function ninja_forms_mp_save_page(){
 			if( isset( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] ) ){
 				foreach( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] as $setting => $value ){
 					if( $value != '' ){
-						$ninja_forms_processing->update_form_setting( $setting, $value );
+						//$ninja_forms_processing->update_form_setting( $setting, $value );
 					}
 				}
 			}
@@ -357,10 +356,20 @@ function ninja_forms_mp_conditional_remove_page( $form_id, $page ){
 	if ( isset ( $ninja_forms_loading ) ) {
 		$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
 		$page_divider_id = $pages[$page]['id'];
-		$ninja_forms_loading->remove_field_value( $page_divider_id );
+		if ( is_array( $pages[$page] ) ){
+			foreach ( $pages[$page]['fields'] as $field_id ) {
+				$ninja_forms_loading->update_field_value( $field_id, false );
+			}
+		}
+		$ninja_forms_loading->update_field_value( $page_divider_id, false );
 	} else {
 		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 		$page_divider_id = $pages[$page]['id'];
-		$ninja_forms_processing->remove_field_value( $page_divider_id );
+		if ( is_array( $pages[$page] ) ){
+			foreach ( $pages[$page]['fields'] as $field_id ) {
+				$ninja_forms_processing->update_field_value( $field_id, false );
+			}
+		}
+		$ninja_forms_processing->update_field_value( $page_divider_id, false );
 	}
 }

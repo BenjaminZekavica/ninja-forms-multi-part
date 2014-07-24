@@ -35,9 +35,13 @@ function ninja_forms_mp_display_progress_bar( $form_id ){
 				}else{
 					$current_page--;
 					$page_count = $ninja_forms_processing->get_extra_value( '_page_count' );
-					$percent = $current_page / $page_count;
-					$percent = $percent * 100;
-					$percent = ceil( $percent );
+					if ( $page_count <= 0 ) {
+						$percent = 100;
+					} else {
+						$percent = $current_page / $page_count;
+						$percent = $percent * 100;
+						$percent = ceil( $percent );						
+					}
 				}
 			}
 		}else{

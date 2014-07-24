@@ -20,6 +20,17 @@ function ninja_forms_register_mp_settings_metabox(){
 
 	$direction = apply_filters( 'ninja_forms_mp_ajax_directions_array', $direction );
 
+	if ( isset ( $_REQUEST['form_id'] ) ) {
+		$form = ninja_forms_get_form_by_id( $_REQUEST['form_id'] );
+		if ( isset ( $form['ajax'] ) ) {
+			$ajax = $form['ajax'];
+		} else {
+			$ajax = 0;
+		}
+	} else {
+		$ajax = 0;
+	}
+
 	$args = array(
 		'page' => 'ninja-forms',
 		'tab' => 'form_settings',
@@ -69,7 +80,7 @@ function ninja_forms_register_mp_settings_metabox(){
 				'type' => 'select',
 				'options' => $effects,
 				'desc' => '',
-				'label' => __( 'Ajax Page Transition Effect', 'ninja-forms-mp' ),
+				'label' => __( 'Page Transition Effect', 'ninja-forms-mp' ),
 				'display_function' => '',
 				'help' => '',
 				'default_value' => 'slide',
@@ -78,7 +89,7 @@ function ninja_forms_register_mp_settings_metabox(){
 				'name' => 'mp_ajax_direction',
 				'type' => 'select',
 				'options' => $direction,
-				'label' => __( 'Ajax Page Transition Direction', 'ninja-forms-mp' ),
+				'label' => __( 'Page Transition Direction', 'ninja-forms-mp' ),
 			),
 			array(
 				'name' => 'mp_confirm',

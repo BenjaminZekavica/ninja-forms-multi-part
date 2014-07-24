@@ -3,8 +3,8 @@
 add_action( 'init', 'ninja_forms_register_mp_remove_save' );
 function ninja_forms_register_mp_remove_save(){
 	global $ninja_forms_processing;
-	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'ajax' ) != 1 ){
-		add_action( 'ninja_forms_before_pre_process', 'ninja_forms_mp_remove_save', 9 );
+	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'mp_js_transition' ) != 1 ){
+		//add_action( 'ninja_forms_before_pre_process', 'ninja_forms_mp_remove_save', 9 );
 	}
 }
 
@@ -13,7 +13,7 @@ function ninja_forms_mp_check_page_conditional_before_pre_process(){
 	$form_id = $ninja_forms_processing->get_form_ID();
 	$form_row = ninja_forms_get_form_by_id( $form_id );
 	if ( isset ( $form_row['data']['multi_part'] ) AND $form_row['data']['multi_part'] == 1 ) {
-		if( isset( $form_row['data']['ajax'] ) AND $form_row['data']['ajax'] == 1 ){
+		//if( isset( $form_row['data']['ajax'] ) AND $form_row['data']['ajax'] == 1 ){
 			if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
 				
 				$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
@@ -26,7 +26,7 @@ function ninja_forms_mp_check_page_conditional_before_pre_process(){
 					}
 				}
 			}		
-		}		
+		//}		
 	}
 }
 
@@ -60,9 +60,9 @@ add_action( 'init', 'ninja_forms_mp_register_save_page' );
 function ninja_forms_mp_register_save_page(){
 	global $ninja_forms_processing;
 
-	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'ajax' ) != 1 ){
-		add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_save_page', 15 );
-		add_action( 'ninja_forms_edit_sub_pre_process', 'ninja_forms_mp_save_page', 1001 );		
+	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'mp_js_transition' ) != 1 ){
+		//add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_save_page', 15 );
+		//add_action( 'ninja_forms_edit_sub_pre_process', 'ninja_forms_mp_save_page', 1001 );		
 	}
 	add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_error_change_page', 20 );
 }
@@ -142,16 +142,6 @@ function ninja_forms_mp_save_page(){
 
 		ninja_forms_mp_nav_update_current_page();
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
-
-		if ( function_exists( 'ninja_forms_conditionals_field_filter' ) ) {
-			ninja_forms_conditionals_field_filter( $form_id );
-			foreach( $pages as $page => $vars ){
-				$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
-				if( !$show ){
-		    		ninja_forms_mp_conditional_remove_page( $form_id, $page );
-		    	}
-	    	}
-	    }
 
 		$field_data = $ninja_forms_processing->get_all_fields();
 		$sub_data = array();

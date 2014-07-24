@@ -109,6 +109,26 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 			$html = '';	
 		}
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
+
+		// Run our two loading action hooks.
+		do_action( 'ninja_forms_display_pre_init', $form_id );
+		do_action( 'ninja_forms_display_init', $form_id );
+
+		if( is_object( $ninja_forms_processing)){
+			$sub_id = $ninja_forms_processing->get_form_setting('sub_id');
+		}else if(isset($_REQUEST['sub_id'])){
+			$sub_id = $_REQUEST['sub_id'];
+		}else{
+			$sub_id = '';
+		}
+
+		// Output our sub ID
+		if( ! empty( $sub_id ) ){
+			?>
+			<input type="hidden" name="_sub_id" value="<?php echo $sub_id;?>">
+			<?php			
+		}
+
 		foreach ( $pages as $num => $vars ) {
 			if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
 				$show = ninja_forms_mp_check_page_conditional( $form_id, $num );
@@ -146,20 +166,6 @@ function ninja_forms_mp_output_confirm_page( $form_id ){
 						$display_label = $type['display_label'];
 						$sub_edit_function = $type['sub_edit_function'];
 						$display_function = $type['display_function'];
-
-						//Check to see if we are currently editing a form submission.
-						//If we are, then $display_function should be set to the sub_edit_function instead.
-						if( is_object( $ninja_forms_processing)){
-							$sub_id = $ninja_forms_processing->get_form_setting('sub_id');
-						}else if(isset($_REQUEST['sub_id'])){
-							$sub_id = $_REQUEST['sub_id'];
-						}else{
-							$sub_id = '';
-						}
-
-						if($sub_id != '' AND $sub_edit_function != ''){
-							//$display_function = $sub_edit_function;
-						}
 
 						$process_field = $type['process_field'];
 						$data = $field['data'];

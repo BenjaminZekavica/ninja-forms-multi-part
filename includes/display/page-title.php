@@ -14,17 +14,13 @@ function ninja_forms_mp_check_page_title( $form_id ){
 	}
 
 	if( isset( $form_data['mp_display_titles'] ) AND $form_data['mp_display_titles'] == 1 ){
-		if( isset( $form_data['ajax'] ) ){
-			$ajax = $form_data['ajax'];
-		}else{
-			$ajax = 0;
-		}
-		if( $ajax == 1 ){
+
+		$js_transition = 1;
+
+		if( $js_transition == 1 ){
 			add_action( 'ninja_forms_display_mp_page_before_fields', 'ninja_forms_mp_display_page_title', 10, 2 );
 			remove_action( 'ninja_forms_display_before_fields', 'ninja_forms_display_req_items', 12 );
 			add_action( 'ninja_forms_display_mp_page_before_fields', 'ninja_forms_mp_display_page_req_items', 10, 2 );
-		}else{
-			ninja_forms_mp_display_page_title( $form_id );
 		}
 	}
 }

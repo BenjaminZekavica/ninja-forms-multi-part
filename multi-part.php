@@ -57,7 +57,7 @@ require_once(NINJA_FORMS_MP_DIR."/includes/admin/ajax.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/form-settings-metabox.php");
 
 require_once(NINJA_FORMS_MP_DIR."/includes/display/nav.php");
-require_once(NINJA_FORMS_MP_DIR."/includes/display/filter-fields.php");
+//require_once(NINJA_FORMS_MP_DIR."/includes/display/filter-fields.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/breadcrumb.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/progress-bar.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/page-title.php");

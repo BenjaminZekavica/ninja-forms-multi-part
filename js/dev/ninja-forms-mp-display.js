@@ -38,10 +38,9 @@ jQuery(document).ready(function(jQuery){
 		jQuery("#ninja_forms_form_" + form_id + "_progress_bar").show();		
 		jQuery("#ninja_forms_form_" + form_id + "_save_progress").show();		
 
-		var settings = window['ninja_forms_form_' + form_id + '_settings'];
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
-		ajax = settings.ajax;
-		if( ajax == 1 ){
+		js_transition = mp_settings.js_transition;
+		if( js_transition == 1 ){
 			e.preventDefault();
 			var current_page = jQuery("[name='_current_page']").val();
 			current_page = parseInt(current_page);
@@ -55,7 +54,6 @@ jQuery(document).ready(function(jQuery){
 			new_page = ninja_forms_mp_page_loop( form_id, new_page, current_page, dir );
 
 			if( current_page != new_page ){
-
 				ninja_forms_mp_change_page( form_id, current_page, new_page, effect );
 				ninja_forms_update_progressbar( form_id, new_page );				
 			}
@@ -67,10 +65,10 @@ jQuery(document).ready(function(jQuery){
 	jQuery( document ).on( 'click', '.ninja-forms-mp-nav', function( e ){
 		jQuery( document ).data( 'mp_submit', 1 );
 		var form_id = ninja_forms_get_form_id(this);
-		var settings = window['ninja_forms_form_' + form_id + '_settings'];
+
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
-		ajax = settings.ajax;
-		if( ajax == 1 ){
+		js_transition = mp_settings.js_transition;
+		if( js_transition == 1 ){
 			e.preventDefault();
 			var current_page = jQuery("[name='_current_page']").val();
 			current_page = parseInt(current_page);
@@ -91,6 +89,15 @@ jQuery(document).ready(function(jQuery){
 			new_page = ninja_forms_mp_page_loop( form_id, new_page, current_page, dir );
 
 			if( current_page != new_page ){
+				if ( typeof tinyMCE !== 'undefined' ) {
+					// Remove any tinyMCE editor         
+					for( i in tinyMCE.editors ) {
+						if ( typeof tinyMCE.editors[i].id !== 'undefined' ) {
+							tinyMCE.editors[i].remove();
+						}
+					}
+
+				}
 				ninja_forms_mp_change_page( form_id, current_page, new_page, effect );
 				ninja_forms_update_progressbar( form_id, new_page );				
 			}
@@ -98,6 +105,7 @@ jQuery(document).ready(function(jQuery){
 	});
 	
 	jQuery(document).on( 'mp_page_change.scroll', function( e, form_id, new_page, old_page ) {
+		ninja_forms_init_tinyMCE();
 		ninja_forms_scroll_to_top( form_id );
 	});
 
@@ -178,7 +186,7 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
     // alert( 'show' + new_page );
 	jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + current_page).hide( effect, { direction: direction_out }, 300, function(){
 		jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + new_page).show( effect, { direction: direction_in }, 200, function() {
-			jQuery(document).triggerHandler( 'mp_page_change', [ form_id, new_page, current_page ] );		 
+			jQuery(document).triggerHandler( 'mp_page_change', [ form_id, new_page, current_page ] );
 		});
 	});
 	
@@ -212,14 +220,15 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
 	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-mp-breadcrumb-active");
 	var field_id = jQuery(".ninja-forms-form-" + form_id + "-mp-page-show[rel=" + new_page + "]").prop("id");
+
 	ninja_forms_toggle_nav( form_id, field_id );
 }
 
 function ninja_forms_before_submit_update_progressbar(formData, jqForm, options){
 	var form_id = jQuery(jqForm).prop("id").replace("ninja_forms_form_", "" );
-	var settings = window['ninja_forms_form_' + form_id + '_settings'];
-	ajax = settings.ajax
-	if ( ajax == 1 ) {
+	var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
+	js_transition = mp_settings.js_transition
+	if ( js_transition == 1 ) {
 		var current_page = jQuery("[name='_current_page']").val();
 		current_page = parseInt(current_page);
 		current_page++;
@@ -401,4 +410,61 @@ function ninja_forms_mp_confirm_error_check(response){
 		jQuery("#ninja_forms_form_" + response.form_id).prepend('<div id="ninja_forms_form_' + response.form_id + '_confirm_response">' + response.errors['confirm-submit-msg']['msg'] + '</div>');
 	}
 	return true;
+}
+
+function ninja_forms_init_tinyMCE() {
+	if ( typeof tinyMCE !== 'undefined' ) {
+		// Remove any tinyMCE editors
+		var init, edId, qtId, firstInit, wrapper;
+			if ( typeof tinyMCEPreInit !== 'undefined' ) {
+				for ( edId in tinyMCEPreInit.mceInit ) {
+					if ( firstInit ) {
+						init = tinyMCEPreInit.mceInit[edId] = tinymce.extend( {}, firstInit, tinyMCEPreInit.mceInit[edId] );
+					} else {
+						init = firstInit = tinyMCEPreInit.mceInit[edId];
+					}
+
+					wrapper = tinymce.DOM.select( '#wp-' + edId + '-wrap' )[0];
+
+					if ( ( tinymce.DOM.hasClass( wrapper, 'tmce-active' ) || ! tinyMCEPreInit.qtInit.hasOwnProperty( edId ) ) &&
+						! init.wp_skip_init ) {
+
+						try {
+							tinymce.init( init );
+
+							if ( ! window.wpActiveEditor ) {
+								window.wpActiveEditor = edId;
+							}
+						} catch(e){}
+					}
+				}
+			}
+
+			if ( typeof quicktags !== 'undefined' ) {
+				for ( qtId in tinyMCEPreInit.qtInit ) {
+					try {
+						quicktags( tinyMCEPreInit.qtInit[qtId] );
+
+						if ( ! window.wpActiveEditor ) {
+							window.wpActiveEditor = qtId;
+						}
+					} catch(e){};
+				}
+			}
+
+			if ( typeof jQuery !== 'undefined' ) {
+				jQuery('.wp-editor-wrap').on( 'click.wp-editor', function() {
+					if ( this.id ) {
+						window.wpActiveEditor = this.id.slice( 3, -5 );
+					}
+				});
+			} else {
+				for ( qtId in tinyMCEPreInit.qtInit ) {
+					document.getElementById( 'wp-' + qtId + '-wrap' ).onclick = function() {
+						window.wpActiveEditor = this.id.slice( 3, -5 );
+					}
+				}
+			}
+		
+	}
 }

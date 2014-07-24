@@ -15,13 +15,7 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 
 	$pages = $form_data['mp_pages'];
 
-	if( isset( $form_data['ajax'] ) ){
-		$ajax = $form_data['ajax'];
-	}else{
-		$ajax = 0;
-	}
-
-	$ajax = 1;
+	$js_transition = 1;
 
 	if( is_object( $ninja_forms_processing ) ){
 		$current_page = absint( $ninja_forms_processing->get_extra_value( '_current_page' ) );
@@ -44,7 +38,7 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 	}
 
 	if( $multi_part == 1 ){
-		if ( $ajax == 1 ) {
+		if ( $js_transition == 1 ) {
 			foreach( $pages as $page => $vars ) {
 				// Check to see if this field is the first field on a page.
 				if ( $field_id == $vars['first_field'] ) {
@@ -69,24 +63,6 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 
 				}
 			}
-		} else {
-			// Check to see if this field is the first field on a page.
-			if ( $field_id == $pages[$current_page]['first_field'] ) {
-				$divider_id = $pages[$current_page]['id'];
-				$style='';
-
-				if( $page == $current_page ){
-					$class = 'ninja-forms-form-'.$form_id.'-mp-page-list-active';
-				}else{
-					$class = 'ninja-forms-form-'.$form_id.'-mp-page-list-inactive';
-				}
-				
-				do_action( 'ninja_forms_display_before_mp_page', $form_id, $page );
-				?>
-				<div id="ninja_forms_form_<?php echo $form_id;?>_mp_page_<?php echo $page;?>" class="ninja-forms-form-<?php echo $form_id;?>-mp-page ninja-forms-mp-page" style="<?php echo $style;?>" rel="<?php echo $page;?>">
-					<?php
-				do_action( 'ninja_forms_display_mp_page_before_fields', $form_id, $page );
-			}
 		}
 	}
 }
@@ -108,13 +84,7 @@ function ninja_forms_close_mp_div( $field_id, $data ){
 
 	$pages = $form_data['mp_pages'];
 
-	if( isset( $form_data['ajax'] ) ){
-		$ajax = $form_data['ajax'];
-	}else{
-		$ajax = 0;
-	}
-
-	$ajax = 1;
+	$js_transition = 1;
 
 	if( is_object( $ninja_forms_processing ) ){
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
@@ -129,7 +99,7 @@ function ninja_forms_close_mp_div( $field_id, $data ){
 	}
 
 	if( $multi_part == 1){
-		if ( $ajax == 1 ) {
+		if ( $js_transition == 1 ) {
 			foreach( $pages as $page => $vars ) {
 				if ( $field_id == $vars['last_field'] ) {
 					do_action( 'ninja_forms_display_mp_page_after_fields', $form_id, $page );
@@ -139,17 +109,7 @@ function ninja_forms_close_mp_div( $field_id, $data ){
 					do_action( 'ninja_forms_display_after_mp_page', $form_id, $page );
 				}
 			}
-		} else {
-			// Check to see if this is the last field on our page. Output our closing div if it is.
-			if ( $field_id == $pages[$current_page]['last_field'] ) {
-				do_action( 'ninja_forms_display_mp_page_after_fields', $form_id, $page );
-				?>
-				</div>
-				<?php
-				do_action( 'ninja_forms_display_after_mp_page', $form_id, $page );
-			}			
 		}
-
 	}
 }
 

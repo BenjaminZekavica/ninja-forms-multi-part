@@ -11,15 +11,15 @@ function ninja_forms_mp_filter_fields( $field_results, $form_id ){
 
 	$form_data = apply_filters( 'ninja_forms_display_form_form_data', $form_data );
 
-	if( isset( $form_data['ajax'] ) ){
-		$ajax = $form_data['ajax'];
+	if( isset( $form_data['mp_js_transition'] ) ){
+		$mp_js_transition = $form_data['mp_js_transition'];
 	}else{
-		$ajax = 0;
+		$mp_js_transition = 0;
 	}
 
-	$ajax = 1;
+	$mp_js_transition = 1;
 
-	if( $ajax != 1 ){
+	if( $mp_js_transition != 1 ){
 		if( isset( $_REQUEST['_current_page'] ) ){
 			$current_page = $_REQUEST['_current_page'];
 		}else{

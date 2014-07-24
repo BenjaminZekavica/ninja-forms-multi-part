@@ -39,7 +39,12 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 				<?php
 				if( is_array( $pages ) AND !empty( $pages ) ){
 					foreach( $pages as $number => $page ){
-						$show = ninja_forms_mp_check_page_conditional( $form_id, $number );
+						if ( function_exists( 'ninja_forms_conditionals_field_filter' ) ) {
+							$show = ninja_forms_mp_check_page_conditional( $form_id, $number );
+						} else {
+							$show = true;
+						}
+						
 						if( $show ){
 							$style = '';
 						}else{
@@ -69,7 +74,7 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 			foreach( $pages as $page => $vars ){
 				$field_id = $vars['id'];
 				//Figure out if this page should be hidden.
-				if( function_exists( 'ninja_forms_mp_check_page_conditional' ) ){
+				if( function_exists( 'ninja_forms_conditionals_field_filter' ) ){
 					$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
 				}else{
 					$show = true;

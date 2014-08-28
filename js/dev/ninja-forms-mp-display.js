@@ -19,10 +19,10 @@ jQuery(document).ready(function(jQuery){
 	});
 
 	jQuery(".ninja-forms-form").on("beforeSubmit", function(e, formData, jqForm, options){
-		if ( jQuery( document ).data( 'mp_submit' ) == 1 ) {
-			jQuery( document ).data( 'submit_action', 'mp_submit' );
-			jQuery( document ).data( 'mp_submit', 0 );
-		}
+		// if ( jQuery( document ).data( 'mp_submit' ) == 1 ) {
+		// 	jQuery( document ).data( 'submit_action', 'mp_submit' );
+		// 	jQuery( document ).data( 'mp_submit', 0 );
+		// }
 		var form_id = jQuery(jqForm).find("#_form_id").val();
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
 		if ( typeof mp_settings !== 'undefined' ) {
@@ -63,7 +63,7 @@ jQuery(document).ready(function(jQuery){
 	});	
 
 	jQuery( document ).on( 'click', '.ninja-forms-mp-nav', function( e ){
-		jQuery( document ).data( 'mp_submit', 1 );
+		//jQuery( document ).data( 'mp_submit', 1 );
 		var form_id = ninja_forms_get_form_id(this);
 
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
@@ -220,6 +220,9 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-form-" + form_id + "-mp-breadcrumb-active");
 	jQuery("[name='_mp_page_" + current_page + "']").removeClass("ninja-forms-mp-breadcrumb-active");
 	var field_id = jQuery(".ninja-forms-form-" + form_id + "-mp-page-show[rel=" + new_page + "]").prop("id");
+
+	// Hide any response messages we might have.
+	jQuery( "#ninja_forms_form_" + form_id + "_response_msg").hide();
 
 	ninja_forms_toggle_nav( form_id, field_id );
 }

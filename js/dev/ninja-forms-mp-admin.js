@@ -86,7 +86,7 @@ jQuery(document).ready(function($) {
 		var form_id = $("#_form_id").val();
 		$(".spinner").show();
 		
-		$.post( ajaxurl, { type: type, form_id: form_id, action:"ninja_forms_new_field"}, ninja_forms_mp_add_page );
+		$.post( ajaxurl, { type: type, form_id: form_id, action:"ninja_forms_new_field", nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, ninja_forms_mp_add_page );
     });
 
     $(".mp-add").droppable({
@@ -97,7 +97,7 @@ jQuery(document).ready(function($) {
 			var type = "_page_divider";
 			var form_id = $("#_form_id").val();
 			$(".spinner").show();
-			$.post( ajaxurl, { type: type, form_id: form_id, action:"ninja_forms_new_field"}, function(response){
+			$.post( ajaxurl, { type: type, form_id: form_id, action:"ninja_forms_new_field", nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function(response){
 				ninja_forms_mp_add_page(response);
 				var page_number = jQuery(".mp-page").length;
 				//var page_number = this.title;
@@ -127,7 +127,7 @@ jQuery(document).ready(function($) {
 	    	if(fields != ''){
 	    		$(".spinner").show();
 
-				$.post( ajaxurl, { form_id: form_id, fields: fields, action:"ninja_forms_mp_delete_page"}, function(response){
+				$.post( ajaxurl, { form_id: form_id, fields: fields, action:"ninja_forms_mp_delete_page", nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function(response){
 
 					if(page_count == 1){
 						for (var i = fields.length - 1; i >= 0; i--) {
@@ -204,7 +204,7 @@ jQuery(document).ready(function($) {
     		};
     		$(".spinner").show();
 
-			$.post( ajaxurl, { form_id: form_id, field_data: field_data, action:"ninja_forms_mp_copy_page"}, ninja_forms_mp_add_page);
+			$.post( ajaxurl, { form_id: form_id, field_data: field_data, action:"ninja_forms_mp_copy_page", nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, ninja_forms_mp_add_page);
 
 		}
 	});

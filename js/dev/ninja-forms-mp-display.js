@@ -1,5 +1,12 @@
 jQuery(document).ready(function(jQuery){
 
+	jQuery( '.ninja-forms-mp-page' ).each( function() { 
+		if ( jQuery( this ).is( ":visible" ) ) {
+			var page = jQuery( this ).attr( 'rel' );
+			jQuery( this ).parent().parent().find( "[name='_current_page']" ).val( page );
+		}
+	});
+
 	jQuery(".ninja-forms-form").on("submitResponse", function(e, response){
 		var form_id = response.form_id;
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
@@ -12,7 +19,8 @@ jQuery(document).ready(function(jQuery){
 	jQuery(".ninja-forms-form").on("submitResponse", function(e, response){
 		var form_id = response.form_id;
 		var mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
-		if ( typeof mp_settings !== 'undefined' ) {
+		var action = jQuery( document ).data( 'submit_action' );
+		if ( typeof mp_settings !== 'undefined' && action == 'submit' ) {
 			return ninja_forms_error_change_page( response );
 		}
 		return true;
@@ -182,14 +190,6 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 		}
 	}
 
-   	// run the effect
-    // alert( 'show' + new_page );
-	jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + current_page).hide( effect, { direction: direction_out }, 300, function(){
-		jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + new_page).show( effect, { direction: direction_in }, 200, function() {
-			jQuery(document).triggerHandler( 'mp_page_change', [ form_id, new_page, current_page ] );
-		});
-	});
-	
 	jQuery("[name='_current_page']").val(new_page);
 
 	if( new_page == 1 ){
@@ -223,6 +223,18 @@ function ninja_forms_mp_change_page( form_id, current_page, new_page, effect ){
 
 	// Hide any response messages we might have.
 	jQuery( "#ninja_forms_form_" + form_id + "_response_msg").hide();
+
+	// Disable button clicks.
+	jQuery( ":submit" ).attr( 'disabled', true );
+
+   	// run the effect
+	jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + current_page).hide( effect, { direction: direction_out }, 300, function(){
+		jQuery("#ninja_forms_form_" + form_id + "_mp_page_" + new_page).show( effect, { direction: direction_in }, 200, function() {
+			jQuery(document).triggerHandler( 'mp_page_change', [ form_id, new_page, current_page ] );
+			// Enable navigation button clicks.
+			jQuery( ":submit" ).attr( 'disabled', false );
+		});
+	});
 
 	ninja_forms_toggle_nav( form_id, field_id );
 }

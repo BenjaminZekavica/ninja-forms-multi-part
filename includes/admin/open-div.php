@@ -24,6 +24,8 @@ function ninja_forms_edit_field_open_div( $form_id ){
 		$current_page = $page_count;
 	}
 
+	$current_page = 1;
+
 	$tmp = $current_page - 1;
 
 	$offset = $tmp * -599.8182067871094;
@@ -38,9 +40,6 @@ function ninja_forms_edit_field_open_div( $form_id ){
 				foreach( $pages as $page => $field_id ){
 					if( $page == $current_page ){
 						$active = 'active';
-						?>
-						<input type="hidden" id="_current_page" name="_current_page" value="<?php echo $current_page;?>">
-						<?php
 					}else{
 						$active = '';
 					}

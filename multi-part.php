@@ -65,6 +65,7 @@ require_once(NINJA_FORMS_MP_DIR."/includes/admin/edit-field-ul.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/scripts.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/ajax.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/form-settings-metabox.php");
+require_once(NINJA_FORMS_MP_DIR."/includes/admin/labels.php");
 
 require_once(NINJA_FORMS_MP_DIR."/includes/display/nav.php");
 //require_once(NINJA_FORMS_MP_DIR."/includes/display/filter-fields.php");

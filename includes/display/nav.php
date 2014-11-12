@@ -101,8 +101,10 @@ function ninja_forms_mp_nav( $form_id ){
 					$next_style = 'display:none;';
 				}
 
-				$next_label = apply_filters( 'nf_multi_part_next_label', __( 'Next', 'ninja-forms-mp' ) );
-				$prev_label = apply_filters( 'nf_multi_part_previous_label', __( 'Previous', 'ninja-forms-mp' ) );
+				$plugin_settings = nf_get_settings();
+
+				$next_label = apply_filters( 'nf_multi_part_next_label', $plugin_settings['mp_next'] );
+				$prev_label = apply_filters( 'nf_multi_part_previous_label', $plugin_settings['mp_previous'] );
 				?>
 				<input type="submit" name="_prev" class="ninja-forms-mp-nav ninja-forms-mp-prev" id="ninja_forms_form_<?php echo $form_id;?>_mp_prev" value="<?php _e( $prev_label, 'ninja-forms-mp' );?>" style="<?php echo $prev_style;?>">
 				<input type="submit" name="_next" class="ninja-forms-mp-nav ninja-forms-mp-next" id="ninja_forms_form_<?php echo $form_id;?>_mp_next" value="<?php _e( $next_label, 'ninja-forms-mp' );?>" style="<?php echo $next_style;?>">	

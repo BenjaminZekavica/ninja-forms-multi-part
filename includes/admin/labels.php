@@ -43,8 +43,8 @@ add_action( 'init', 'nf_mp_labels', 11 );
  */
 
 function nf_mp_labels_filter( $settings ) {
-	$settings['mp_previous'] = isset ( $settings['mp_previous'] ) ? $settings['mp_previous'] : __( 'Previous', 'ninja-forms-mp');
-	$settings['mp_next'] = isset ( $settings['mp_next'] ) ? $settings['mp_next'] : __( 'Next', 'ninja-forms-mp');
+	$settings['mp_previous'] = isset ( $settings['mp_previous'] ) ? $settings['mp_previous'] : __( 'Previous', 'ninja-forms-mp' );
+	$settings['mp_next'] = isset ( $settings['mp_next'] ) ? $settings['mp_next'] : __( 'Next', 'ninja-forms-mp' );
 	return $settings;
 }
 

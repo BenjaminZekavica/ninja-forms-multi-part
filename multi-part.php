@@ -3,14 +3,26 @@
 Plugin Name: Ninja Forms - Multi-Part Forms
 Plugin URI: http://ninjaforms.com/downloads/multi-part-forms/
 Description: Multi-Part Forms add-on for Ninja Forms.
-Version: 1.2.7
+Version: 1.2.8
 Author: The WP Ninjas
 Author URI: http://ninjaforms.com
+Text Domain: ninja-forms-mp
+Domain Path: /lang/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 */
 
 define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR."/".basename( dirname( __FILE__ ) ) );
 define("NINJA_FORMS_MP_URL", plugins_url()."/".basename( dirname( __FILE__ ) ) );
-define("NINJA_FORMS_MP_VERSION", "1.2.7");
+define("NINJA_FORMS_MP_VERSION", "1.2.8");
 
 function ninja_forms_mp_setup_license() {
 	if ( class_exists( 'NF_Extension_Updater' ) ) {
@@ -26,25 +38,25 @@ add_action( 'admin_init', 'ninja_forms_mp_setup_license' );
  */
 function ninja_forms_mp_load_translations() {
 
-	/** Set our unique textdomain string */
-	$textdomain = 'ninja-forms-mp';
+  /** Set our unique textdomain string */
+  $textdomain = 'ninja-forms-mp';
 
-	/** The 'plugin_locale' filter is also used by default in load_plugin_textdomain() */
-	$locale = apply_filters( 'plugin_locale', get_locale(), $textdomain );
+  /** The 'plugin_locale' filter is also used by default in load_plugin_textdomain() */
+  $locale = apply_filters( 'plugin_locale', get_locale(), $textdomain );
 
-	/** Set filter for WordPress languages directory */
-	$wp_lang_dir = apply_filters(
-		'ninja_forms_mp_wp_lang_dir',
-		trailingslashit( WP_LANG_DIR ) . 'ninja-forms-multi-part/' . $textdomain . '-' . $locale . '.mo'
-	);
+  /** Set filter for WordPress languages directory */
+  $wp_lang_dir = apply_filters(
+    'ninja_forms_mp_wp_lang_dir',
+    trailingslashit( WP_LANG_DIR ) . 'ninja-forms-mp/' . $textdomain . '-' . $locale . '.mo'
+  );
 
-	/** Translations: First, look in WordPress' "languages" folder = custom & update-secure! */
-	load_textdomain( $textdomain, $wp_lang_dir );
+  /** Translations: First, look in WordPress' "languages" folder = custom & update-secure! */
+  load_textdomain( $textdomain, $wp_lang_dir );
 
-	/** Translations: Secondly, look in plugin's "lang" folder = default */
-	$plugin_dir = trailingslashit( basename( dirname( __FILE__ ) ) );
-	$lang_dir = apply_filters( 'ninja_forms_mp_lang_dir', $plugin_dir . 'languages/' );
-	load_plugin_textdomain( $textdomain, FALSE, $lang_dir );
+  /** Translations: Secondly, look in plugin's "lang" folder = default */
+  $plugin_dir = trailingslashit( basename( dirname( __FILE__ ) ) );
+  $lang_dir = apply_filters( 'ninja_forms_mp_lang_dir', $plugin_dir . 'lang/' );
+  load_plugin_textdomain( $textdomain, FALSE, $lang_dir );
 
 }
 add_action( 'plugins_loaded', 'ninja_forms_mp_load_translations' );
@@ -55,6 +67,7 @@ require_once(NINJA_FORMS_MP_DIR."/includes/admin/edit-field-ul.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/scripts.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/ajax.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/form-settings-metabox.php");
+require_once(NINJA_FORMS_MP_DIR."/includes/admin/labels.php");
 
 require_once(NINJA_FORMS_MP_DIR."/includes/display/nav.php");
 //require_once(NINJA_FORMS_MP_DIR."/includes/display/filter-fields.php");

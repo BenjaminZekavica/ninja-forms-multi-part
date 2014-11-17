@@ -191,12 +191,13 @@ jQuery(document).ready(function($) {
     	var page_count = $(".mp-page").length;
     	var field_data = {};
 
-    	if(page_count > 1){
+    	// if(page_count > 1){
     		$("#ninja_forms_field_list_" + current_page).find(".page-divider").removeClass("not-sortable");
-    	}
+    	// }
 
-    	var fields = $("#ninja_forms_field_list_" + current_page).sortable("toArray");
-
+    	$( "#ninja_forms_field_list_" + current_page ).sortable( "refresh" );
+    	var fields = $( "#ninja_forms_field_list_" + current_page ).sortable( "toArray" );
+    	
     	if(fields != ''){
     		for (var i = fields.length - 1; i >= 0; i--) {
 				var field_id = fields[i].replace("ninja_forms_field_", "");

@@ -17,6 +17,7 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 		'edit_custom_class' => false,
 		'edit_help' => false,
 		'edit_meta' => false,
+		'edit_desc' => false,
 		'edit_conditional' => true,
 		'process_field' => false,
 		'use_li' => false,
@@ -49,7 +50,6 @@ function ninja_forms_field_page_divider_edit( $field_id, $data ){
 	$type_name = __( 'Multi-Part Page', 'ninja-forms-mp' );
 	?>
 	<li id="ninja_forms_field_<?php echo $field_id;?>" class="not-sortable page-divider menu-item-settings">
-		Page Title: <input type="text" id="ninja_forms_field_<?php echo $field_id;?>_page_name" name="ninja_forms_field_<?php echo $field_id;?>[page_name]" value="<?php echo $page_name;?>" class="mp-page-name"> 
 		<a href="#" id="" name="" class="button-secondary ninja-forms-mp-copy-page"><?php _e( 'Duplicate Page', 'ninja-forms-mp' );?></a>
 		<div id="ninja_forms_field_<?php echo $field_id;?>" class="">
 			<dl class="menu-item-bar">
@@ -63,12 +63,11 @@ function ninja_forms_field_page_divider_edit( $field_id, $data ){
 			</dl>
 
 			<div class="menu-item-settings type-class inside" id="ninja_forms_field_<?php echo $field_id;?>_inside" style="display:none;">
-			
-			
-		
-		<?php
-		do_action( 'ninja_forms_edit_field_after_registered', $field_id );
-		?>
+				<?php _e( 'Page Title', 'ninja-forms-mp' ); ?>: <input type="text" id="ninja_forms_field_<?php echo $field_id;?>_page_name" name="ninja_forms_field_<?php echo $field_id;?>[page_name]" value="<?php echo $page_name;?>" class="mp-page-name"> 
+	
+				<?php
+				do_action( 'ninja_forms_edit_field_after_registered', $field_id );
+				?>
 			</div>
 		</div>
 	</li>

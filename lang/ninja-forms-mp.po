@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ninja-forms-multi-part\n"
-"POT-Creation-Date: 2014-11-15 16:16-0500\n"
-"PO-Revision-Date: 2014-11-15 16:16-0500\n"
+"Project-Id-Version: ninja-forms-mp\n"
+"POT-Creation-Date: 2014-11-17 14:19-0500\n"
+"PO-Revision-Date: 2014-11-17 14:19-0500\n"
 "Last-Translator: \n"
 "Language-Team: WP Ninjas <info@wpninjas.com>\n"
 "MIME-Version: 1.0\n"
@@ -93,15 +93,15 @@ msgstr ""
 msgid "Page Divider"
 msgstr ""
 
-#: includes/fields/page-divider.php:26
+#: includes/fields/page-divider.php:27
 msgid "Show This"
 msgstr ""
 
-#: includes/fields/page-divider.php:31
+#: includes/fields/page-divider.php:32
 msgid "Hide This"
 msgstr ""
 
-#: includes/fields/page-divider.php:49
+#: includes/fields/page-divider.php:50
 msgid "Multi-Part Page"
 msgstr ""
 
@@ -115,4 +115,8 @@ msgstr ""
 
 #: includes/fields/page-divider.php:60
 msgid "Edit Menu Item"
+msgstr ""
+
+#: includes/fields/page-divider.php:66
+msgid "Page Title"
 msgstr ""

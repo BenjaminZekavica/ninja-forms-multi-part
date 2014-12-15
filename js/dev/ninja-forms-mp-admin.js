@@ -10,20 +10,6 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	$(".ninja-forms-save-data").click(function(event){
-		//event.preventDefault();
-		$(".page-divider").removeClass("not-sortable");
-		$(".ninja-forms-field-list").sortable("refresh");
-		var order = '';
-		$(".ninja-forms-field-list").each(function(){
-			if(order != ''){
-				order = order + ",";
-			}
-			order = order + $(this).sortable('toArray');
-		})
-		$("#ninja_forms_field_order").val(order);
-	});
-
 	$("#mp-page-list").sortable({
 		 //placeholder: "drop-hover",
 		 helper: "clone",
@@ -184,6 +170,84 @@ jQuery(document).ready(function($) {
 		}
     });
 
+	$(document).on( 'click', '.mp-copy-page', function(e){
+		e.preventDefault();
+		var form_id = $("#_form_id").val();
+    	var current_page = $(".mp-page.active").attr("title");
+    	var page_count = $(".mp-page").length;
+
+    	$("#ninja_forms_field_list_" + current_page).find(".page-divider").removeClass("not-sortable");
+
+    	$( "#ninja_forms_field_list_" + current_page ).sortable( "refresh" );
+    	var fields = $( "#ninja_forms_field_list_" + current_page ).sortable( "toArray" );
+    	var field_ids = {};
+    	if( fields != '' ){
+    		for (var i = fields.length - 1; i >= 0; i--) {
+    			// TODO:
+    			// Grabbing the ID isn't enough if the metabox is open. Need to check the data model to see if it is open, and if it is,
+    			// get the current data from the fields. This means some fields will be passed as IDs and some will have data if the metabox is open when the page is copied.
+				field_ids[i] = fields[i].replace("ninja_forms_field_", "");
+			}
+    		$('.mp-spinner').show();
+
+			$.post( ajaxurl, { form_id: form_id, field_data: field_data, action: 'nf_mp_copy_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, ninja_forms_mp_add_page);
+
+		}
+	});
+
+	// Filter our order variable before we save fields.
+	$( document ).on( 'nfAdminSaveFields', function( e ) {
+		//event.preventDefault();
+		$(".page-divider").removeClass("not-sortable");
+		$(".ninja-forms-field-list").sortable("refresh");
+		var current_order = '';
+		$(".ninja-forms-field-list").each(function(){
+			if(current_order != ''){
+				current_order = current_order + ",";
+			}
+			current_order = current_order + $(this).sortable('toArray');
+		});
+		current_order = current_order.split( ',' );
+		var order = {};
+		for ( var i = 0; i < current_order.length; i++ ) {
+			order[i] = current_order[i];
+		};
+		order = JSON.stringify( order );
+
+		$( document ).data( 'field_order', order );
+
+	} );
+
+	// Expand our page divider field when the edit button is clicked.
+	$( document ).on( 'click', '.page-divider-toggle', function( e ) {
+		e.preventDefault();
+		$( this ).parent().parent().parent().parent().find( '.inside' ).toggle();
+	});
+
+
+	/* * * End Multi-Part Forms Settings JS * * */
+
+
+	/**
+	 * Deprecated functionailty required for compatibility with Ninja Forms versions before 2.9.
+	 *
+	 */
+
+	$(".ninja-forms-save-data").click(function(event){
+		//event.preventDefault();
+		$(".page-divider").removeClass("not-sortable");
+		$(".ninja-forms-field-list").sortable("refresh");
+		var order = '';
+		$(".ninja-forms-field-list").each(function(){
+			if(order != ''){
+				order = order + ",";
+			}
+			order = order + $(this).sortable('toArray');
+		})
+		$("#ninja_forms_field_order").val(order);
+	});
+
+
 	$(document).on( 'click', '.ninja-forms-mp-copy-page', function(e){
 		e.preventDefault();
 		var form_id = $("#_form_id").val();
@@ -210,7 +274,9 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	/* * * End Multi-Part Forms Settings JS * * */
+	/**
+	 * End Deprecated ready statements
+	 */
 
 });
 
@@ -230,25 +296,38 @@ function ninja_forms_new_field_response( response ){
 	var current_page = jQuery(".mp-page.active").attr("title");
 
 	jQuery("#ninja_forms_field_list_" + current_page).append(response.new_html);
-	if(typeof response.edit_options != 'undefined'){
-		for(var i = 0; i < response.edit_options.length; i++){
-			if(response.edit_options[i].type == 'rte'){
-				var editor_id = 'ninja_forms_field_' + response.new_id + '[' + response.edit_options[i].name + ']';
-				
-				tinyMCE.execCommand( 'mceRemoveControl', false, editor_id );
-				tinyMCE.execCommand( 'mceAddControl', true, editor_id );
-			}
-		}
+	if ( response.new_type == 'List' ) {
+		//Make List Options sortable
+		jQuery(".ninja-forms-field-list-options").sortable({
+			helper: 'clone',
+			handle: '.ninja-forms-drag',
+			items: 'div',
+			placeholder: "ui-state-highlight",
+		});
 	}
+	if ( typeof nf_ajax_rte_editors !== 'undefined' ) {
+		for (var x = nf_ajax_rte_editors.length - 1; x >= 0; x--) {
+			var editor_id = nf_ajax_rte_editors[x];
+			tinyMCE.init( tinyMCEPreInit.mceInit[ editor_id ] );
+			try { quicktags( tinyMCEPreInit.qtInit[ editor_id ] ); } catch(e){}
+		};
+	}
+
 	jQuery(".ninja-forms-field-conditional-cr-field").each(function(){
 		jQuery(this).append('<option value="' + response.new_id + '">' + response.new_type + '</option>');
 	});
-	jQuery("#ninja_forms_field_" + response.new_id + "_toggle").click();
-	
-	jQuery("#ninja_forms_field_" + response.new_id + "_label").focus();
+
+	// Add our field to our backbone data model.
+	fields.add( { id: response.new_id, metabox_state: 1 } );
+
+	// Fire our custom jQuery addField event.
+	jQuery( document ).trigger('addField', [ response ]);
+
 }
 
 function ninja_forms_mp_add_page( response ){
+	console.log( response );
+	return false;
 	var last_page = jQuery(".mp-page").length;
 	var new_page = last_page + 1;
 	var ul_html = '<ul class="menu ninja-forms-field-list" id="ninja_forms_field_list_' + new_page + '" data-order="' + new_page + '"></ul>';
@@ -273,6 +352,9 @@ function ninja_forms_mp_add_page( response ){
 
 	jQuery("#ninja_forms_field_list_" + new_page).append(response.new_html);
 	ninja_forms_mp_change_page( new_page, ninja_forms_mp_page_added );
+
+	// Add our field to our backbone data model.
+	fields.add( { id: response.new_id, metabox_state: 1 } );
 }
 
 function ninja_forms_mp_page_added(){

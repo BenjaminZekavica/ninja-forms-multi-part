@@ -30,16 +30,20 @@ add_action('wp_ajax_ninja_forms_mp_delete_page', 'ninja_forms_mp_delete_page');
  * @returns void
  */
 
-function ninja_forms_mp_copy_page(){
+function nf_mp_copy_page(){
 	$form_id = $_REQUEST['form_id'];
-	$fields = $_REQUEST['field_data'];
+	$fields = $_REQUEST['fields'];
+	var_dump( $fields );
+	die();
+	$new_ids = array();
 
 	$order = 999;
 	foreach( $fields[0] as $f => $data ){
 		$data = serialize( $data );
 		$args = array( 'type' => '_page_divider', 'data' => $data, 'order' => $order, 'fav_id' => 0, 'def_id' => 0 );
 		$new_divider = ninja_forms_insert_field( $form_id, $args );
-		$new_html = ninja_forms_return_echo( 'ninja_forms_edit_field', $new_divider );		
+		$new_html = ninja_forms_return_echo( 'ninja_forms_edit_field', $new_divider );
+		$new_ids[] = $new_divider;
 	}
 
 	unset( $fields[0] );
@@ -74,11 +78,14 @@ function ninja_forms_mp_copy_page(){
 		$new_html .= ninja_forms_return_echo( 'ninja_forms_edit_field', $field_id );
 	}
 
+	var_dump( $new_ids );
+	die();
+
 	header("Content-type: application/json");
-	$array = array( 'new_html' => $new_html );
+	$array = array( 'new_html' => $new_html, 'new_ids' => $new_ids );
 	echo json_encode( $array );
 	die();
 }
 
 
-add_action( 'wp_ajax_ninja_forms_mp_copy_page', 'ninja_forms_mp_copy_page' );
+add_action( 'wp_ajax_nf_mp_copy_page', 'nf_mp_copy_page' );

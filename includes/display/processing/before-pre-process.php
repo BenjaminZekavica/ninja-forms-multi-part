@@ -1,13 +1,5 @@
 <?php
 
-add_action( 'init', 'ninja_forms_register_mp_remove_save' );
-function ninja_forms_register_mp_remove_save(){
-	global $ninja_forms_processing;
-	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'mp_js_transition' ) != 1 ){
-		//add_action( 'ninja_forms_before_pre_process', 'ninja_forms_mp_remove_save', 9 );
-	}
-}
-
 function ninja_forms_mp_check_page_conditional_before_pre_process(){
 	global $ninja_forms_processing;
 	$form_id = $ninja_forms_processing->get_form_ID();
@@ -56,16 +48,8 @@ function ninja_forms_mp_remove_save(){
 	
 }
 
-add_action( 'init', 'ninja_forms_mp_register_save_page' );
-function ninja_forms_mp_register_save_page(){
-	global $ninja_forms_processing;
+add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_error_change_page', 20 );
 
-	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'mp_js_transition' ) != 1 ){
-		//add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_save_page', 15 );
-		//add_action( 'ninja_forms_edit_sub_pre_process', 'ninja_forms_mp_save_page', 1001 );		
-	}
-	add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_error_change_page', 20 );
-}
 
 function ninja_forms_mp_error_change_page(){
 	global $ninja_forms_processing;
@@ -83,123 +67,6 @@ function ninja_forms_mp_error_change_page(){
 			}
 		$ninja_forms_processing->update_extra_value( '_current_page', $error_page );
 		}
-	}
-}
-
-function ninja_forms_mp_save_page(){
-	global $ninja_forms_processing, $current_user, $ninja_forms_fields;
-
-	if( $ninja_forms_processing->get_form_setting( 'multi_part' ) ){
-
-		$form_id = $ninja_forms_processing->get_form_ID();
-		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
-
-		$page_count = count( $pages );
-		$ninja_forms_processing->update_extra_value( '_page_count', $page_count );
-
-		$sub_id = $ninja_forms_processing->get_form_setting('sub_id');
-		$user_id = $ninja_forms_processing->get_user_ID();
-		$form_id = $ninja_forms_processing->get_form_ID();
-
-		$field_data = $ninja_forms_processing->get_all_submitted_fields();
-
-		if( $sub_id != '' ){
-			$sub_row = ninja_forms_get_sub_by_id( $sub_id );
-			$sub_data = $sub_row['data'];
-			$status = $sub_row['status'];
-		}else{
-			$sub_data = array();
-			$status = 0;
-		}
-
-		if(is_array($field_data) AND !empty($field_data)){
-			foreach($field_data as $field_id => $user_value){
-				array_push( $sub_data, array( 'field_id' => $field_id, 'user_value' => $user_value ) );
-			}
-		}
-
-		foreach( $sub_data as $row ){
-			$ninja_forms_processing->update_field_value( $row['field_id'], $row['user_value'] );
-			if( !$ninja_forms_processing->get_field_settings( $row['field_id'] ) ){
-				$field_row = ninja_forms_get_field_by_id( $row['field_id'] );
-
-				$ninja_forms_processing->update_field_settings( $row['field_id'], $field_row );
-			}
-		}
-
-		$all_fields = $ninja_forms_processing->get_all_fields();
-		foreach( $all_fields as $field_id => $user_value ){
-			$field = $ninja_forms_processing->get_field_settings( $field_id );
-			$field_type = $field['type'];
-			if( isset( $ninja_forms_fields[$field_type] ) ) {
-				if( $user_value === false ){
-					if ( $user_value === false ) {
-						$ninja_forms_processing->update_field_settings( $field_id, $field );
-					}
-				}
-			}
-		}
-
-		ninja_forms_mp_nav_update_current_page();
-		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
-
-		$field_data = $ninja_forms_processing->get_all_fields();
-		$sub_data = array();
-
-		if(is_array($field_data) AND !empty($field_data)){
-			foreach($field_data as $field_id => $user_value){
-				array_push( $sub_data, array( 'field_id' => $field_id, 'user_value' => $user_value ) );
-			}
-		}
-
-		if( $ninja_forms_processing->get_action() == 'submit' ){
-			
-			if( isset( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] ) ){
-				foreach( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] as $setting => $value ){
-					if( $value != '' ){
-						//$ninja_forms_processing->update_form_setting( $setting, $value );
-					}
-				}
-			}
-
-			ninja_forms_req_fields_process();
-			unset( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] );
-		}
-		
-		if( $ninja_forms_processing->get_action() == 'mp_save' OR $ninja_forms_processing->get_all_errors() ){
-		
-			if( isset( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] ) ){
-				foreach( $_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] as $setting => $value ){
-					if( $value != '' ){
-						//$ninja_forms_processing->update_form_setting( $setting, $value );
-					}
-				}
-			}
-			
-			$all_form_settings = $ninja_forms_processing->get_all_form_settings();
-			$_SESSION['ninja_forms_form_'.$form_id.'_form_settings'] = $all_form_settings;
-
-			$args = array(
-				'form_id' => $form_id,
-				'user_id' => $user_id,
-				'status' => $status,
-				'action' => 'mp_save',
-				'data' => serialize( $sub_data ),
-			);
-
-			if($sub_id != ''){
-				$args['sub_id'] = $sub_id;
-				ninja_forms_update_sub($args);
-			}else{
-				$sub_id = ninja_forms_insert_sub($args);
-			}
-
-			$ninja_forms_processing->update_form_setting( 'sub_id', $sub_id );
-
-			$ninja_forms_processing->add_error( '_mp_save', '' );
-		}
-
-
 	}
 }
 

@@ -50,14 +50,14 @@ function ninja_forms_field_page_divider_edit( $field_id, $data ){
 	$type_name = __( 'Multi-Part Page', 'ninja-forms-mp' );
 	?>
 	<li id="ninja_forms_field_<?php echo $field_id;?>" class="not-sortable page-divider menu-item-settings">
-		<a href="#" id="" name="" class="button-secondary ninja-forms-mp-copy-page"><?php _e( 'Duplicate Page', 'ninja-forms-mp' );?></a>
+		<a href="#" id="" name="" class="button-secondary mp-copy-page"><?php _e( 'Duplicate Page', 'ninja-forms-mp' );?></a>
 		<div id="ninja_forms_field_<?php echo $field_id;?>" class="">
 			<dl class="menu-item-bar">
 				<dt class="menu-item-handle" >
 					<span class="item-title ninja-forms-field-title" id="ninja_forms_field_<?php echo $field_id;?>_title"><?php _e( 'Page Settings', 'ninja-forms-mp' );?></span>
 					<span class="item-controls">
 						<span class="item-type"><?php echo $type_name;?></span>
-						<a class="item-edit" id="ninja_forms_field_<?php echo $field_id;?>_toggle" title="<?php _e( 'Edit Menu Item', 'ninja-forms-mp' ); ?>" href="#"><?php _e( 'Edit Menu Item' , 'ninja-forms-mp' ); ?></a>
+						<a class="item-edit page-divider-toggle" id="ninja_forms_field_<?php echo $field_id;?>_toggle" title="<?php _e( 'Edit Menu Item', 'ninja-forms-mp' ); ?>" href="#"><?php _e( 'Edit Menu Item' , 'ninja-forms-mp' ); ?></a>
 					</span>
 				</dt>
 			</dl>

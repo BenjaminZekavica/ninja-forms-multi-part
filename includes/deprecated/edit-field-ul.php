@@ -1,6 +1,6 @@
 <?php
-
-function nf_mp_register_edit_field_ul(){
+add_action( 'admin_init', 'ninja_forms_mp_register_edit_field_ul' );
+function ninja_forms_mp_register_edit_field_ul(){
 	if( isset( $_REQUEST['form_id'] ) ){
 		$form_id = $_REQUEST['form_id'];
 		$form_row = ninja_forms_get_form_by_id( $form_id );
@@ -14,13 +14,10 @@ function nf_mp_register_edit_field_ul(){
 		if( $multi_part == 1 ){
 			remove_action( 'ninja_forms_edit_field_ul', 'ninja_forms_edit_field_output_ul' );
 			add_action( 'ninja_forms_edit_field_ul', 'ninja_forms_edit_field_output_mp_ul' );
-			add_action( 'ninja_forms_edit_field_before_ul', 'nf_mp_edit_field_open_div' );
-			add_action( 'ninja_forms_edit_field_after_ul', 'nf_mp_edit_field_close_div' );
+			add_action( 'ninja_forms_edit_field_before_ul', 'ninja_forms_edit_field_open_div' );
 		}
 	}
 }
-
-add_action( 'admin_init', 'nf_mp_register_edit_field_ul' );
 
 function ninja_forms_edit_field_output_mp_ul( $form_id ){
 	

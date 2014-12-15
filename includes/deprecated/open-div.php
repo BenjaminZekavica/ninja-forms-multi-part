@@ -1,5 +1,5 @@
 <?php
-function nf_mp_edit_field_open_div( $form_id ){
+function ninja_forms_edit_field_open_div( $form_id ){
 	$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
 	$pages = array();
 	if( is_array( $all_fields ) AND !empty( $all_fields ) ){
@@ -31,7 +31,7 @@ function nf_mp_edit_field_open_div( $form_id ){
 	$offset = $tmp * -599.8182067871094;
 ?>
 	<div id="ninja-forms-viewport">
-		<input class="button-primary menu-save nf-save-admin-fields" id="ninja_forms_save_data_top" type="button" value="<?php _e('Save', 'ninja-forms'); ?>" />
+		<input class="button-primary menu-save ninja-forms-save-data" id="ninja_forms_save_data_top" type="submit" value="<?php _e( 'Save Field Settings', 'ninja-forms-mp' ); ?>" />
 		<ul id="ninja-forms-mp-pagination">
 			<li class="mp-subtract">-</li>
 			<span id="mp-page-list">
@@ -51,7 +51,7 @@ function nf_mp_edit_field_open_div( $form_id ){
 			?>
 			</span>
 			<li class="mp-add">+</li>
-		<span class="spinner mp-spinner" style="float:left;display:none;"></span>
+		<span class="spinner" style="float:left;display:none;"></span>
 		</ul>
 		
 		<div id="ninja-forms-slide" style="left: <?php echo $offset;?>px;">

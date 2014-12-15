@@ -26,7 +26,7 @@ function ninja_forms_mp_admin_js(){
 				}
 				wp_enqueue_script( 'ninja-forms-mp-admin',
 					NINJA_FORMS_MP_URL .'/js/' . $src .'/ninja-forms-mp-admin' . $suffix . '.js',
-					array( 'jquery', 'ninja-forms-admin', 'jquery-ui-droppable' ) );
+					array( 'jquery', 'ninja-forms-admin', 'nf-admin-fields', 'jquery-ui-droppable' ) );
 			}
 		}
 	}

@@ -69,19 +69,21 @@ if ( version_compare ( $nf_plugin_version, '2.9', '<' ) ) { // If our current ve
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/open-div.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/close-div.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/edit-field-ul.php");
+  require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/page-divider.php");
+  require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/scripts.php");
 } else { // If we're using a version of Ninja Forms >= 2.9, include the non-deprecated stuff.
   require_once(NINJA_FORMS_MP_DIR."/includes/admin/open-div.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/admin/close-div.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/admin/edit-field-ul.php");
+  require_once(NINJA_FORMS_MP_DIR."/includes/fields/page-divider.php");
+  require_once(NINJA_FORMS_MP_DIR."/includes/admin/scripts.php");  
 }
 
-require_once(NINJA_FORMS_MP_DIR."/includes/admin/scripts.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/ajax.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/form-settings-metabox.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/admin/labels.php");
 
 require_once(NINJA_FORMS_MP_DIR."/includes/display/nav.php");
-//require_once(NINJA_FORMS_MP_DIR."/includes/display/filter-fields.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/breadcrumb.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/progress-bar.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/page-title.php");
@@ -92,8 +94,6 @@ require_once(NINJA_FORMS_MP_DIR."/includes/display/form/confirm.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/processing/before-pre-process.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/processing/post-process.php");
 require_once(NINJA_FORMS_MP_DIR."/includes/display/processing/confirm.php");
-
-require_once(NINJA_FORMS_MP_DIR."/includes/fields/page-divider.php");
 
 require_once(NINJA_FORMS_MP_DIR."/includes/functions.php");
 

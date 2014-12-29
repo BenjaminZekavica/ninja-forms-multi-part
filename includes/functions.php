@@ -1,15 +1,15 @@
 <?php
 
-function ninja_forms_mp_get_pages( $form_id = '' ){
+function nf_mp_get_pages( $form_id = '' ){
 	global $ninja_forms_loading, $ninja_forms_processing;
 	
-	$field_results = ninja_forms_get_fields_by_form_id( $form_id );
+	$fields = Ninja_Forms()->form( $form_id )->fields;
 
 	$pages = array();
 	$x = 0;
 	$y = 0;
 	$last_field = '';
-	foreach( $field_results as $field ){
+	foreach( $fields as $field ){
 
 		if( $field['type'] == '_page_divider' ){
 			$x++;
@@ -21,7 +21,6 @@ function ninja_forms_mp_get_pages( $form_id = '' ){
 				$page_name = '';
 			}
 			$pages[$x]['page_title'] = $page_name;
-
 		} else {
 			if ( $y == 0 ) {
 				$pages[$x]['first_field'] = $field['id'];
@@ -33,7 +32,7 @@ function ninja_forms_mp_get_pages( $form_id = '' ){
 	
 		if ( isset ( $ninja_forms_loading ) ) {
 			$ninja_forms_loading->update_field_setting( $field['id'], 'page', $x );
-		} else {
+		} else if ( isset ( $ninja_forms_processing ) ) {
 			$ninja_forms_processing->update_field_setting( $field['id'], 'page', $x );
 		}
 	}
@@ -97,7 +96,7 @@ function ninja_forms_mp_get_page_by_field_id( $field_id ) {
  *
  * Function that loops through our pages and adds an array with the pages information to our loading/processing classes.
  *
- * @since 2.4
+ * @since 1.2.6
  * @return void
  */
 
@@ -122,3 +121,73 @@ function ninja_forms_mp_set_page_array( $form_id ) {
 add_action( 'ninja_forms_display_init', 'ninja_forms_mp_set_page_array' );
 add_action( 'ninja_forms_before_pre_process', 'ninja_forms_mp_set_page_array' );
 add_action( 'ninja_forms_edit_sub_pre_process', 'ninja_forms_mp_set_page_array', 3 );
+
+/*
+ * Get a page count for a particular form.
+ *
+ * @since 1.3
+ * @return int $count - Number of pages in the given form
+ */
+
+function nf_mp_get_page_count( $form_id ) {
+	if ( empty ( $form_id ) )
+		return false;
+
+	$fields = Ninja_Forms()->form( $form_id )->fields;
+	$x = 0;
+	foreach ( $fields as $field ) {
+		if ( $field['type'] == '_page_divider' ) {
+			$x++;
+		}
+	}
+
+	return $x;
+}
+
+/**
+ * Output our admin page nav <li>s given a form id.
+ * 
+ * @since 1.3
+ * @return void;
+ */
+function nf_mp_admin_page_nav( $form_id ) {
+	$pages = nf_mp_get_pages( $form_id );
+	$page_count = nf_mp_get_page_count( $form_id );
+	$current_page = 1;
+	$offset = 0;
+	?>
+	<li class="mp-remove-page">-</li>
+	<span id="mp-page-list">
+	<?php
+	if( is_array( $pages ) AND !empty( $pages ) ){
+		foreach( $pages as $page => $data ){
+			if( $page == $current_page ){
+				$active = 'active';
+			}else{
+				$active = '';
+			}
+			?>
+			<li class="<?php echo $active;?> mp-page-nav" data-page="<?php echo $page;?>" id="ninja_forms_mp_page_<?php echo $page;?>"><?php echo $page;?></li>
+			<?php
+		}
+	}
+	?>
+	</span>
+	<li class="mp-add-page">+</li>
+	<?php
+}
+
+/**
+ * Delete all page dividers in a given form.
+ *
+ * @since 1.3
+ * @return void
+ */
+function nf_mp_delete_dividers( $form_id ) {
+	$fields = Ninja_Forms()->form( $form_id )->fields;
+	foreach ( $fields as $field_id => $field ) {
+		if ( $field['type'] == '_page_divider' ) {
+			ninja_forms_delete_field( $field_id );
+		}
+	}
+}

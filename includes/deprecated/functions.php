@@ -66,3 +66,72 @@ function ninja_forms_mp_copy_page(){
 
 
 add_action( 'wp_ajax_ninja_forms_mp_copy_page', 'ninja_forms_mp_copy_page' );
+
+function ninja_forms_mp_get_pages( $form_id = '' ){
+	global $ninja_forms_loading, $ninja_forms_processing;
+	
+	$field_results = ninja_forms_get_fields_by_form_id( $form_id );
+
+	$pages = array();
+	$x = 0;
+	$y = 0;
+	$last_field = '';
+	foreach( $field_results as $field ){
+
+		if( $field['type'] == '_page_divider' ){
+			$x++;
+			$y = 0;
+			$pages[$x]['id'] = $field['id'];
+			if ( isset ( $field['data']['page_name'] ) ) {
+				$page_name = $field['data']['page_name'];
+			} else {
+				$page_name = '';
+			}
+			$pages[$x]['page_title'] = $page_name;
+
+		} else {
+			if ( $y == 0 ) {
+				$pages[$x]['first_field'] = $field['id'];
+				$y++;
+			}
+		}
+
+		$pages[$x]['fields'][] = $field['id'];
+	
+		if ( isset ( $ninja_forms_loading ) ) {
+			$ninja_forms_loading->update_field_setting( $field['id'], 'page', $x );
+		} else {
+			$ninja_forms_processing->update_field_setting( $field['id'], 'page', $x );
+		}
+	}
+
+	foreach ( $pages as $num => $vars ) {
+		$last_field = end( $vars['fields'] );
+		$pages[$num]['last_field'] = $last_field;
+	}
+
+	return $pages;
+}
+
+/*
+ *
+ * Function used to delete a page from the Field Settings tab. It is called via ajax.
+ *
+ * @since 1.0
+ * @returns void
+ */
+
+function ninja_forms_mp_delete_page(){
+	global $wpdb, $ninja_forms_fields;
+	$fields = $_REQUEST['fields'];
+
+	if( is_array( $fields ) AND !empty( $fields ) ){
+		foreach( $fields as $field ){
+			$field_id = str_replace( 'ninja_forms_field_', '', $field );
+			ninja_forms_delete_field( $field_id );
+		}
+	}
+	die();
+}
+
+add_action('wp_ajax_ninja_forms_mp_delete_page', 'ninja_forms_mp_delete_page');

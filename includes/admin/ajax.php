@@ -3,13 +3,14 @@
  *
  * Function used to delete a page from the Field Settings tab. It is called via ajax.
  *
- * @since 1.0
+ * @since 1.3
  * @returns void
  */
 
-function ninja_forms_mp_delete_page(){
+function nf_mp_delete_page(){
 	global $wpdb, $ninja_forms_fields;
 	$fields = $_REQUEST['fields'];
+	$form_id = $_REQUEST['form_id'];
 
 	if( is_array( $fields ) AND !empty( $fields ) ){
 		foreach( $fields as $field ){
@@ -17,10 +18,16 @@ function ninja_forms_mp_delete_page(){
 			ninja_forms_delete_field( $field_id );
 		}
 	}
+
+	$page_count = nf_mp_get_page_count( $form_id );
+	if ( $page_count <= 1 ) {
+		nf_mp_delete_dividers( $form_id );
+	}
+
 	die();
 }
 
-add_action('wp_ajax_ninja_forms_mp_delete_page', 'ninja_forms_mp_delete_page');
+add_action('wp_ajax_nf_mp_delete_page', 'nf_mp_delete_page');
 
 /*
  *
@@ -32,12 +39,23 @@ add_action('wp_ajax_ninja_forms_mp_delete_page', 'ninja_forms_mp_delete_page');
 
 function nf_mp_copy_page(){
 	$form_id = $_REQUEST['form_id'];
-	$fields = $_REQUEST['fields'];
-	var_dump( $fields );
+	$field_ids = $_REQUEST['field_ids'];
+	$field_data = $_REQUEST['field_data'];
+	print_r( $field_data );
 	die();
 	$new_ids = array();
 
 	$order = 999;
+
+	
+
+
+	foreach ( $field_ids as $field_id ) {
+
+	}
+
+
+	
 	foreach( $fields[0] as $f => $data ){
 		$data = serialize( $data );
 		$args = array( 'type' => '_page_divider', 'data' => $data, 'order' => $order, 'fav_id' => 0, 'def_id' => 0 );
@@ -87,5 +105,38 @@ function nf_mp_copy_page(){
 	die();
 }
 
-
 add_action( 'wp_ajax_nf_mp_copy_page', 'nf_mp_copy_page' );
+
+/**
+ * Enable multi-part forms by adding a new page. 
+ * This adds a divider with an order of 0 and another divider at the end of all the fields.
+ *
+ * @since 1.3
+ * @return void
+ */
+function nf_mp_enable() {
+	$form_id = $_REQUEST['form_id'];
+	// Bail if we aren't in the admin
+	if ( ! is_admin() )
+		return false;
+
+	check_ajax_referer( 'nf_ajax', 'nf_ajax_nonce' );
+
+	// Add a page to the beginning of the form.
+	$args = array( 'type' => '_page_divider', 'order' => 0, 'fav_id' => 0, 'def_id' => 0 );
+	$new_id = ninja_forms_insert_field( $form_id, $args );
+
+	// Add a page to the end of the form.
+	$args = array( 'type' => '_page_divider', 'order' => 999, 'fav_id' => 0, 'def_id' => 0 );
+	$new_id = ninja_forms_insert_field( $form_id, $args );
+
+	$new_nav = ninja_forms_return_echo('nf_mp_admin_page_nav', $form_id );
+	$new_slide = ninja_forms_return_echo('nf_mp_edit_field_output_ul', $form_id );
+	header("Content-type: application/json");
+	$array = array ( 'new_nav' => $new_nav, 'new_slide' => $new_slide );
+	echo json_encode($array);
+
+	die();
+}
+
+add_action( 'wp_ajax_nf_mp_enable', 'nf_mp_enable' );

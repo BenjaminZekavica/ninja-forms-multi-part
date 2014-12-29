@@ -4,7 +4,7 @@
 	position: relative;
 	overflow: hidden;
 }
-#ninja-forms-mp-pagination {
+#ninja_forms_mp_pagination {
 	clear: both;
 	float: none;
 	list-style: none;
@@ -12,7 +12,7 @@
 	width: 100%;
 	overflow: hidden;
 }
-#ninja-forms-mp-pagination li{
+#ninja_forms_mp_pagination li{
 	background: #f1f1f1;
 	border: 1px solid #999;
 	border-radius: 3px;
@@ -21,7 +21,7 @@
 	margin-right: 3px;
 	padding: 3px 8px;
 }
-#ninja-forms-mp-pagination li.active{
+#ninja_forms_mp_pagination li.active{
 	background-color: #278AB7;
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#2E9FD2),to(#21759B));
 	background-image: -webkit-linear-gradient(top,#2E9FD2,#21759B);
@@ -35,7 +35,7 @@
 	color: white;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
-#ninja-forms-mp-pagination li.drop-hover{
+#ninja_forms_mp_pagination li.drop-hover{
 	background-color: #278AB7;
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#2E9FD2),to(#21759B));
 	background-image: -webkit-linear-gradient(top,#2E9FD2,#21759B);
@@ -49,12 +49,12 @@
 	color: white;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
-#ninja-forms-slide {
+#ninja_forms_slide {
 	margin-left: 0;
 	width: 9999999px;
 	position: relative;
 }
-#ninja-forms-slide:after {
+#ninja_forms_slide:after {
 	content: "";
 	display: table;
 	clear: both;

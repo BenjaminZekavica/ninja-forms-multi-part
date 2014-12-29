@@ -7,6 +7,7 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 	$args = array(
 		'name' => __( 'Page Divider', 'ninja-forms-mp' ),
 		'sidebar' => '',
+		'edit_function' => 'ninja_forms_field_page_divider_edit',
 		'display_function' => '',
 		'save_function' => '',
 		'group' => '',
@@ -28,7 +29,7 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 			),
 
 		),
-		'li_class' => 'not-sortable',
+		'use_li' => false,
 		'conditional' => array(
 			'action' => array(
 				'show' => array(
@@ -48,6 +49,35 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 	if( function_exists( 'ninja_forms_register_field' ) ){
 		ninja_forms_register_field( '_page_divider', $args );
 	}
+}
+
+function ninja_forms_field_page_divider_edit( $field_id, $data ){
+	if( isset( $data['page_name'] ) ){
+		$page_name = $data['page_name'];
+	}else{
+		$page_name = '';
+	}
+	$type_name = __( 'Multi-Part Page', 'ninja-forms-mp' );
+	?>
+	<li id="ninja_forms_field_<?php echo $field_id;?>" class="not-sortable page-divider menu-item-settings">
+		<a href="#" id="" name="" class="button-secondary mp-copy-page"><?php _e( 'Duplicate Page', 'ninja-forms-mp' );?></a>
+		<div id="ninja_forms_field_<?php echo $field_id;?>" class="">
+			<dl class="menu-item-bar">
+				<dt class="menu-item-handle" >
+					<span class="item-title ninja-forms-field-title" id="ninja_forms_field_<?php echo $field_id;?>_title"><?php _e( 'Page Settings', 'ninja-forms-mp' );?></span>
+					<span class="item-controls">
+						<span class="item-type"><?php echo $type_name;?></span>
+						<a class="item-edit metabox-item-edit page-divider-toggle" id="ninja_forms_field_<?php echo $field_id;?>_toggle" title="<?php _e( 'Edit Menu Item', 'ninja-forms-mp' ); ?>" href="#" data-field="<?php echo $field_id; ?>"><?php _e( 'Edit Menu Item' , 'ninja-forms-mp' ); ?></a>
+					</span>
+				</dt>
+			</dl>
+
+			<div class="menu-item-settings type-class inside" id="ninja_forms_field_<?php echo $field_id;?>_inside" style="display:none;">
+				
+			</div>
+		</div>
+	</li>
+	<?php
 }
 
 function ninja_forms_field_page_divider_display( $field_id, $data ){

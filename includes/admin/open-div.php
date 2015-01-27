@@ -21,6 +21,6 @@ function nf_mp_edit_field_open_div( $form_id ){
 			nf_mp_admin_page_nav( $form_id );
 			?>
 		</ul>
-		<span class="spinner mp-spinner" style="float:left;display:none;"></span>
+		<span class="spinner mp-spinner" style="display:none;"></span>
 <?php
 }

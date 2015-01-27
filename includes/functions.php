@@ -21,7 +21,11 @@ function nf_mp_get_pages( $form_id = '' ){
 				$page_name = '';
 			}
 			$pages[$x]['page_title'] = $page_name;
+			
 		} else {
+			// If we don't have a divider, we still want to be on page 1.
+			if ( $x == 0 )
+				$x++;
 			if ( $y == 0 ) {
 				$pages[$x]['first_field'] = $field['id'];
 				$y++;
@@ -150,10 +154,9 @@ function nf_mp_get_page_count( $form_id ) {
  * @since 1.3
  * @return void;
  */
-function nf_mp_admin_page_nav( $form_id ) {
+function nf_mp_admin_page_nav( $form_id, $current_page = 1 ) {
 	$pages = nf_mp_get_pages( $form_id );
 	$page_count = nf_mp_get_page_count( $form_id );
-	$current_page = 1;
 	$offset = 0;
 	?>
 	<li class="mp-remove-page">-</li>

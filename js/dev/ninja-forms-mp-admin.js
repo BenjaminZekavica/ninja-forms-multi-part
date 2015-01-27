@@ -1,9 +1,16 @@
 // Setup our page data models to track which pages exist and what fields are on them.
 // Model to hold our page settings.
-var nfPage = Backbone.Model.extend();
+var nfPage = Backbone.Model.extend( {
+	duplicate: function() {
+		console.log( 'hi' );
+	}
+} );
 // Collection to hold our fields.
 var nfPages = Backbone.Collection.extend({
-	model: nfPage
+	model: nfPage,
+	enable: function() {
+		console.log( 'hello' );
+	}
 });
 
 // Instantiate our fields collection.
@@ -12,21 +19,254 @@ var nfPages = new nfPages();
 jQuery(document).ready(function($) {
 
 	nfPages.current_page = 1;
-
-	// Loop through our field JSON that is already on the page and populate our collection with it.
+	nfPages.count = 1;
+	// Loop through our MP pages JSON that is already on the page and populate our collection with it.
 	if( 'undefined' !== typeof nf_mp.pages ) {
+		var x = 1;
 		_.each( nf_mp.pages, function( page ) {
-			// nfFields.add( { id: field.id, metabox_state: field.metabox_state } );
-			console.log( page );
+			nfPages.add( { id: x, divider_id: page.id, page_title: page.page_title, fields: page.fields } );
+			x++;
 		} );
+		nfPages.count = x - 1;
 	}
 
+	/**
+	 * Function that makes an ajax call to add a divider to the beginning and end of our form.
+	 *
+	 */
+
 	$( document ).on( 'click', '#nf_mp_enable', function( e ) {
-		$( this ).hide();
+		// Hide our "enable multi-part" button.
+		$( this ).fadeOut();
+		// Get our current form ID.
 		var form_id = ninja_forms_settings.form_id;
+
+		// Post to our PHP handler.
 		$.post( ajaxurl, { form_id: form_id, action: 'nf_mp_enable', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function( response ) {
+
+			// Add our newly created page dividers to the field list.
+			_.each( response.new_parts, function( part ) {
+				// Add our newly created pages to our part model.
+				nfPages.add( { id: part.num, divider_id: part.id, page_title: '', fields: part.fields } );				
+				// Add our field to our backbone data model.
+				nfFields.add( { id: part.id, metabox_state: 0 } );
+			} );
+
+			// Set our page count to 2.
+			nfPages.count = 2;
+
+			// Update our multi-part pagination UL HTML.
 			$( '#ninja_forms_mp_pagination' ).html( response.new_nav );
+			// Update our field list HTML.
 			$( '#ninja_forms_slide' ).html( response.new_slide );
+			// Make our newly added field lists sortable.
+			$( '.ninja-forms-field-list' ).sortable({
+				handle: '.menu-item-handle',
+				items: "li:not(.not-sortable)",
+				connectWith: '.ninja-forms-field-list',
+				//cursorAt: {left: -10, top: -1},
+				start: function(e, ui){
+					var wp_editor_count = $(ui.item).find('.wp-editor-wrap').length;
+					if(wp_editor_count > 0){
+						$(ui.item).find('.wp-editor-wrap').each(function(){
+							var ed_id = this.id.replace('wp-', '');
+							ed_id = ed_id.replace('-wrap', '');
+							tinyMCE.execCommand( 'mceRemoveControl', false, ed_id );
+						});
+					}
+				},
+				stop: function(e,ui) {
+					var wp_editor_count = $(ui.item).find('.wp-editor-wrap').length;
+					if( wp_editor_count > 0 ){
+						$( ui.item ).find( '.wp-editor-wrap' ).each( function() {
+							var ed_id = this.id.replace( 'wp-', '' );
+							ed_id = ed_id.replace( '-wrap', '' );
+							tinyMCE.execCommand( 'mceAddControl', true, ed_id );
+						});
+					}
+					$( this ).sortable( 'refresh' );
+				}
+			} );
+			// Show our newly added multi-part pagination.
+			$( '#ninja_forms_mp_pagination' ).fadeIn();
+
+		} );
+	} );
+
+	$(document).on( 'click', '.mp-page-nav', function(e){
+		var page_number = $( this ).data( 'page' );
+		var current_page = nfPages.current_page;
+
+		if( page_number != current_page ) {
+			nf_mp_change_page( page_number );
+		}
+	});
+
+	$( document ).on( 'click', '.mp-remove-page', function( e ) {
+    	var answer = confirm( nf_mp.remove_page_text );
+
+    	if( answer ) {
+			var form_id = ninja_forms_settings.form_id;
+	    	var current_page = nfPages.current_page;
+	    	var page_count = nfPages.count;
+
+	    	if(page_count > 1){
+	    		$("#ninja_forms_field_list_" + current_page).find("._page_divider-li").removeClass("not-sortable");
+	    	}
+
+	    	var fields = nfPages.get( current_page ).get( 'fields' );
+
+	    	if( fields.length > 0 ){
+	    		// Show our MP spinner
+	    		$( '.mp-spinner' ).show();
+
+				if ( current_page > 1 ) {
+		    		move_to_page = current_page - 1;
+		    	}else{
+		    		move_to_page = 1;
+		    	}
+
+				$.post( ajaxurl, { form_id: form_id, fields: fields, move_to_page: move_to_page, action: 'nf_mp_delete_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function(response){
+					// Hide our MP spinner
+					$( '.mp-spinner' ).hide();
+
+					if( page_count == 2 ){
+						nf_mp_change_page( 1 );
+						$( '._page_divider-li' ).remove();
+						$( '#ninja_forms_mp_pagination' ).fadeOut();
+						$( '#nf_mp_enable' ).fadeIn();
+					}else{
+						var part = nfPages.get( current_page );
+
+						// Remove our part nav button
+				    	$( '#mp-page-list' ).find( '[data-page="' + current_page + '"]' ).remove();
+
+				    	// Remove our part UL
+				    	$( '#ninja_forms_slide' ).find( '[data-page="' + current_page + '"]' ).remove();
+
+				    	// Remove our current page from the nfPages collection
+				    	nfPages.remove( part );
+
+				    	// Recalculate our part numbers
+				    	var x = 1;
+				    	_.each( nfPages.models, function( part ) {
+				    		part.set( 'id', x );
+				    		var tmp = x++;
+				    		$( '#mp-page-list' ).find( '[data-page="' + tmp + '"]' ).html( tmp );
+				    		x++;
+				    	} );
+
+				    	// Move to our previous/next page.
+				    	nf_mp_change_page( move_to_page );
+					}
+
+					nfPages.count--;
+
+			    });
+			}
+		}
+    });
+
+
+	// Filter our order variable before we save fields.
+	$( document ).on( 'nfAdminSaveFields.mpFilter', function( e ) {
+		//event.preventDefault();
+		$("._page_divider-li").removeClass("not-sortable");
+		$(".ninja-forms-field-list").sortable("refresh");
+		var current_order = '';
+		$(".ninja-forms-field-list").each(function(){
+			if(current_order != ''){
+				current_order = current_order + ",";
+			}
+			current_order = current_order + $(this).sortable('toArray');
+		});
+		current_order = current_order.split( ',' );
+		var order = {};
+		for ( var i = 0; i < current_order.length; i++ ) {
+			order[i] = current_order[i];
+		};
+		order = JSON.stringify( order );
+
+		$( document ).data( 'field_order', order );
+
+	} );
+
+	// Remove our default addField behaviour
+	$( document ).off( 'addField.default' );
+
+	// Add our custom addField behaviour
+	$( document ).on( 'addField.mpAdd', function( e, response ) {
+		var current_page = nfPages.current_page;
+
+		jQuery("#ninja_forms_field_list_" + current_page).append(response.new_html);
+		if ( response.new_type == 'List' ) {
+			//Make List Options sortable
+			jQuery(".ninja-forms-field-list-options").sortable({
+				helper: 'clone',
+				handle: '.ninja-forms-drag',
+				items: 'div',
+				placeholder: "ui-state-highlight",
+			});
+		}
+		if ( typeof nf_ajax_rte_editors !== 'undefined' ) {
+			for (var x = nf_ajax_rte_editors.length - 1; x >= 0; x--) {
+				var editor_id = nf_ajax_rte_editors[x];
+				tinyMCE.init( tinyMCEPreInit.mceInit[ editor_id ] );
+				try { quicktags( tinyMCEPreInit.qtInit[ editor_id ] ); } catch(e){}
+			};
+		}
+
+		// Add our field to our backbone data model.
+		nfFields.add( { id: response.new_id, metabox_state: 1 } );
+
+		// Add our field to this page.
+		var page = nfPages.get( current_page );
+		var page_fields = page.get( 'fields' );
+		page_fields.push( response.new_id.toString() );
+		page.set( 'fields', page_fields );
+	} );
+
+	// Add our custom removeField behaviour
+	// This function removes the field id from its page model when the field is removed.
+	$( document ).on( 'removeField', function( e, field_id ) {
+		var page = nfPages.get( nfPages.current_page );
+		var page_fields = page.get( 'fields' );
+		page_fields = nf_mp_remove_array_value( page_fields, field_id );
+		page.set( 'fields', page_fields );
+	} );
+
+	// When a user clicks the "copy mp page" link, copy the page and add it to the editor.
+	$( document ).on( 'click', '.mp-copy-page', function( e ) {
+		e.preventDefault();
+		var form_id = ninja_forms_settings.form_id;
+		var page = nfPages.get( nfPages.current_page );
+		nf_update_all_fields();
+		var field_data = JSON.stringify( nfFields.toJSON() );
+
+		// Show our MP spinner
+		$( '.mp-spinner' ).show();
+
+		$.post( ajaxurl, { form_id: form_id, field_ids: page.get( 'fields' ), field_data: field_data, action: 'nf_mp_copy_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function(response){
+			// Hide our MP spinner
+			$( '.mp-spinner' ).hide();
+					
+			// Update our part navigation
+			$( '#ninja_forms_mp_pagination' ).html( response.new_nav );
+			// Update our field list HTML.
+			$( '#ninja_forms_slide' ).html( response.new_slide );
+
+			// Update our page and field data models
+			// Update our page data model.
+			nfPages.add( { id: response.new_part.num, divider_id: response.new_part.id, page_title: response.new_part.page_title, fields: response.new_part.fields } );
+			// Increase our page count.
+			nfPages.count++;
+			// Add our new fields to the fields data model.
+			_.each( response.new_part.fields, function( field_id ) {
+				// Add our field to our backbone data model.
+				nfFields.add( { id: field_id, metabox_state: 0 } );
+			} );
+
+			// Make our newly added field lists sortable.
 			$( '.ninja-forms-field-list' ).sortable({
 				handle: '.menu-item-handle',
 				items: "li:not(.not-sortable)",
@@ -54,122 +294,15 @@ jQuery(document).ready(function($) {
 					$(this).sortable('refresh');
 				}
 			});
-			$( '#ninja_forms_mp_pagination' ).show();
+
+			// Move to our current page.
+			nf_mp_change_page( response.new_part.num );
+
 		} );
+		
 	} );
 
-	$(document).on( 'click', '.mp-page-nav', function(e){
-		var page_number = $( this ).data( 'page' );
-		var current_page = nfPages.current_page;
-
-		if( page_number != current_page ) {
-			nf_mp_change_page( page_number );
-		}
-	});
-
-	$( document ).on( 'click', '.mp-remove-page', function( e ) {
-    	var answer = confirm( nf_mp.remove_page_text );
-
-    	if( answer ) {
-			var form_id = ninja_forms_settings.form_id;
-	    	var current_page = nfPages.current_page;
-	    	var page_count = $(".mp-page-nav").length;
-
-	    	if(page_count > 1){
-	    		$("#ninja_forms_field_list_" + current_page).find("._page_divider-li").removeClass("not-sortable");
-	    	}
-
-	    	var fields = $("#ninja_forms_field_list_" + current_page).sortable("toArray");
-
-	    	if( fields != '' ){
-	    		// $(".spinner").show();
-
-				$.post( ajaxurl, { form_id: form_id, fields: fields, action: 'nf_mp_delete_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function(response){
-
-					if( page_count == 2 ){
-						nf_mp_change_page( 1 );
-						$( '._page_divider-li' ).remove();
-						$( '#ninja_forms_mp_pagination' ).hide();
-						$( '#nf_mp_enable' ).show();
-					}else{
-						if(current_page > 1){
-				    		move_to_page = current_page - 1;
-				    	}else{
-				    		move_to_page = 1;
-				    	}
-									    	
-				    	$("#ninja_forms_field_list_" + current_page).remove();
-				    	$("#ninja_forms_mp_page_" + current_page).remove();
-
-				    	
-				    	var i = 1;
-				    	$(".mp-page-nav").each(function(){
-				    		$(this).prop("id", "ninja_forms_mp_page_" + i);
-				    		$(this).prop("innerHTML", i);
-				    		$(this).attr("title", i);
-				    		i++;
-				    	});
-						/*
-				    	var i = 1;
-				    	$(".ninja-forms-style-sortable").each(function(){
-				    		$(this).prop("id", "ninja_forms_style_list_" + i);
-				    		i++;
-				    	});
-
-				    	console.log(move_to_page);
-
-				    	ninja_forms_mp_change_page(move_to_page, ninja_forms_mp_hide_spinner);
-				    	*/
-
-				    	var div = $('#ninja-forms-slide');
-		 	
-					    uls = div.children('ul');
-
-					    uls.detach().sort(function(a,b) {
-					        return $(a).data('order') - $(b).data('order');  
-					    });
-
-					    uls.each(function(index){
-					    	var page = index + 1;
-					    	$(this).prop("id", "ninja_forms_field_list_" + page );
-					    });
-
-					    div.append(uls);
-						ninja_forms_mp_change_page(move_to_page, ninja_forms_mp_hide_spinner);
-					}
-			    });
-			}
-		}
-    });
-
-
-	// Filter our order variable before we save fields.
-	$( document ).on( 'nfAdminSaveFields', function( e ) {
-		//event.preventDefault();
-		$("._page_divider-li").removeClass("not-sortable");
-		$(".ninja-forms-field-list").sortable("refresh");
-		var current_order = '';
-		$(".ninja-forms-field-list").each(function(){
-			if(current_order != ''){
-				current_order = current_order + ",";
-			}
-			current_order = current_order + $(this).sortable('toArray');
-		});
-		current_order = current_order.split( ',' );
-		var order = {};
-		for ( var i = 0; i < current_order.length; i++ ) {
-			order[i] = current_order[i];
-		};
-		order = JSON.stringify( order );
-
-		$( document ).data( 'field_order', order );
-
-	} );
-
-} );
-
-
-
+} ); // Main document.ready
 
 function nf_mp_change_page( page_number, callback ){
 	if(!callback){
@@ -349,43 +482,6 @@ jQuery(document).ready(function($) {
 		}
     });
 
-	$(document).on( 'click', '.mp-copy-page', function(e){
-		e.preventDefault();
-		var form_id = $("#_form_id").val();
-    	var current_page = $(".mp-page.active").attr("title");
-    	var page_count = $(".mp-page").length;
-
-    	$("#ninja_forms_field_list_" + current_page).find(".page-divider").removeClass("not-sortable");
-
-    	$( "#ninja_forms_field_list_" + current_page ).sortable( "refresh" );
-    	var page_fields = $( "#ninja_forms_field_list_" + current_page ).sortable( "toArray" );
-
-    	var field_ids = {};
-    	var field_data = {};
-    	if( page_fields != '' ){
-    		for (var i = page_fields.length - 1; i >= 0; i--) {
-				field_id = page_fields[i].replace("ninja_forms_field_", "");
-				field_ids[i] = field_id;
-				metabox_state = nfFields.get( field_id ).get( 'metabox_state' );
-    			// Grabbing the ID isn't enough if the metabox is open. Need to check the data model to see if it is open, and if it is,
-    			// get the current data from the fields. This means some fields will be passed as IDs and some will have data if the metabox is open when the page is copied.
-				if ( 1 == metabox_state ) { // If our metabox is open, add to our field data array.
-					var data = ninja_forms_mp_serialize_data( field_id );
-					if ( typeof data['ninja_forms_field_' + field_id ] != 'undefined' ) {
-						field_data[ field_id ] = data['ninja_forms_field_' + field_id ];						
-					}
-				}
-			}
-
-    		$('.mp-spinner').show();
-
-			// $.post( ajaxurl, { form_id: form_id, field_ids: field_ids, field_data: field_data, action: 'nf_mp_copy_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, ninja_forms_mp_add_page);
-			$.post( ajaxurl, { form_id: form_id, field_ids: field_ids, field_data: field_data, action: 'nf_mp_copy_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function( response ) {
-				console.log( response );
-			});
-		}
-	});
-
 	// Expand our page divider field when the edit button is clicked.
 	$( document ).on( 'click', '.page-divider-toggle', function( e ) {
 		e.preventDefault();
@@ -477,7 +573,7 @@ function ninja_forms_new_field_response( response ){
 	nfFields.add( { id: response.new_id, metabox_state: 1 } );
 
 	// Fire our custom jQuery addField event.
-	jQuery( document ).trigger('addField', [ response ]);
+	jQuery( document ).trigger( 'addField', [ response ] );
 
 }
 
@@ -558,4 +654,15 @@ function ninja_forms_mp_serialize_data( field_id ){
 	var data = jQuery("#ninja_forms_field_" + field_id).find(":input[name^=ninja_forms_field_" + field_id + "]");
 	var field_data = jQuery(data).serializeFullArray();
 	return field_data;
+}
+
+function nf_mp_remove_array_value( arr ) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax= arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
 }

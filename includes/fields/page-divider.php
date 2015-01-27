@@ -5,12 +5,12 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 	global $ninja_forms_processing;
 
 	$args = array(
-		'name' => __( 'Page Divider', 'ninja-forms-mp' ),
+		'name' => __( 'Part Settings', 'ninja-forms-mp' ),
 		'sidebar' => '',
 		'display_function' => '',
 		'save_function' => '',
 		'group' => '',
-		'edit_label' => false,
+		'edit_label' => true,
 		'edit_label_pos' => false,
 		'edit_req' => false,
 		'edit_custom_class' => false,
@@ -19,15 +19,6 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 		'edit_desc' => false,
 		'edit_conditional' => true,
 		'process_field' => false,
-		'edit_options' => array(
-			array(
-				'type' => 'text',
-				'name' => 'page_name',
-				'label' => __( 'Page Title', 'ninja-forms-mp'), //Label to be shown before the option.
-				'class' => 'widefat', //Additional classes to be added to the input element.
-			),
-
-		),
 		'li_class' => 'not-sortable',
 		'conditional' => array(
 			'action' => array(
@@ -43,6 +34,9 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 				),			
 			),
 		),
+		'show_remove' => false,
+		'show_fav' => false,
+		'show_field_id' => false,
 	);
 
 	if( function_exists( 'ninja_forms_register_field' ) ){
@@ -71,3 +65,20 @@ function ninja_forms_field_page_divider_display( $field_id, $data ){
 		<?php
 	}
 }
+
+/**
+ * Add our "Duplicate Page" button to the admin editor
+ *
+ * @since 1.3
+ * @return void
+ */
+function nf_mp_output_copy_page_link( $field_id ) {
+	$field = ninja_forms_get_field_by_id( $field_id );
+	if ( '_page_divider' == $field['type'] ) {
+		?>
+		<a href="#" class="mp-copy-page button-secondary" data-field="<?php echo $field_id; ?>"><?php _e( 'Duplicate Part', 'ninja-forms-mp' ); ?></a>
+		<?php		
+	}
+}
+
+add_action( 'ninja_forms_edit_field_before_registered', 'nf_mp_output_copy_page_link', 9 );

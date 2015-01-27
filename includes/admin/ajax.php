@@ -11,6 +11,8 @@ function nf_mp_delete_page(){
 	global $wpdb, $ninja_forms_fields;
 	$fields = $_REQUEST['fields'];
 	$form_id = $_REQUEST['form_id'];
+	$move_to_page = $_REQUEST['move_to_page'];
+
 
 	if( is_array( $fields ) AND !empty( $fields ) ){
 		foreach( $fields as $field ){
@@ -24,6 +26,8 @@ function nf_mp_delete_page(){
 		nf_mp_delete_dividers( $form_id );
 	}
 
+	do_action( 'nf_mp_after_delete_page', $new_fields );	
+
 	die();
 }
 
@@ -33,74 +37,77 @@ add_action('wp_ajax_nf_mp_delete_page', 'nf_mp_delete_page');
  *
  * Function used to copy a page from the Field Settings tab. It is called via ajax.
  *
- * @since 1.0.3
+ * @since 1.3
  * @returns void
  */
 
 function nf_mp_copy_page(){
+	// Setup our initial variables.
 	$form_id = $_REQUEST['form_id'];
 	$field_ids = $_REQUEST['field_ids'];
-	$field_data = $_REQUEST['field_data'];
-	print_r( $field_data );
-	die();
-	$new_ids = array();
-
+	$field_data = json_decode( stripslashes( $_REQUEST['field_data'] ), true );
+	$new_ids = array();	
 	$order = 999;
-
-	
-
-
-	foreach ( $field_ids as $field_id ) {
-
-	}
-
-
-	
-	foreach( $fields[0] as $f => $data ){
-		$data = serialize( $data );
-		$args = array( 'type' => '_page_divider', 'data' => $data, 'order' => $order, 'fav_id' => 0, 'def_id' => 0 );
-		$new_divider = ninja_forms_insert_field( $form_id, $args );
-		$new_html = ninja_forms_return_echo( 'ninja_forms_edit_field', $new_divider );
-		$new_ids[] = $new_divider;
-	}
-
-	unset( $fields[0] );
-
+	$fields = array();
 	$new_fields = array();
 
-	foreach( $fields as $field ){
-		foreach( $field as $f => $data ){
-			$field_id = str_replace( 'ninja_forms_field_', '', $f );
-			$field_row = ninja_forms_get_field_by_id( $field_id );
-			$field_type = $field_row['type'];
-			if( isset( $field_row['fav_id'] ) ){
-				$fav_id = $field_row['fav_id'];
-			}else{
-				$fav_id = 0;
-			}
-			if( isset( $field_row['def_id'] ) ){
-				$def_id = $field_row['def_id'];
-			}else{
-				$def_id = 0;
-			}
-			$data = serialize( $data );
-			$args = array( 'type' => $field_type, 'data' => $data, 'order' => $order, 'fav_id' => $fav_id, 'def_id' => $def_id );
-			$new_id = ninja_forms_insert_field( $form_id, $args );
-			$new_fields[ $field_id ] = $new_id;
-		}
+	// Loop through our received field data and re-key it so that it is easy to check/merge later.
+	$tmp_array = array();
+	foreach ( $field_data as $data ) {
+		$field_id = $data['id'];
+		unset( $data['id'] );
+		$tmp_array[ $field_id ] = $data;
 	}
+
+	$field_data = apply_filters( 'nf_mp_before_copy_page', $tmp_array );
 	
-	do_action( 'nf_mp_copy_page', $new_fields );	
+	// Loop through our received field ids. We're going to merge any receieved data for those fields with the data saved in the database.
+	foreach ( $field_ids as $field_id ) {
+		if ( ! isset ( Ninja_Forms()->form( $form_id )->fields[ $field_id ] ) )
+			continue;
 
-	foreach( $new_fields as $field_id ){
-		$new_html .= ninja_forms_return_echo( 'ninja_forms_edit_field', $field_id );
+		// Grab our saved field data.
+		$field = Ninja_Forms()->form( $form_id )->fields[ $field_id ];
+
+		// // Use the wp_parse_args() function to merge our passed data with our saved data.
+		if ( is_array( $field_data[ $field_id ] ) ) {
+			$data = wp_parse_args( $field_data[ $field_id ], $field['data'] );
+		} else {
+			$data = $field['data'];
+		}
+
+		$new_type = $field['type'];
+
+		$fav_id = isset ( $field['fav_id'] ) ? $field['fav_id'] : 0;
+		$def_id = isset ( $field['def_id'] ) ? $field['def_id'] : 0;
+
+		$data = serialize( $data );
+
+		$args = array( 'type' => $new_type, 'data' => $data, 'order' => $order, 'fav_id' => $fav_id, 'def_id' => $def_id );
+
+		$new_id = ninja_forms_insert_field( $form_id, $args );
+
+		if ( $new_type == '_page_divider' )
+			$divider_id = $new_id;
 	}
 
-	var_dump( $new_ids );
-	die();
+	do_action( 'nf_mp_after_copy_page', $new_fields );	
+
+	// Update our form object since we added new fields.
+	Ninja_Forms()->form( $form_id )->update_fields();
+
+	$pages = nf_mp_get_pages( $form_id );
+	$current_page = nf_mp_get_page_count( $form_id );
+
+	$fields = isset ( $pages[ $current_page ]['fields'] ) ? $pages[ $current_page ]['fields'] : array();
+	$page_title = isset ( $pages[ $current_page ]['page_title'] ) ? $pages[ $current_page ]['page_title'] : '';
+	$new_part = array( 'id' => $divider_id, 'fields' => $fields, 'num' => $current_page, 'page_title' => $page_title );
+
+	$new_nav = ninja_forms_return_echo( 'nf_mp_admin_page_nav', $form_id, $current_page );
+	$new_slide = ninja_forms_return_echo( 'nf_mp_edit_field_output_all_uls', $form_id );
 
 	header("Content-type: application/json");
-	$array = array( 'new_html' => $new_html, 'new_ids' => $new_ids );
+	$array = array( 'new_nav' => $new_nav, 'new_slide' => $new_slide, 'new_part' => $new_part );
 	echo json_encode( $array );
 	die();
 }
@@ -123,17 +130,27 @@ function nf_mp_enable() {
 	check_ajax_referer( 'nf_ajax', 'nf_ajax_nonce' );
 
 	// Add a page to the beginning of the form.
-	$args = array( 'type' => '_page_divider', 'order' => 0, 'fav_id' => 0, 'def_id' => 0 );
+	$args = array( 'type' => '_page_divider', 'order' => -1, 'fav_id' => 0, 'def_id' => 0 );
 	$new_id = ninja_forms_insert_field( $form_id, $args );
+	// Update our form object cache since we added new fields.
+	Ninja_Forms()->form( $form_id )->update_fields();
+	$pages = nf_mp_get_pages( $form_id );
+	$fields = isset ( $pages[1]['fields'] ) ? $pages[1]['fields'] : array();
+	$new_parts[] = array( 'id' => $new_id, 'fields' => $fields, 'num' => 1 );
 
 	// Add a page to the end of the form.
 	$args = array( 'type' => '_page_divider', 'order' => 999, 'fav_id' => 0, 'def_id' => 0 );
 	$new_id = ninja_forms_insert_field( $form_id, $args );
+	// Update our form object cache since we added new fields.
+	Ninja_Forms()->form( $form_id )->update_fields();
+	$pages = nf_mp_get_pages( $form_id );
+	$fields = isset ( $pages[2]['fields'] ) ? $pages[2]['fields'] : array();
+	$new_parts[] = array( 'id' => $new_id, 'fields' => $fields, 'num' => 2 );
 
-	$new_nav = ninja_forms_return_echo('nf_mp_admin_page_nav', $form_id );
-	$new_slide = ninja_forms_return_echo('nf_mp_edit_field_output_ul', $form_id );
+	$new_nav = ninja_forms_return_echo('nf_mp_admin_page_nav', $form_id, 1 );
+	$new_slide = ninja_forms_return_echo('nf_mp_edit_field_output_all_uls', $form_id );
 	header("Content-type: application/json");
-	$array = array ( 'new_nav' => $new_nav, 'new_slide' => $new_slide );
+	$array = array ( 'new_nav' => $new_nav, 'new_slide' => $new_slide, 'new_parts' => $new_parts );
 	echo json_encode($array);
 
 	die();

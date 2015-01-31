@@ -18,7 +18,6 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 		'edit_meta' => false,
 		'edit_desc' => false,
 		'edit_conditional' => true,
-		'edit_function' => 'nf_mp_page_divider_edit',
 		'process_field' => false,
 		'li_class' => 'not-sortable',
 		'conditional' => array(
@@ -104,7 +103,9 @@ add_action( 'ninja_forms_edit_field_before_registered', 'nf_mp_output_copy_page_
  * @since 1.3
  * @return void
  */
-function nf_mp_page_editor_edit( $field_id, $data ) {
+function nf_mp_page_divider_edit( $field_id ) {
+	$field = ninja_forms_get_field_by_id( $field_id );
+	$data = $field['data'];
 	if ( isset( $data['page_name'] ) ) {
 		// If we have a 'page_name' set, remove it and set the label instead.
 		$data['label'] = $data['page_name'];
@@ -123,3 +124,5 @@ function nf_mp_page_editor_edit( $field_id, $data ) {
 		ninja_forms_update_field( $args );
 	}
 }
+
+add_action( 'ninja_forms_edit_field_before_registered', 'nf_mp_page_divider_edit', 10 );

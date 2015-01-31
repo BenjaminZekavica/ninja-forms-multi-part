@@ -1,5 +1,44 @@
 <?php
-/*
+/**
+ * Function used to create a new part on the Field Settings tab. It is called via ajax.
+ *
+ * @since 1.3
+ * @returns void
+ */
+
+function nf_mp_new_page() {
+	$form_id = $_REQUEST['form_id'];
+
+	$data = serialize( array() );
+	$args = array( 'type' => '_page_divider', 'data' => $data, 'order' => 999, 'fav_id' => 0, 'def_id' => 0 );
+
+	$new_id = ninja_forms_insert_field( $form_id, $args );
+
+	do_action( 'nf_mp_after_new_page', $new_id );	
+
+	// Update our form object since we added new fields.
+	Ninja_Forms()->form( $form_id )->update_fields();
+
+	$pages = nf_mp_get_pages( $form_id );
+	$current_page = nf_mp_get_page_count( $form_id );
+
+	$fields = isset ( $pages[ $current_page ]['fields'] ) ? $pages[ $current_page ]['fields'] : array();
+	$page_title = isset ( $pages[ $current_page ]['page_title'] ) ? $pages[ $current_page ]['page_title'] : '';
+	$new_part = array( 'id' => $new_id, 'fields' => $fields, 'num' => $current_page, 'page_title' => $page_title );
+
+	$new_nav = ninja_forms_return_echo( 'nf_mp_admin_page_nav', $form_id, $current_page );
+	$new_slide = ninja_forms_return_echo( 'nf_mp_edit_field_output_all_uls', $form_id );
+
+	header("Content-type: application/json");
+	$array = array( 'new_nav' => $new_nav, 'new_slide' => $new_slide, 'new_part' => $new_part );
+	echo json_encode( $array );
+
+	die();
+}
+
+add_action( 'wp_ajax_nf_mp_new_page', 'nf_mp_new_page' );
+
+/**
  *
  * Function used to delete a page from the Field Settings tab. It is called via ajax.
  *
@@ -8,11 +47,9 @@
  */
 
 function nf_mp_delete_page(){
-	global $wpdb, $ninja_forms_fields;
 	$fields = $_REQUEST['fields'];
 	$form_id = $_REQUEST['form_id'];
 	$move_to_page = $_REQUEST['move_to_page'];
-
 
 	if( is_array( $fields ) AND !empty( $fields ) ){
 		foreach( $fields as $field ){
@@ -26,14 +63,24 @@ function nf_mp_delete_page(){
 		nf_mp_delete_dividers( $form_id );
 	}
 
-	do_action( 'nf_mp_after_delete_page', $new_fields );	
+	do_action( 'nf_mp_after_delete_page' );	
+
+	// Update our form object since we added new fields.
+	Ninja_Forms()->form( $form_id )->update_fields();
+
+	$new_nav = ninja_forms_return_echo( 'nf_mp_admin_page_nav', $form_id, $move_to_page );
+	$new_slide = ninja_forms_return_echo( 'nf_mp_edit_field_output_all_uls', $form_id );
+
+	header("Content-type: application/json");
+	$array = array( 'new_nav' => $new_nav, 'new_slide' => $new_slide );
+	echo json_encode( $array );
 
 	die();
 }
 
-add_action('wp_ajax_nf_mp_delete_page', 'nf_mp_delete_page');
+add_action( 'wp_ajax_nf_mp_delete_page', 'nf_mp_delete_page' );
 
-/*
+/**
  *
  * Function used to copy a page from the Field Settings tab. It is called via ajax.
  *
@@ -46,6 +93,7 @@ function nf_mp_copy_page(){
 	$form_id = $_REQUEST['form_id'];
 	$field_ids = $_REQUEST['field_ids'];
 	$field_data = json_decode( stripslashes( $_REQUEST['field_data'] ), true );
+	
 	$new_ids = array();	
 	$order = 999;
 	$fields = array();

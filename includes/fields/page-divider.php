@@ -18,6 +18,7 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 		'edit_meta' => false,
 		'edit_desc' => false,
 		'edit_conditional' => true,
+		'edit_function' => 'nf_mp_page_divider_edit',
 		'process_field' => false,
 		'li_class' => 'not-sortable',
 		'conditional' => array(
@@ -44,7 +45,7 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 	}
 }
 
-function ninja_forms_field_page_divider_display( $field_id, $data ){
+function ninja_forms_field_page_divider_display( $field_id, $data ) {
 	global $ninja_forms_loading, $ninja_forms_processing;
 	if ( isset ( $ninja_forms_loading ) ) {
 		$form_id = $ninja_forms_loading->get_form_ID();
@@ -54,14 +55,28 @@ function ninja_forms_field_page_divider_display( $field_id, $data ){
 		$form_data = $ninja_forms_processing->get_all_form_settings();
 	}
 
-	if( isset( $data['page_name'] ) ){
-		$page_name = $data['page_name'];
-	}else{
-		$page_name = '';
+	if ( isset( $data['page_name'] ) ) {
+		// If we have a 'page_name' set, remove it and set the label instead.
+		$data['label'] = $data['page_name'];
+		unset( $data['page_name'] );
+		// Update our field.
+		$data = serialize( $data );
+		$args = array(
+			'update_array' => array(
+				'data' => $data,
+			),
+			'where' => array(
+				'id' => $field_id,
+			),
+		);
+
+		ninja_forms_update_field( $args );
 	}
+
+	$label = isset ( $data['label'] ) ? $data['label'] : '';
 	if( isset( $form_data['mp_display_titles'] ) AND $form_data['mp_display_titles'] == 1 ){
 		?>
-		<h4><?php echo $page_name;?></h4>
+		<h4><?php echo $label;?></h4>
 		<?php
 	}
 }
@@ -82,3 +97,29 @@ function nf_mp_output_copy_page_link( $field_id ) {
 }
 
 add_action( 'ninja_forms_edit_field_before_registered', 'nf_mp_output_copy_page_link', 9 );
+
+/**
+ * Add an edit function to convert older versions of MP settings.
+ *
+ * @since 1.3
+ * @return void
+ */
+function nf_mp_page_editor_edit( $field_id, $data ) {
+	if ( isset( $data['page_name'] ) ) {
+		// If we have a 'page_name' set, remove it and set the label instead.
+		$data['label'] = $data['page_name'];
+		unset( $data['page_name'] );
+		// Update our field.
+		$data = serialize( $data );
+		$args = array(
+			'update_array' => array(
+				'data' => $data,
+			),
+			'where' => array(
+				'id' => $field_id,
+			),
+		);
+
+		ninja_forms_update_field( $args );
+	}
+}

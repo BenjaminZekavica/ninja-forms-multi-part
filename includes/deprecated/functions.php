@@ -147,3 +147,80 @@ function ninja_forms_mp_new_form_add_page( $form_id, $data ){
 
 
 add_action( 'ninja_forms_save_new_form_settings', 'ninja_forms_mp_new_form_add_page', 10, 2 );
+
+function ninja_forms_mp_get_divider_by_page( $form_id, $current_page ){
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
+	} else {
+		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
+	}
+
+	$divider_id = $pages[$current_page]['id'];
+
+	return $divider_id;
+}
+
+function ninja_forms_mp_get_page_by_divider( $form_id, $field_id ){
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$pages = $ninja_forms_loading->get_form_setting( 'mp_pages' );
+	} else {
+		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
+	}
+
+	$x = 1;
+	foreach ( $pages as $num => $vars ) {
+		if ( $vars['id'] == $field_id ) {
+			$page_num = $x;
+			break;
+		}
+		$x++;
+	}
+
+	return $page_num;
+}
+
+function ninja_forms_mp_get_page_by_field_id( $field_id ) {
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$page = $ninja_forms_loading->get_field_setting( $field_id, 'page' );
+	} else {
+		$page = $ninja_forms_processing->get_field_setting( $field_id, 'page' );
+	}
+
+	return $page;
+}
+
+/*
+ *
+ * Function that loops through our pages and adds an array with the pages information to our loading/processing classes.
+ *
+ * @since 1.2.6
+ * @return void
+ */
+
+function ninja_forms_mp_set_page_array( $form_id ) {
+	global $ninja_forms_loading, $ninja_forms_processing;
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$form_id = $ninja_forms_loading->get_form_ID();
+	} else {
+		$form_id = $ninja_forms_processing->get_form_ID();
+	}
+
+	$pages = ninja_forms_mp_get_pages( $form_id );
+
+	if ( isset ( $ninja_forms_loading ) ) {
+		$ninja_forms_loading->update_form_setting( 'mp_pages', $pages );
+	} else {
+		$ninja_forms_processing->update_form_setting( 'mp_pages', $pages );
+	}
+}
+
+add_action( 'ninja_forms_display_init', 'ninja_forms_mp_set_page_array' );
+add_action( 'ninja_forms_before_pre_process', 'ninja_forms_mp_set_page_array' );
+add_action( 'ninja_forms_edit_sub_pre_process', 'ninja_forms_mp_set_page_array', 3 );

@@ -15,8 +15,8 @@ function nf_mp_get_pages( $form_id = '' ){
 			$x++;
 			$y = 0;
 			$pages[$x]['id'] = $field['id'];
-			if ( isset ( $field['data']['page_name'] ) ) {
-				$page_name = $field['data']['page_name'];
+			if ( isset ( $field['data']['label'] ) ) {
+				$page_name = $field['data']['label'];
 			} else {
 				$page_name = '';
 			}

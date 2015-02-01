@@ -135,3 +135,15 @@ function ninja_forms_mp_delete_page(){
 }
 
 add_action('wp_ajax_ninja_forms_mp_delete_page', 'ninja_forms_mp_delete_page');
+
+function ninja_forms_mp_new_form_add_page( $form_id, $data ){
+	if( $data['multi_part'] == 1 ){
+		$args = array(
+			'type' => '_page_divider',
+		);
+		ninja_forms_insert_field( $form_id, $args );
+	}
+}
+
+
+add_action( 'ninja_forms_save_new_form_settings', 'ninja_forms_mp_new_form_add_page', 10, 2 );

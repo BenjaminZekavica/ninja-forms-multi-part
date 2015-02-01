@@ -31,7 +31,13 @@ function ninja_forms_open_mp_div( $field_id, $data ){
 		$ninja_forms_processing->update_extra_value( '_current_page', $current_page );
 	}
 
-	if( nf_mp_get_page_count( $form_id ) > 1 ) {
+	if( isset( $form_data['multi_part'] ) ){
+		$multi_part = $form_data['multi_part'];
+	}else{
+		$multi_part = 0;
+	}
+
+	if( $multi_part == 1 ){
 		if ( $js_transition == 1 ) {
 			foreach( $pages as $page => $vars ) {
 				// Check to see if this field is the first field on a page.
@@ -86,7 +92,13 @@ function ninja_forms_close_mp_div( $field_id, $data ){
 		$current_page = 1;
 	}
 
-	if ( nf_mp_get_page_count( $form_id ) > 1 ) {
+	if( isset( $form_data['multi_part'] ) ){
+		$multi_part = $form_data['multi_part'];
+	}else{
+		$multi_part = 0;
+	}
+
+	if( $multi_part == 1){
 		if ( $js_transition == 1 ) {
 			foreach( $pages as $page => $vars ) {
 				if ( $field_id == $vars['last_field'] ) {

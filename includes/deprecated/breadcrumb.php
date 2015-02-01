@@ -15,7 +15,7 @@ function ninja_forms_mp_display_breadcrumb( $form_id ){
 		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 	}
 
-	if ( count( $pages ) > 1 ) {
+	if ( isset ( $form_data['multi_part'] ) AND $form_data['multi_part'] == 1 ) {
 		$display = 1;
 
 		$display = apply_filters( 'ninja_forms_mp_display_breadcrumbs_visbility', $display, $form_id );

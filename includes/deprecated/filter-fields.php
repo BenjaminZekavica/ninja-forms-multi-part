@@ -30,9 +30,13 @@ function ninja_forms_mp_filter_fields( $field_results, $form_id ){
 			$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );
 		}
 
-		$page_count = nf_mp_get_page_count( $form_id );
+		if( isset( $form_data['multi_part'] ) ){
+			$multi_part = $form_data['multi_part'];
+		}else{
+			$multi_part = 0;
+		}
 		
-		if( $page_count > 1 ){
+		if( $multi_part == 1 ){
 			if( is_array( $field_results ) AND !empty( $field_results ) ){
 				$pages = array();
 				$x = 0;

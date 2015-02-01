@@ -113,7 +113,7 @@ function ninja_forms_mp_set_page_array( $form_id ) {
 		$form_id = $ninja_forms_processing->get_form_ID();
 	}
 
-	$pages = ninja_forms_mp_get_pages( $form_id );
+	$pages = nf_mp_get_pages( $form_id );
 
 	if ( isset ( $ninja_forms_loading ) ) {
 		$ninja_forms_loading->update_form_setting( 'mp_pages', $pages );

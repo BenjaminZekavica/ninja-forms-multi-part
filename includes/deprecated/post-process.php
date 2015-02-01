@@ -7,8 +7,7 @@ function ninja_forms_mp_register_post_process(){
 
 function ninja_forms_mp_post_process(){
 	global $ninja_forms_processing;
-	$form_id = $ninja_forms_processing->get_form_ID();
-	if( nf_mp_get_page_count( $form_id ) > 1 ) {
+	if( $ninja_forms_processing->get_form_setting( 'multi_part' ) ){
 		$ninja_forms_processing->update_extra_value( '_current_page', 1 );
 		$ninja_forms_processing->update_form_setting( 'sub_id', '' );
 	}

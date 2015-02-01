@@ -75,8 +75,8 @@ if ( version_compare ( $nf_plugin_version, '2.9', '<' ) ) { // If our current ve
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/breadcrumb.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/nav.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/output-divs.php");
-  require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/processing/before-pre-process.php");
-  require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/processing/post-process.php");
+  require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/before-pre-process.php");
+  require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/post-process.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/functions.php");
   require_once(NINJA_FORMS_MP_DIR."/includes/deprecated/form-settings-metabox.php");
 } else { // If we're using a version of Ninja Forms >= 2.9, include the non-deprecated stuff.

@@ -309,7 +309,6 @@ jQuery(document).ready(function($) {
 
 	$( document ).on( 'click', '.mp-remove-page', function( e ) {
 		var current_page = nfPages.current_page;
-		console.log( nfPages.findWhere( { num: current_page } ) );
 		var part = nfPages.findWhere( { num: current_page } );
 		part.remove();
     });

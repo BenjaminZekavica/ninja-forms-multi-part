@@ -10,8 +10,6 @@
 function ninja_forms_mp_copy_page(){
 	$form_id = $_REQUEST['form_id'];
 	$fields = $_REQUEST['field_data'];
-	var_dump( $fields );
-	die();
 	$new_ids = array();
 
 	$order = 999;
@@ -54,9 +52,6 @@ function ninja_forms_mp_copy_page(){
 	foreach( $new_fields as $field_id ){
 		$new_html .= ninja_forms_return_echo( 'ninja_forms_edit_field', $field_id );
 	}
-
-	var_dump( $new_ids );
-	die();
 
 	header("Content-type: application/json");
 	$array = array( 'new_html' => $new_html, 'new_ids' => $new_ids );

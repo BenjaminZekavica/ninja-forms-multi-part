@@ -20,15 +20,6 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 		'edit_desc' => false,
 		'edit_conditional' => true,
 		'process_field' => false,
-		'edit_options' => array(
-			array(
-				'type' => 'text',
-				'name' => 'page_name',
-				'label' => __( 'Page Title', 'ninja-forms-mp'), //Label to be shown before the option.
-				'class' => 'widefat', //Additional classes to be added to the input element.
-			),
-
-		),
 		'use_li' => false,
 		'conditional' => array(
 			'action' => array(
@@ -45,7 +36,6 @@ function ninja_forms_register_field_page_divider( $form_id = '' ){
 			),
 		),
 	);
-
 	if( function_exists( 'ninja_forms_register_field' ) ){
 		ninja_forms_register_field( '_page_divider', $args );
 	}
@@ -60,20 +50,24 @@ function ninja_forms_field_page_divider_edit( $field_id, $data ){
 	$type_name = __( 'Multi-Part Page', 'ninja-forms-mp' );
 	?>
 	<li id="ninja_forms_field_<?php echo $field_id;?>" class="not-sortable page-divider menu-item-settings">
-		<a href="#" id="" name="" class="button-secondary mp-copy-page"><?php _e( 'Duplicate Page', 'ninja-forms-mp' );?></a>
+		<a href="#" id="" name="" class="button-secondary ninja-forms-mp-copy-page"><?php _e( 'Duplicate Page', 'ninja-forms-mp' );?></a>
 		<div id="ninja_forms_field_<?php echo $field_id;?>" class="">
 			<dl class="menu-item-bar">
 				<dt class="menu-item-handle" >
 					<span class="item-title ninja-forms-field-title" id="ninja_forms_field_<?php echo $field_id;?>_title"><?php _e( 'Page Settings', 'ninja-forms-mp' );?></span>
 					<span class="item-controls">
 						<span class="item-type"><?php echo $type_name;?></span>
-						<a class="item-edit metabox-item-edit page-divider-toggle" id="ninja_forms_field_<?php echo $field_id;?>_toggle" title="<?php _e( 'Edit Menu Item', 'ninja-forms-mp' ); ?>" href="#" data-field="<?php echo $field_id; ?>"><?php _e( 'Edit Menu Item' , 'ninja-forms-mp' ); ?></a>
+						<a class="item-edit" id="ninja_forms_field_<?php echo $field_id;?>_toggle" title="<?php _e( 'Edit Menu Item', 'ninja-forms-mp' ); ?>" href="#"><?php _e( 'Edit Menu Item' , 'ninja-forms-mp' ); ?></a>
 					</span>
 				</dt>
 			</dl>
 
 			<div class="menu-item-settings type-class inside" id="ninja_forms_field_<?php echo $field_id;?>_inside" style="display:none;">
-				
+				<?php _e( 'Page Title', 'ninja-forms-mp' ); ?>: <input type="text" id="ninja_forms_field_<?php echo $field_id;?>_page_name" name="ninja_forms_field_<?php echo $field_id;?>[page_name]" value="<?php echo $page_name;?>" class="mp-page-name"> 
+	
+				<?php
+				do_action( 'ninja_forms_edit_field_after_registered', $field_id );
+				?>
 			</div>
 		</div>
 	</li>

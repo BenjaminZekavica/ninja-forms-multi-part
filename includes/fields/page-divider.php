@@ -103,7 +103,7 @@ add_action( 'ninja_forms_edit_field_before_registered', 'nf_mp_output_copy_page_
  * @since 1.3
  * @return void
  */
-function nf_mp_page_divider_edit( $field_id ) {
+function nf_mp_page_update_title( $field_id ) {
 	$field = ninja_forms_get_field_by_id( $field_id );
 	$data = $field['data'];
 	if ( isset( $data['page_name'] ) ) {
@@ -125,4 +125,4 @@ function nf_mp_page_divider_edit( $field_id ) {
 	}
 }
 
-add_action( 'ninja_forms_edit_field_before_registered', 'nf_mp_page_divider_edit', 10 );
+add_action( 'ninja_forms_edit_field_li', 'nf_mp_page_update_title', 5 );

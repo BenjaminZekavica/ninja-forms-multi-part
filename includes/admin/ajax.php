@@ -16,6 +16,27 @@ function nf_mp_new_page() {
 
 	do_action( 'nf_mp_after_new_page', $new_id );	
 
+	// Save our current order
+	$order = json_decode( strip_tags( stripslashes( $_REQUEST['order'] ) ), true );
+
+	if ( is_array ( $order ) ) {
+		$order_array = array();
+		$x = 0;
+		foreach ( $order as $id ) {
+			$id = str_replace( 'ninja_forms_field_', '', $id );
+			$args = array(
+				'update_array' => array(
+					'order' => $x,
+				),
+				'where' => array(
+					'id' => $id,
+				),
+			);
+			ninja_forms_update_field( $args );
+			$x++;
+		}
+	}
+
 	// Update our form object since we added new fields.
 	Ninja_Forms()->form( $form_id )->update_fields();
 
@@ -58,16 +79,41 @@ function nf_mp_delete_page(){
 		}
 	}
 
+	// Update our form object since we added new fields.
+	Ninja_Forms()->form( $form_id )->update_fields();
+
 	$page_count = nf_mp_get_page_count( $form_id );
-	if ( $page_count <= 1 ) {
+
+	if ( $page_count == 1 ) {
 		nf_mp_delete_dividers( $form_id );
 	}
 
 	do_action( 'nf_mp_after_delete_page' );	
 
+	// Save our current order
+	$order = json_decode( strip_tags( stripslashes( $_REQUEST['order'] ) ), true );
+
+	if ( is_array ( $order ) ) {
+		$order_array = array();
+		$x = 0;
+		foreach ( $order as $id ) {
+			$id = str_replace( 'ninja_forms_field_', '', $id );
+			$args = array(
+				'update_array' => array(
+					'order' => $x,
+				),
+				'where' => array(
+					'id' => $id,
+				),
+			);
+			ninja_forms_update_field( $args );
+			$x++;
+		}
+	}
+
 	// Update our form object since we added new fields.
 	Ninja_Forms()->form( $form_id )->update_fields();
-
+	
 	$new_nav = ninja_forms_return_echo( 'nf_mp_admin_page_nav', $form_id, $move_to_page );
 	$new_slide = ninja_forms_return_echo( 'nf_mp_edit_field_output_all_uls', $form_id );
 

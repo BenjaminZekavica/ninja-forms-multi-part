@@ -423,6 +423,7 @@ function ninja_forms_mp_confirm_error_check(response){
 		jQuery("#ninja_forms_form_" + response.form_id + "_mp_nav_wrap").hide();
 		jQuery("#ninja_forms_form_" + response.form_id + "_mp_confirm").val(1);
 		jQuery("#ninja_forms_form_" + response.form_id).prepend('<div id="ninja_forms_form_' + response.form_id + '_confirm_response">' + response.errors['confirm-submit-msg']['msg'] + '</div>');
+		ninja_forms_scroll_to_top( response.form_id );
 	}
 	return true;
 }

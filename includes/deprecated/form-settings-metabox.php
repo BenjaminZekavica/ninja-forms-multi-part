@@ -40,6 +40,15 @@ function ninja_forms_register_mp_settings_metabox(){
 		'state' => 'closed',
 		'settings' => array(
 			array(
+				'name' => 'multi_part',
+				'type' => 'checkbox',
+				'desc' => '',
+				'label' => __( 'Enable Multi-Part Form?', 'ninja-forms-mp' ),
+				'display_function' => '',
+				'help' => __( 'If this box is checked Ninja Forms will allow multi-part form pages to be created.', 'ninja-forms-mp' ),
+				'default' => 0,
+			),
+			array(
 				'name' => 'mp_progress_bar',
 				'type' => 'checkbox',
 				'desc' => '',

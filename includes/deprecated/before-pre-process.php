@@ -4,12 +4,11 @@ function ninja_forms_mp_check_page_conditional_before_pre_process(){
 	global $ninja_forms_processing;
 	$form_id = $ninja_forms_processing->get_form_ID();
 	$form_row = ninja_forms_get_form_by_id( $form_id );
-	$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
-	if ( nf_mp_get_page_count( $form_id ) > 1 ) {
+	if ( isset ( $form_row['data']['multi_part'] ) AND $form_row['data']['multi_part'] == 1 ) {
 		//if( isset( $form_row['data']['ajax'] ) AND $form_row['data']['ajax'] == 1 ){
 			if( function_exists( 'ninja_forms_conditionals_field_filter')  ){
 				
-				
+				$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 				if( is_array( $pages ) AND !empty( $pages ) ){
 					foreach( $pages as $page => $vars ){
 						$show = ninja_forms_mp_check_page_conditional( $form_id, $page );
@@ -29,26 +28,24 @@ add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_check_page_conditional_be
 function ninja_forms_mp_remove_save(){
 	global $ninja_forms_processing, $ninja_forms_fields;
 
-	if( is_object( $ninja_forms_processing ) ) {
-		$form_id = $ninja_forms_processing->get_form_ID();
-		if ( nf_mp_get_page_count( $form_id ) > 1 ) {
-			$nav = ninja_forms_mp_breadcrumb_update_current_page();
+	if( is_object( $ninja_forms_processing ) AND $ninja_forms_processing->get_form_setting( 'multi_part' ) == 1 ){
+		$nav = ninja_forms_mp_breadcrumb_update_current_page();
 
-			if( $ninja_forms_processing->get_extra_value( '_prev' ) ){
-				$nav = 'prev';
-			}
+		if( $ninja_forms_processing->get_extra_value( '_prev' ) ){
+			$nav = 'prev';
+		}
 
-			if( $ninja_forms_processing->get_extra_value( '_next' ) ){
-				$nav = 'next';
-			}
+		if( $ninja_forms_processing->get_extra_value( '_next' ) ){
+			$nav = 'next';
+		}
 
-			if( $nav != '' ){
-				remove_action( 'ninja_forms_pre_process', 'ninja_forms_req_fields_process', 13 );
-				$ninja_forms_processing->set_action( 'mp_save' );
-				remove_action( 'ninja_forms_post_process', 'ninja_forms_save_sub' );
-			}			
+		if( $nav != '' ){
+			remove_action( 'ninja_forms_pre_process', 'ninja_forms_req_fields_process', 13 );
+			$ninja_forms_processing->set_action( 'mp_save' );
+			remove_action( 'ninja_forms_post_process', 'ninja_forms_save_sub' );
 		}
 	}
+	
 }
 
 add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_error_change_page', 20 );
@@ -57,8 +54,7 @@ add_action( 'ninja_forms_pre_process', 'ninja_forms_mp_error_change_page', 20 );
 function ninja_forms_mp_error_change_page(){
 	global $ninja_forms_processing;
 
-	$form_id = $ninja_forms_processing->get_form_ID();
-	if( $ninja_forms_processing->get_action() == 'submit' && nf_mp_get_page_count( $form_id ) > 1 ) {
+	if( $ninja_forms_processing->get_action() == 'submit'AND $ninja_forms_processing->get_form_setting( 'multi_part' ) == 1 ){
 		
 		if( $ninja_forms_processing->get_all_errors() ){
 			$all_fields = $ninja_forms_processing->get_all_fields();
@@ -69,9 +65,7 @@ function ninja_forms_mp_error_change_page(){
 					break;
 				}
 			}
-
 		$ninja_forms_processing->update_extra_value( '_current_page', $error_page );
-
 		}
 	}
 }

@@ -13,9 +13,15 @@ function ninja_forms_mp_nav( $form_id ){
 		$pages = $ninja_forms_processing->get_form_setting( 'mp_pages' );
 	}
 
+	if( isset( $form_data['multi_part'] ) ){
+		$multi_part = $form_data['multi_part'];
+	}else{
+		$multi_part = 0;
+	}
+
 	$js_transition = 1;
 
-	if( count( $pages ) > 1 ){
+	if( $multi_part == 1 ){
 
 		if( isset( $_REQUEST['_current_page'] ) ){
 			$current_page = $_REQUEST['_current_page'];

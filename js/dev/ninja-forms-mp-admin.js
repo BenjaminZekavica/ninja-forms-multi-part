@@ -43,8 +43,12 @@ var nfPage = Backbone.Model.extend( {
 	    	var fields = this.get( 'fields' );
 
 	    	if( fields.length > 0 ){
+	    		// Hide our - symbol
+	    		jQuery( '.mp-remove-page' ).find( '.symbol' ).hide();
+	    		// Add our spinner-specific CSS
+	    		jQuery( '.mp-remove-page' ).css( 'padding', '4px 0 0 0' );
 	    		// Show our MP spinner
-	    		jQuery( '.mp-spinner' ).show();
+	    		jQuery( '.mp-remove-page' ).find('.spinner' ).show();
 
 				if ( current_page > 1 ) {
 		    		move_to_page = current_page - 1;
@@ -53,29 +57,38 @@ var nfPage = Backbone.Model.extend( {
 		    	}
 
 		    	var that = this;
+		    	var order = nf_mp_get_field_order();
 
-				jQuery.post( ajaxurl, { form_id: form_id, fields: fields, move_to_page: move_to_page, action: 'nf_mp_delete_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function(response){
-					// Hide our MP spinner
-					jQuery( '.mp-spinner' ).hide();
+				jQuery.post( ajaxurl, { form_id: form_id, fields: fields, move_to_page: move_to_page, order: order, action: 'nf_mp_delete_page', nf_ajax_nonce:ninja_forms_settings.nf_ajax_nonce }, function(response){
+		    		// Hide our MP spinner
+		    		jQuery(  '.mp-remove-page'  ).find( '.spinner' ).hide();
+		    		// Remove our padding CSS
+		    		jQuery(  '.mp-remove-page'  ).css( 'padding', '0' );
+		    		// Show our - symbol
+		    		jQuery(  '.mp-remove-page'  ).find( '.symbol' ).show();
+
+					// Remove our current page from the nfPages collection
+			    	nfPages.remove( that );
+
+			    	// Remove the current page from our nfFields collection
+			    	var divider_id = that.get( 'id' );
+			    	var divider = nfFields.get( divider_id );
+			    	nfFields.remove( divider );
 
 					if( page_count == 2 ){
-						nf_mp_change_page( 1 );
+						nfPages.reset();
 						jQuery( '._page_divider-li' ).remove();
-						jQuery( '#ninja_forms_mp_pagination' ).fadeOut();
+						nfPages.updateView( response.new_nav, response.new_slide, 1 );
+						jQuery( '#ninja_forms_mp_pagination' ).fadeOut( 'fast' );
 						jQuery( '#nf_mp_enable' ).fadeIn();
 					}else{
-						// Remove our current page from the nfPages collection
-				    	nfPages.remove( that );
-
 				    	// Recalculate our part numbers
 				    	var x = 1;
 				    	_.each( nfPages.models, function( part ) {
 				    		part.set( 'num', x );
 				    		x++;
 				    	} );
-
 				    	nfPages.updateView( response.new_nav, response.new_slide, move_to_page );
-
 					}
 
 					nfPages.count--;
@@ -90,6 +103,7 @@ var nfPages = Backbone.Collection.extend({
 	enable: function() {
 		// Hide our "enable multi-part" button.
 		jQuery( '#nf_mp_enable' ).fadeOut();
+
 		// Get our current form ID.
 		var form_id = ninja_forms_settings.form_id;
 
@@ -112,13 +126,21 @@ var nfPages = Backbone.Collection.extend({
 		} );
 	},
 	addNew: function() {
-		// Show our spinner
-		jQuery( '.mp-spinner' ).show();
+		// Hide our - symbol
+		jQuery( '.mp-add-page' ).find( '.symbol' ).hide();
+		// Add our spinner-specific CSS
+		jQuery( '.mp-add-page' ).css( 'padding', '4px 0 0 0' );
+		// Show our MP spinner
+		jQuery( '.mp-add-page' ).find('.spinner' ).show();
+
+		nfFields.updateData();
+
 		var form_id = ninja_forms_settings.form_id;
 		var that = this;
-		
+		var order = nf_mp_get_field_order();
+
 		// Send a post request with our form id to create a new part.
-		jQuery.post( ajaxurl, { form_id: form_id, action: 'nf_mp_new_page', nf_ajax_nonce: ninja_forms_settings.nf_ajax_nonce }, function( response ) {
+		jQuery.post( ajaxurl, { form_id: form_id, order: order, action: 'nf_mp_new_page', nf_ajax_nonce: ninja_forms_settings.nf_ajax_nonce }, function( response ) {
 			// Increase our part count
 			that.count++;
 
@@ -138,8 +160,10 @@ var nfPages = Backbone.Collection.extend({
 			// Fire our added event.
 			jQuery( document ).triggerHandler( 'nfMpAddPart', [ response ] );
 
-			// Hide our spinner
-			jQuery( '.mp-spinner' ).hide();
+			// Hide our MP spinner
+    		jQuery( '.mp-add-page' ).find( '.spinner' ).hide();
+    		// Show our - symbol
+    		jQuery( '.mp-add-page' ).find( '.symbol' ).show();
 		} );
 
 	},
@@ -147,13 +171,15 @@ var nfPages = Backbone.Collection.extend({
 		// Update our page navigation.
 		jQuery( '#ninja_forms_mp_pagination' ).html( new_nav );
 		// Update our field list HTML.
-		jQuery( '#ninja_forms_slide' ).html( new_slide );
+		jQuery( '#ninja-forms-slide' ).html( new_slide );
 		// Update our sortables
 		this.updateSortables();
 		// Show our newly added multi-part pagination.
 		jQuery( '#ninja_forms_mp_pagination' ).fadeIn();
-		// Move to our previous/next page.
-    	nf_mp_change_page( move_to_page );
+		if ( false != move_to_page ) {
+			// Move to our previous/next page.
+	    	nf_mp_change_page( move_to_page );			
+		}
 	},
 	updateSortables: function() {
 		// Make our newly added field lists sortable.
@@ -234,7 +260,7 @@ var nfPages = Backbone.Collection.extend({
 					part.unset( 'new_num' );
 				} );
 
-				var div = jQuery( '#ninja_forms_slide' );
+				var div = jQuery( '#ninja-forms-slide' );
 				
 				uls = div.children( 'ul' );
 
@@ -260,12 +286,9 @@ var nfPages = Backbone.Collection.extend({
 	        hoverClass: 'drop-hover',
 	        tolerance: 'pointer',
 			drop: function( event, ui ) {
-				jQuery( '.mp-spinner' ).show();
 				var page_number = jQuery( this ).data( 'page' );
-	       
-				ui.draggable.hide( 'slow', function() {
+	       				ui.draggable.hide( 'slow', function() {
 	                jQuery( this ).appendTo( '#ninja_forms_field_list_' + page_number ).show( 'slow' );
-	                jQuery('.spinner').hide(); 
 	            });
 			}
 	    });
@@ -376,9 +399,11 @@ jQuery(document).ready(function($) {
 	// This function removes the field id from its page model when the field is removed.
 	$( document ).on( 'removeField', function( e, field_id ) {
 		var page = nfPages.findWhere( { num: nfPages.current_page } );
-		var page_fields = page.get( 'fields' );
-		page_fields = nf_mp_remove_array_value( page_fields, field_id );
-		page.set( 'fields', page_fields );
+		if ( 'undefined' !== typeof page ) {
+			var page_fields = page.get( 'fields' );
+			page_fields = nf_mp_remove_array_value( page_fields, field_id );
+			page.set( 'fields', page_fields );			
+		}
 	} );
 
 	// When a user clicks the "copy mp page" link, copy the page and add it to the editor.
@@ -403,7 +428,28 @@ function nf_mp_change_page( page_number, callback ){
 	jQuery( '.mp-page-nav' ).removeClass( 'active' );
 	jQuery( '#ninja_forms_mp_page_' + page_number ).addClass( 'active' );
 	var new_page = jQuery( '#ninja_forms_field_list_' + page_number ).position().left;
-	jQuery( '#ninja_forms_slide').animate({left: -new_page},'300', callback );
+	jQuery( '#ninja-forms-slide').animate({left: -new_page},'300', callback );
+}
+
+function nf_mp_get_field_order() {
+	jQuery( '._page_divider-li' ).removeClass( 'not-sortable' );
+	jQuery( '.ninja-forms-field-list' ).sortable( 'refresh' );
+	var current_order = '';
+	jQuery( '.ninja-forms-field-list' ).each(function(){
+		if(current_order != ''){
+			current_order = current_order + ',';
+		}
+		current_order = current_order + jQuery( this ).sortable( 'toArray' );
+	});
+	current_order = current_order.split( ',' );
+	var order = {};
+	for ( var i = 0; i < current_order.length; i++ ) {
+		order[i] = current_order[i];
+	};
+
+	jQuery( '._page_divider-li' ).addClass( 'not-sortable' );
+
+	return JSON.stringify( order );
 }
 
 function nf_mp_remove_array_value( arr ) {

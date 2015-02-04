@@ -159,10 +159,10 @@ function nf_mp_admin_page_nav( $form_id, $current_page = 1 ) {
 	$page_count = nf_mp_get_page_count( $form_id );
 	$offset = 0;
 	?>
-	<li class="mp-remove-page">-</li>
+	<li class="mp-remove-page mp-operation"><span class="symbol"><span class="dashicons dashicons-minus"></span></span><span class="spinner mp-operation-spinner"></span></li>
 	<span id="mp-page-list">
 	<?php
-	if( is_array( $pages ) AND !empty( $pages ) ){
+	if( is_array( $pages ) && !empty( $pages ) ){
 		foreach( $pages as $page => $data ){
 			if( $page == $current_page ){
 				$active = 'active';
@@ -176,7 +176,7 @@ function nf_mp_admin_page_nav( $form_id, $current_page = 1 ) {
 	}
 	?>
 	</span>
-	<li class="mp-add-page">+</li>
+	<li class="mp-add-page mp-operation"><span class="symbol"><span class="dashicons dashicons-plus"></span></span><span class="spinner mp-operation-spinner"></span></li>
 	<?php
 }
 

@@ -131,17 +131,7 @@ function ninja_forms_mp_delete_page(){
 
 add_action('wp_ajax_ninja_forms_mp_delete_page', 'ninja_forms_mp_delete_page');
 
-function ninja_forms_mp_new_form_add_page( $form_id, $data ){
-	if( $data['multi_part'] == 1 ){
-		$args = array(
-			'type' => '_page_divider',
-		);
-		ninja_forms_insert_field( $form_id, $args );
-	}
-}
 
-
-add_action( 'ninja_forms_save_new_form_settings', 'ninja_forms_mp_new_form_add_page', 10, 2 );
 
 function ninja_forms_mp_get_divider_by_page( $form_id, $current_page ){
 	global $ninja_forms_loading, $ninja_forms_processing;
@@ -219,3 +209,16 @@ function ninja_forms_mp_set_page_array( $form_id ) {
 add_action( 'ninja_forms_display_init', 'ninja_forms_mp_set_page_array' );
 add_action( 'ninja_forms_before_pre_process', 'ninja_forms_mp_set_page_array' );
 add_action( 'ninja_forms_edit_sub_pre_process', 'ninja_forms_mp_set_page_array', 3 );
+
+function ninja_forms_mp_new_form_add_page( $form_id, $data ){
+  if( $data['multi_part'] == 1 ){
+    $args = array(
+      'type' => '_page_divider',
+      'order' => -1,
+    );
+    ninja_forms_insert_field( $form_id, $args );
+  }
+}
+
+add_action( 'ninja_forms_save_new_form_settings', 'ninja_forms_mp_new_form_add_page', 10, 2 );
+add_action( 'ninja_forms_save_form_settings', 'ninja_forms_mp_new_form_add_page', 10, 2 );

@@ -208,6 +208,7 @@ var nfPages = Backbone.Collection.extend({
 					});
 				}
 				jQuery( this ).sortable( 'refresh' );
+				nfForm.set( 'saved', false );
 			}
 		} );
 
@@ -339,7 +340,7 @@ jQuery(document).ready(function($) {
 
 	// Filter our order variable before we save fields.
 	$( document ).on( 'nfAdminSaveFields.mpFilter', function( e ) {
-		//event.preventDefault();
+
 		$( '._page_divider-li' ).removeClass( 'not-sortable' );
 		$( '.ninja-forms-field-list' ).sortable( 'refresh' );
 		var current_order = '';
@@ -356,8 +357,8 @@ jQuery(document).ready(function($) {
 		};
 		order = JSON.stringify( order );
 
-		$( document ).data( 'field_order', order );
-
+		$( document ).data( 'field_order', order );			
+		
 	} );
 
 	// Remove our default addField behaviour
@@ -366,7 +367,6 @@ jQuery(document).ready(function($) {
 	// Add our custom addField behaviour
 	$( document ).on( 'addField.mpAdd', function( e, response ) {
 		var current_page = nfPages.current_page;
-
 		jQuery("#ninja_forms_field_list_" + current_page).append(response.new_html);
 		if ( response.new_type == 'List' ) {
 			//Make List Options sortable
@@ -390,9 +390,12 @@ jQuery(document).ready(function($) {
 
 		// Add our field to this page.
 		var page = nfPages.findWhere( { num: current_page } );
-		var page_fields = page.get( 'fields' );
-		page_fields.push( response.new_id.toString() );
-		page.set( 'fields', page_fields );
+		if ( 'undefined' !== typeof page ) {
+			var page_fields = page.get( 'fields' );
+			page_fields.push( response.new_id.toString() );
+			page.set( 'fields', page_fields );			
+		}
+
 	} );
 
 	// Add our custom removeField behaviour
@@ -417,6 +420,35 @@ jQuery(document).ready(function($) {
 	$( '#mp-page-list' ).disableSelection();
 
 	nfPages.updateSortables();
+
+	nfForm.saveTitle = function() {
+		var title = jQuery( '#modal-contents-wrapper' ).find( '#nf-form-title' ).val();
+		var insert_submit = jQuery( '#modal-contents-wrapper' ).find( '#nf-insert-submit' ).prop( 'checked' );
+		this.set( 'title', title );
+		this.set( 'status', '' );
+
+		// Insert our submit button if we checked the box.
+		if ( insert_submit ) {
+			var that = this;
+			// Add our custom addField behaviour
+			jQuery( document ).on( 'addField.insertSubmit', function( e, response ) {
+				jQuery( '#ninja_forms_field_' + response.new_id + '_toggle' ).click();
+				jQuery( '#nf-save-title' ).nfAdminModal( 'close' );
+				that.save();
+				jQuery( document ).off( 'addField.insertSubmit' );
+			} );
+			
+			if ( nfPages.count > 1 ) {
+				nf_mp_change_page( nfPages.count, function() { jQuery( '#_submit' ).click(); } );
+			} else {
+				jQuery( '#_submit' ).click();
+			}
+			
+		} else {
+			jQuery( '#nf-save-title' ).nfAdminModal( 'close' );
+			this.save();			
+		}
+	}
 
 } ); // Main document.ready
 

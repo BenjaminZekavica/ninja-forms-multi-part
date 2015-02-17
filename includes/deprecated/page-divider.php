@@ -66,7 +66,7 @@ function ninja_forms_field_page_divider_edit( $field_id, $data ){
 				<?php _e( 'Page Title', 'ninja-forms-mp' ); ?>: <input type="text" id="ninja_forms_field_<?php echo $field_id;?>_page_name" name="ninja_forms_field_<?php echo $field_id;?>[page_name]" value="<?php echo $page_name;?>" class="mp-page-name"> 
 	
 				<?php
-				do_action( 'ninja_forms_edit_field_after_registered', $field_id );
+				do_action( 'ninja_forms_edit_field_after_registered', $field_id, $data );
 				?>
 			</div>
 		</div>

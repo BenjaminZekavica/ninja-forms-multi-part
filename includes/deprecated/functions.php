@@ -86,13 +86,17 @@ function ninja_forms_mp_get_pages( $form_id = '' ){
 
 		} else {
 			if ( $y == 0 ) {
-				$pages[$x]['first_field'] = $field['id'];
-				$y++;
+				if ( ! empty( $field['type'] ) ) {
+					$pages[$x]['first_field'] = $field['id'];
+					$y++;
+				}
 			}
 		}
 
-		$pages[$x]['fields'][] = $field['id'];
-	
+		if ( ! empty( $field['type'] ) ) {
+			$pages[$x]['fields'][] = $field['id'];
+		}
+
 		if ( isset ( $ninja_forms_loading ) ) {
 			$ninja_forms_loading->update_field_setting( $field['id'], 'page', $x );
 		} else {

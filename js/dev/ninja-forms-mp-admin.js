@@ -368,6 +368,8 @@ jQuery(document).ready(function($) {
 	$( document ).on( 'addField.mpAdd', function( e, response ) {
 		var current_page = nfPages.current_page;
 		jQuery("#ninja_forms_field_list_" + current_page).append(response.new_html);
+		var field_id = response.new_id;
+		
 		if ( response.new_type == 'List' ) {
 			//Make List Options sortable
 			jQuery(".ninja-forms-field-list-options").sortable({
@@ -377,6 +379,7 @@ jQuery(document).ready(function($) {
 				placeholder: "ui-state-highlight",
 			});
 		}
+
 		if ( typeof nf_ajax_rte_editors !== 'undefined' ) {
 			for (var x = nf_ajax_rte_editors.length - 1; x >= 0; x--) {
 				var editor_id = nf_ajax_rte_editors[x];
@@ -384,6 +387,13 @@ jQuery(document).ready(function($) {
 				try { quicktags( tinyMCEPreInit.qtInit[ editor_id ] ); } catch(e){}
 			};
 		}
+
+		jQuery( '#ninja_forms_field_' + field_id + '_inside' ).find( '.nf-field-settings .inside' ).each( function() {
+			var html = jQuery.trim( jQuery( this ).html() );
+			if ( html == '' ) {
+				jQuery( this ).parent().remove();
+			}
+		} );
 
 		// Add our field to our backbone data model.
 		nfFields.add( { id: response.new_id, metabox_state: 1 } );

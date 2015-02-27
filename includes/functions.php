@@ -27,12 +27,16 @@ function nf_mp_get_pages( $form_id = '' ){
 			if ( $x == 0 )
 				$x++;
 			if ( $y == 0 ) {
-				$pages[$x]['first_field'] = $field['id'];
-				$y++;
+				if ( ! empty( $field['type'] ) ) {
+					$pages[$x]['first_field'] = $field['id'];
+					$y++;
+				}
 			}
 		}
 
-		$pages[$x]['fields'][] = $field['id'];
+		if ( ! empty( $field['type'] ) ) {
+			$pages[$x]['fields'][] = $field['id'];
+		}
 	
 		if ( isset ( $ninja_forms_loading ) ) {
 			$ninja_forms_loading->update_field_setting( $field['id'], 'page', $x );

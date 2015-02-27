@@ -165,7 +165,7 @@ function ninja_forms_mp_breadcrumb_update_current_page(){
 function ninja_forms_mp_check_page_conditional( $form_id = '', $current_page = '' ){
 	global $ninja_forms_loading, $ninja_forms_processing;
 
-	if( $current_page == '' ){
+	if( $current_page == '' && isset ( $ninja_forms_processing ) ) {
 		$current_page = $ninja_forms_processing->get_extra_value( '_current_page' );		
 	}
 

@@ -296,6 +296,36 @@ var nfPages = Backbone.Collection.extend({
 	}
 });
 
+nfForm.saveTitle = function() {
+	var title = jQuery( '#modal-contents-wrapper' ).find( '#nf-form-title' ).val();
+	var show_insert_submit = this.get( 'show_insert_submit' );
+	var insert_submit = jQuery( '#modal-contents-wrapper' ).find( '#nf-insert-submit' ).prop( 'checked' );
+	this.set( 'title', title );
+	this.set( 'status', '' );
+
+	// Insert our submit button if we checked the box.
+	if ( show_insert_submit && insert_submit ) {
+		var that = this;
+		// Add our custom addField behaviour
+		jQuery( document ).on( 'addField.insertSubmit', function( e, response ) {
+			jQuery( '#ninja_forms_field_' + response.new_id + '_toggle' ).click();
+			jQuery( '#nf-save-title' ).nfAdminModal( 'close' );
+			that.save();
+			jQuery( document ).off( 'addField.insertSubmit' );
+		} );
+		
+		if ( nfPages.count > 1 ) {
+			nf_mp_change_page( nfPages.count, function() { jQuery( '#_submit' ).click(); } );
+		} else {
+			jQuery( '#_submit' ).click();
+		}
+		
+	} else {
+		jQuery( '#nf-save-title' ).nfAdminModal( 'close' );
+		this.save();			
+	}
+}
+
 // Instantiate our fields collection.
 var nfPages = new nfPages();
 
@@ -431,34 +461,7 @@ jQuery(document).ready(function($) {
 
 	nfPages.updateSortables();
 
-	nfForm.saveTitle = function() {
-		var title = jQuery( '#modal-contents-wrapper' ).find( '#nf-form-title' ).val();
-		var insert_submit = jQuery( '#modal-contents-wrapper' ).find( '#nf-insert-submit' ).prop( 'checked' );
-		this.set( 'title', title );
-		this.set( 'status', '' );
-
-		// Insert our submit button if we checked the box.
-		if ( insert_submit ) {
-			var that = this;
-			// Add our custom addField behaviour
-			jQuery( document ).on( 'addField.insertSubmit', function( e, response ) {
-				jQuery( '#ninja_forms_field_' + response.new_id + '_toggle' ).click();
-				jQuery( '#nf-save-title' ).nfAdminModal( 'close' );
-				that.save();
-				jQuery( document ).off( 'addField.insertSubmit' );
-			} );
-			
-			if ( nfPages.count > 1 ) {
-				nf_mp_change_page( nfPages.count, function() { jQuery( '#_submit' ).click(); } );
-			} else {
-				jQuery( '#_submit' ).click();
-			}
-			
-		} else {
-			jQuery( '#nf-save-title' ).nfAdminModal( 'close' );
-			this.save();			
-		}
-	}
+	
 
 } ); // Main document.ready
 

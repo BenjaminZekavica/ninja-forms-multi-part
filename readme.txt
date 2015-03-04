@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.3.2 (4 March 2015) =
+
+*Bugs:*
+
+* Fixed a bug that could cause issues when adding a field type and then deactivating an extension that added it.
 
 = 1.3.1 (27 February 2015) =
 

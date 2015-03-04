@@ -1,7 +1,7 @@
 <?php
 
 function nf_mp_get_pages( $form_id = '' ){
-	global $ninja_forms_loading, $ninja_forms_processing;
+	global $ninja_forms_loading, $ninja_forms_processing, $ninja_forms_fields;
 	
 	$fields = Ninja_Forms()->form( $form_id )->fields;
 
@@ -23,6 +23,8 @@ function nf_mp_get_pages( $form_id = '' ){
 			$pages[$x]['page_title'] = $page_name;
 			
 		} else {
+			if ( ! isset ( $ninja_forms_fields[ $field['type'] ] ) )
+				continue;
 			// If we don't have a divider, we still want to be on page 1.
 			if ( $x == 0 )
 				$x++;

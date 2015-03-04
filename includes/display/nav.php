@@ -62,15 +62,6 @@ function ninja_forms_mp_nav( $form_id ){
 			$style = 'style="display:none;"';
 		}
 
-		/*
-		Not needed if the page isn't reloading between every submission.
-		
-		if ( $sub_id != '' ) {
-			?>
-			<input type="hidden" name="_sub_id" value="<?php echo $sub_id;?>">
-			<?php
-		}
-		*/
 		?>
 		
 		<input type="hidden" name="_current_page" value="<?php echo $current_page;?>">

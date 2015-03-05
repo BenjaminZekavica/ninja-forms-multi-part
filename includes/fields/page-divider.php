@@ -126,3 +126,43 @@ function nf_mp_page_update_title( $field_id ) {
 }
 
 add_action( 'ninja_forms_edit_field_li', 'nf_mp_page_update_title', 5 );
+
+/**
+ * Check our option to see if we've updated all of our form settings.
+ * If we haven't, then update the form currently being viewed.
+ * 
+ * @since 1.3.4
+ * @return void
+ */
+function nf_mp_page_update_title_on_form_display( $form_id ) {
+	// Bail if we are in the admin
+	if ( is_admin() )
+		return false;
+
+	$fields = Ninja_Forms()->form( $form_id )->fields;
+
+	foreach ( $fields as $field_id => $field ) {
+		if ( ! empty ( $field['data'] ) && ! empty ( $field['data']['page_name'] ) ) {
+			$data = $field['data'];
+			Ninja_Forms()->form( $form_id )->fields[ $field_id ]['data']['label'] = $data['page_name'];
+			
+			// If we have a 'page_name' set, remove it and set the label instead.
+			$data['label'] = $data['page_name'];
+			unset( $data['page_name'] );
+			// Update our field.
+			$data = serialize( $data );
+			$args = array(
+				'update_array' => array(
+					'data' => $data,
+				),
+				'where' => array(
+					'id' => $field_id,
+				),
+			);
+
+			ninja_forms_update_field( $args );
+		}
+	}
+}
+
+add_action( 'nf_before_display_loading', 'nf_mp_page_update_title_on_form_display' );

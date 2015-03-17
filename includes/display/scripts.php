@@ -43,7 +43,7 @@ function ninja_forms_mp_display_js( $form_id ){
 		}
 
 		wp_enqueue_script( 'ninja-forms-mp-display',
-			NINJA_FORMS_MP_URL .'/js/' . $src . '/ninja-forms-mp-display' . $suffix . '.js',
+			NINJA_FORMS_MP_URL .'/js/' . $src . '/ninja-forms-mp-display' . $suffix . '.js?nf_ver=' . NINJA_FORMS_MP_VERSION,
 			array( 'jquery', 'ninja-forms-display' ) );
 
 		if( $js_transition == 1 ){

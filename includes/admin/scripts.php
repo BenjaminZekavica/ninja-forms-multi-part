@@ -33,7 +33,7 @@ function ninja_forms_mp_admin_css(){
 	}
 	if( $form_id != '' AND $form_id != 'new' AND $form_id != 'all' ){
 		if( isset( $_REQUEST['page'] ) AND $_REQUEST['page'] == 'ninja-forms' ){
-			wp_enqueue_style( 'ninja-forms-mp-admin', NINJA_FORMS_MP_URL .'/css/ninja-forms-mp-admin.css', array( 'ninja-forms-admin' ) );
+			wp_enqueue_style( 'ninja-forms-mp-admin', NINJA_FORMS_MP_URL .'/css/ninja-forms-mp-admin.css?nf_ver=' . NINJA_FORMS_MP_VERSION, array( 'ninja-forms-admin' ) );
 		}
 	}
 }

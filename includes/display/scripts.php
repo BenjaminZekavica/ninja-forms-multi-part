@@ -58,6 +58,6 @@ function ninja_forms_mp_display_css( $form_id ){
 	$form_row = ninja_forms_get_form_by_id( $form_id );
 	$form_data = $form_row['data'];
 	if( nf_mp_get_page_count( $form_id ) > 1 ){
-		wp_enqueue_style('ninja-forms-mp-display', NINJA_FORMS_MP_URL .'/css/ninja-forms-mp-display.css');
+		wp_enqueue_style('ninja-forms-mp-display', NINJA_FORMS_MP_URL .'/css/ninja-forms-mp-display.css?nf_ver=' . NINJA_FORMS_MP_VERSION );
 	}
 }

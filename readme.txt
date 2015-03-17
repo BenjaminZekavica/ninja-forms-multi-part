@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.3.4 (17 March 2015) =
+
+*Bugs:*
+
+* When our JS changes, users browsers shouldn't keep old copies in the cache.
 
 = 1.3.3 (4 March 2015) =
 

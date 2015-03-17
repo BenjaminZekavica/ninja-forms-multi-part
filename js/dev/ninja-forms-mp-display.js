@@ -142,6 +142,10 @@ function ninja_forms_error_change_page(response){
 		}
 		ninja_forms_update_progressbar( form_id, error_page );
 	}
+
+    // Show previously hidden response message in order to show errors
+    jQuery("#ninja_forms_form_" + form_id + "_response_msg").css('display', 'block');
+
 	return true;
 }
 

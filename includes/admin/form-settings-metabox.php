@@ -40,6 +40,15 @@ function ninja_forms_register_mp_settings_metabox(){
 		'state' => 'closed',
 		'settings' => array(
 			array(
+				'name' => 'mp_validate_parts',
+				'type' => 'checkbox',
+				'desc' => '',
+				'label' => __( 'Validate Each Part?', 'ninja-forms-mp' ),
+				'display_function' => '',
+				'help' => '',
+				'default' => 0,
+			),
+			array(
 				'name' => 'mp_progress_bar',
 				'type' => 'checkbox',
 				'desc' => '',

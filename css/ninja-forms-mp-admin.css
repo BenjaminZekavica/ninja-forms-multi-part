@@ -91,4 +91,6 @@ ul.ninja-forms-field-list {
 .mp-operation-spinner {
 	margin:0 0 0 4px;
 	background-size: 15px 15px;
+	display: none;
+	visibility: visible
 }

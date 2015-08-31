@@ -1,6 +1,7 @@
 jQuery(document).ready(function(jQuery) {
 	
 	jQuery(document).data('mp_submit', -1);
+	ninja_forms_mp_init_valid_pages();
 
 	jQuery('.ninja-forms-mp-page').each(function () {
 		if (jQuery(this).is(":visible")) {
@@ -29,6 +30,7 @@ jQuery(document).ready(function(jQuery) {
 			if (!ninja_forms_mp_is_error_on_page(response)) {
 				jQuery(document).data('mp_submit', 0);
 				ninja_forms_mp_clear_errors(this);
+				ninja_forms_mp_set_page_valid(true);
 
 				var elem_name = jQuery(document).data('nav-elem-name');
 				var nav_selector = "[name='" + elem_name + "']";
@@ -36,6 +38,7 @@ jQuery(document).ready(function(jQuery) {
 			}
 			else {
 				jQuery(document).data('mp_submit', -1);
+				ninja_forms_mp_set_page_valid(false);
 			}
 		}
 		return true;
@@ -108,32 +111,39 @@ jQuery(document).ready(function(jQuery) {
 			}
 			// else .data('mp_submit) == 0
 			else {
-				jQuery(document).data('mp_submit', -1);
 				validatePage = false;
 			}
 		}
 
+		var current_page = parseInt(jQuery("[name='_current_page']").val());
+		var new_page, dir;
+		var valid_pages = jQuery(document).data('mp_valid_pages');
+		
+		if (this.name == '_next') {
+			new_page = current_page + 1;
+			dir = 'next';
+		} else if (this.name == '_prev') {
+			new_page = current_page - 1;
+			dir = 'prev';
+		} else {
+			new_page = jQuery(this).attr("rel");
+		}
+
+		//Check to see if the new page should be shown
+		new_page = ninja_forms_mp_page_loop(form_id, new_page, current_page, dir);
+
 		var js_transition = mp_settings.js_transition;
 
-		if ((js_transition == 1) && !validatePage) {
+		/*
+		 * Go to the new page if validation has been passed on the current page
+		 * or if the new page has already passed validation
+		 */
+		if ( ((js_transition == 1) && !validatePage) || (valid_pages[new_page] == 1)) {
+			// Reset multi-part submit state
+			jQuery(document).data('mp_submit', -1);
 			e.preventDefault();
-			var current_page = jQuery("[name='_current_page']").val();
-			current_page = parseInt(current_page);
-			var page_count = mp_settings.page_count;
 			var effect = mp_settings.effect;
 
-			if (this.name == '_next') {
-				var new_page = current_page + 1;
-				var dir = 'next';
-			} else if (this.name == '_prev') {
-				var new_page = current_page - 1;
-				var dir = 'prev';
-			} else {
-				var new_page = jQuery(this).attr("rel");
-			}
-
-			//Check to see if the new page should be shown
-			new_page = ninja_forms_mp_page_loop(form_id, new_page, current_page, dir);
 
 			if (current_page != new_page) {
 				if (typeof tinyMCE !== 'undefined') {
@@ -148,8 +158,8 @@ jQuery(document).ready(function(jQuery) {
 				ninja_forms_mp_change_page(form_id, current_page, new_page, effect);
 				ninja_forms_update_progressbar(form_id, new_page);
 			}
-		}
-	});
+			
+}	});
 
 	jQuery(document).on('mp_page_change.scroll', function (e, form_id, new_page, old_page) {
 		ninja_forms_init_tinyMCE();
@@ -157,6 +167,46 @@ jQuery(document).ready(function(jQuery) {
 	});
 
 });
+
+/*
+ * Per-page validation will allow the user to navigate from an unvalidated page if
+ * the new page was previously validated. .data('mp_valid_pages') contains the flags
+ * which indicate if each page has been validated. Those considering using these
+ * flags for other purposes should note the flags do NOT indicate a current valid 
+ * state, but only that the page passed validation previously.  The objective
+ * is to allow users to easily refer to information entered on other pages.
+ * @summary Create zero-filled array for validated page flags.
+ */
+function ninja_forms_mp_init_valid_pages() {
+	var form_id,
+		mp_settings,
+		length,
+		valid_pages = [];
+
+	form_id = jQuery('#_form_id').val();
+	mp_settings = window['ninja_forms_form_' + form_id + '_mp_settings'];
+	
+	// flag index is 1-based (page number)
+	length = parseInt(mp_settings.page_count) + 1;
+	
+	while (length--) {
+		valid_pages.push(0);
+	}
+
+	jQuery(document).data('mp_valid_pages', valid_pages);
+}
+
+/*
+ * @summary Set the validated flag for the current page.
+ * @param {Boolean} true = validated
+ */
+function ninja_forms_mp_set_page_valid(valid) {
+	var valid_pages = jQuery(document).data('mp_valid_pages');
+	var current_page = parseInt(jQuery("[name='_current_page']").val());
+	
+	valid_pages[current_page] = valid ? 1 : 0;
+	jQuery(document).data('mp_valid_pages', valid_pages);
+}
 
 /*
  * @summary Check for errors on the current page.

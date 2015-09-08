@@ -3,8 +3,8 @@ Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.8
-Tested up to: 4.1.1
-Stable tag: 1.3.4
+Tested up to: 4.3
+Stable tag: 1.3.5
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 1.3.5 (08 September 2015) =
+
+*Bugs:*
+
+* Fixed a bug that could cause the animated spinner to fail to show when building a form.
 
 = 1.3.4 (17 March 2015) =
 

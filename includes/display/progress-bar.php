@@ -20,10 +20,10 @@ function ninja_forms_mp_display_progress_bar( $form_id ){
 
 	if ( isset ( $ninja_forms_loading ) ) {
 		$form_data = $ninja_forms_loading->get_all_form_settings();
+
 	} else {
 		$form_data = $ninja_forms_processing->get_all_form_settings();
 	}
-
 	if( isset( $form_data['mp_progress_bar'] ) AND $form_data['mp_progress_bar'] == 1 ){
 		if( is_object( $ninja_forms_processing ) ){
 			if( $ninja_forms_processing->get_form_setting( 'processing_complete' ) == 1 ){
@@ -33,7 +33,6 @@ function ninja_forms_mp_display_progress_bar( $form_id ){
 				if( $current_page == 1 ){
 					$percent = 0;
 				}else{
-					$current_page--;
 					$page_count = $ninja_forms_processing->get_extra_value( '_page_count' );
 					if ( $page_count <= 0 ) {
 						$percent = 100;

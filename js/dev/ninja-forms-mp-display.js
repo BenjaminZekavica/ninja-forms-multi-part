@@ -263,7 +263,6 @@ function ninja_forms_update_progressbar( form_id, current_page ){
 	}else if( current_page == ( page_count + 1 ) ){
 		percent = 100;
 	}else{
-		current_page--;
 		var percent = current_page / page_count;
 		percent = Math.ceil( percent * 100 );		
 	}

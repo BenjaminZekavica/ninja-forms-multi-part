@@ -63,6 +63,10 @@ ul.ninja-forms-field-list {
 	float: left;
 	margin-right: 73px;
 }
+.rtl ul.ninja-forms-field-list {
+	float: right;
+}
+
 #post-body-content .page-divider .menu-item-handle {
 	width: 490px;
 }

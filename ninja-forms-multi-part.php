@@ -39,11 +39,17 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
         {
             add_action( 'admin_init', array( $this, 'setup_license') );
             add_action( 'ninja_forms_builder_templates', array( $this, 'builder_templates' ) );
+            add_action( 'ninja_forms_enqueue_scripts', array( $this, 'frontend_templates' ) );
         }
 
         public function builder_templates()
         {
             self::template( 'builder.html' );
+        }
+
+        public function frontend_templates()
+        {
+            self::template( 'frontend.html' );
         }
 
         /*

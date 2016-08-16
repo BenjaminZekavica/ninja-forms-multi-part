@@ -175,4 +175,14 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
     }
 
     NF_MultiPart();
+
+    /*
+     * TODO: Move this into the main class.
+     */
+    function nf_mp_enqueue_all_the_things( $form_id ) {
+        wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js' );
+    }
+
+    add_action( 'nf_display_enqueue_scripts', 'nf_mp_enqueue_all_the_things' );
+
 }

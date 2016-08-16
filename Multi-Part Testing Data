@@ -1,4 +1,16 @@
-Add/Update form_meta / formContentData with the appropriate serialised data below:
+How to use the MP Test form:
+
+1) Import the form normally.
+2) Open the form for editing, make a change, undo the change, and Publish.
+3) Make a note of the form ID.
+4) Go to phpMyAdmin->wp_nf3_form_meta. Search for:
+	parent_id 	== FORM ID
+	key 		== formContentData
+5) Update the value it finds with the serialised data below.
+	a) If Layout & Styles is NOT active, use the first string.
+	b) If Layout & Styles IS active, use the second string.
+6) Preview your form.
+7) If you update/publish/change your form in any way, you'll need to repeat step 5.
 
 *
 * NO LAYOUTS

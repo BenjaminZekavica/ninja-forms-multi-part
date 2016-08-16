@@ -16,28 +16,26 @@
 </script>
 
 <script id="nf-tmpl-mp-next-previous" type="text/template">
-	<% if ( ! showNext && ! showPrevious ) return %>
-	<ul>
+	<ul class="nf-next-previous">
 		<% if ( showPrevious ) { %>
-			<li>
-				<a href="#" class="nf-previous">PREVIOUS</a>
+			<li class="nf-previous-item">
+				<input type="button" class="nf-previous" value="Previous" />
 			</li>
 		<% } %>
-		
+
 		<% if ( showNext ) { %>
-			<li>
-				<a href="#" class="nf-next">NEXT</a>
+			<li class="nf-next-item">
+				<input type="button" class="nf-next" value="Next" />
 			</li>
 		<% } %>
 	</ul>
 </script>
 
 <script id="nf-tmpl-mp-breadcrumbs" type="text/template">
-	<ul>
+	<ul class="nf-breadcrumbs">
 		<% _.each( parts, function( part, index ) { %>
 			<li class="<%= ( currentIndex == index ) ? 'active' : '' %> <%= ( part.errors ) ? 'errors' : '' %>">
-				<a href="#" class="nf-breadcrumb" data-index="<%= index %>"><%= part.title %></a>
-				<%= ( part.errors ) ? '<-- ERRORS' : '' %>
+				<a href="#" class="nf-breadcrumb" data-index="<%= index %>"><%= ( part.errors ) ? '(&#9888;)' : '' %> <%= part.title %></a>
 			</li>
 		<% } ); %>
 	</ul>

@@ -4,7 +4,7 @@ define( [], function() {
 
 		defaults: {
 			errors: false,
-			validate: true,
+			validate: false,
 		},
 
 		initialize: function() {
@@ -41,6 +41,6 @@ define( [], function() {
 			this.get( 'formContentData' ).validateFields();
 		}
 	} );
-	
+
 	return model;
 } );

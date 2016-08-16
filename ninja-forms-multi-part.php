@@ -187,6 +187,19 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
      */
     function nf_mp_enqueue_all_the_things( $form_id ) {
         wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js' );
+        
+        if( Ninja_Forms()->get_setting( 'opinionated_styles' ) ) {
+            if( 'light' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){
+                wp_enqueue_style( 'nf-mp-display', NF_MultiPart::$url . 'assets/css/display-opinions-light.css');
+            }
+
+            if( 'dark' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){
+                wp_enqueue_style('nf-mp-display', NF_MultiPart::$url . 'assets/css/display-opinions-dark.css');
+            }
+        } else {
+            wp_enqueue_style( 'nf-mp-display', NF_MultiPart::$url . 'assets/css/display-structure.css' );
+        }
+
     }
 
     add_action( 'nf_display_enqueue_scripts', 'nf_mp_enqueue_all_the_things' );

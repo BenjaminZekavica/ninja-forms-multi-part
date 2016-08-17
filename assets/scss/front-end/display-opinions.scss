@@ -8,8 +8,9 @@
 }
 
 .nf-breadcrumbs {
+    margin: 40px 0 !important;
     .nf-breadcrumb-error {
-        display: none;
+        //display: none;
     }
     li {
         a {
@@ -18,6 +19,18 @@
         &.active {
             a {
                 font-weight: normal;
+            }
+        }
+        &.errors {
+            a {
+                position: relative;
+                padding-left: 36px;
+                &::after {
+                    font-family: "FontAwesome";
+                    position: absolute;
+                    content: "\f06a";
+                    left: 12px;
+                }
             }
         }
     }

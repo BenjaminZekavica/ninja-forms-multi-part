@@ -18,17 +18,19 @@ define( [], function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-next-previous' ).html() );
 					var showNext = false;
 					var showPrevious = false;
+					var visibleParts = that.collection.where( { visible: true } );
+					
 					/*
-					 * If our collection pointer isn't on the last item, show Next navigation.
+					 * If our collection pointer isn't on the last visible part, show Next navigation.
 					 */
-					if ( that.collection.indexOf( that.model ) != that.collection.length -1 ) {
+					if ( visibleParts.indexOf( that.model ) != visibleParts.length - 1 ) {
 						showNext = true;
 					}
 
 					/*
-					 * If our collection pointer isn't on the first item, show Previous navigation.
+					 * If our collection pointer isn't on the first visible part, show Previous navigation.
 					 */
-					if ( that.collection.indexOf( that.model ) != 0 ) {
+					if ( visibleParts.indexOf( that.model ) != 0 ) {
 						showPrevious = true;
 					}
 

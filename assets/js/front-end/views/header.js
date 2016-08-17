@@ -18,7 +18,7 @@ define( [], function() {
 				renderBreadcrumbs: function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
 					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
-					return template( { parts: parts, currentIndex: that.collection.indexOf( that.model ) } );
+					return template( { parts: parts, currentIndex: that.collection.getVisibleParts().indexOf( that.model ) } );
 				},
 
 				renderProgressBar: function() {
@@ -36,11 +36,7 @@ define( [], function() {
 
 		clickBreadcrumb: function( e ) {
 			e.preventDefault();
-			this.collection.setElement( this.collection.at( jQuery( e.target ).data( 'index' ) ) );
-		},
-
-		test: function() {
-			console.log( 'RESET ERRORS!' );
+			this.collection.setElement( this.collection.getVisibleParts()[ jQuery( e.target ).data( 'index' ) ] );
 		}
 	} );
 

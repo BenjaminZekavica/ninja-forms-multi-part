@@ -17,7 +17,7 @@ define( [], function() {
 			return {
 				renderBreadcrumbs: function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
-					var parts = that.collection.invoke( 'pick', [ 'title', 'errors' ] )
+					var parts = that.collection.invoke( 'pick', [ 'title', 'errors', 'visible' ] )
 					return template( { parts: parts, currentIndex: that.collection.indexOf( that.model ) } );
 				}
 			}

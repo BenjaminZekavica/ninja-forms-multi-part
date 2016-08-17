@@ -4,7 +4,8 @@ define( [], function() {
 
 		defaults: {
 			errors: false,
-			validate: true,
+			visible: true,
+			validate: false
 		},
 
 		initialize: function() {

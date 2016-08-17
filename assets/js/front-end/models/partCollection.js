@@ -33,22 +33,28 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		},
 		
 		next: function (){
+			var visibleParts = this.where( { visible: true } );
+			visibleParts = new this.constructor( visibleParts );
+
 			/*
-			 * If this isn't the last item, move forward.
+			 * If this isn't the last visible part, move forward.
 			 */
-			if ( this.models.length - 1 != this.indexOf( this.getElement() ) ) {
-				this.setElement( this.at( this.indexOf( this.getElement() ) + 1 ) );
+			if ( visibleParts.length - 1 != visibleParts.indexOf( this.getElement() ) ) {
+				this.setElement( visibleParts.at( visibleParts.indexOf( this.getElement() ) + 1 ) );
 			}
 			
 			return this;
 		},
 
 		previous: function() {
+			var visibleParts = this.where( { visible: true } );
+			visibleParts = new this.constructor( visibleParts );
+	
 			/*
-			 * If this isn't the first item, move backward.
+			 * If this isn't the first visible part, move backward.
 			 */
-			if ( 0 != this.indexOf( this.getElement() ) ) {
-				this.setElement( this.at( this.indexOf( this.getElement() ) - 1 ) );	
+			if ( 0 != visibleParts.indexOf( this.getElement() ) ) {
+				this.setElement( visibleParts.at( visibleParts.indexOf( this.getElement() ) - 1 ) );	
 			}
 			
 			return this;

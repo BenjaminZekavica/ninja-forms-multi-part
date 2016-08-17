@@ -35,7 +35,6 @@
 <script id="nf-tmpl-mp-breadcrumbs" type="text/template">
 	<ul class="nf-breadcrumbs">
 		<% _.each( parts, function( part, index ) { %>
-			<% if ( ! part.visible ) return %>
 			<li class="<%= ( currentIndex == index ) ? 'active' : '' %> <%= ( part.errors ) ? 'errors' : '' %>">
 				<a href="#" class="nf-breadcrumb" data-index="<%= index %>"><%= ( part.errors ) ? '' : '' %> <%= part.title %></a>
 			</li>

@@ -33,28 +33,22 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		},
 		
 		next: function (){
-			var visibleParts = this.where( { visible: true } );
-			visibleParts = new this.constructor( visibleParts );
-
 			/*
 			 * If this isn't the last visible part, move forward.
 			 */
-			if ( visibleParts.length - 1 != visibleParts.indexOf( this.getElement() ) ) {
-				this.setElement( visibleParts.at( visibleParts.indexOf( this.getElement() ) + 1 ) );
+			if ( this.getVisibleParts().length - 1 != this.getVisibleParts().indexOf( this.getElement() ) ) {
+				this.setElement( this.getVisibleParts()[ this.getVisibleParts().indexOf( this.getElement() ) + 1 ] );
 			}
 			
 			return this;
 		},
 
 		previous: function() {
-			var visibleParts = this.where( { visible: true } );
-			visibleParts = new this.constructor( visibleParts );
-	
 			/*
 			 * If this isn't the first visible part, move backward.
 			 */
-			if ( 0 != visibleParts.indexOf( this.getElement() ) ) {
-				this.setElement( visibleParts.at( visibleParts.indexOf( this.getElement() ) - 1 ) );	
+			if ( 0 != this.getVisibleParts().indexOf( this.getElement() ) ) {
+				this.setElement( this.getVisibleParts()[ this.getVisibleParts().indexOf( this.getElement() ) - 1 ] );	
 			}
 			
 			return this;
@@ -73,8 +67,11 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			/*
 			 * call validateFields on each visible part
 			 */
-			var visibleParts = this.where( { visible: true } );
-			_.each( visibleParts, function( partModel ) { partModel.validateFields(); } );
+			_.each( this.getVisibleParts(), function( partModel ) { partModel.validateFields(); } );
+		},
+
+		getVisibleParts: function() {
+			return this.where( { visible: true } );
 		}
 	} );
 

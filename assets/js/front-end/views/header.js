@@ -17,14 +17,14 @@ define( [], function() {
 			return {
 				renderBreadcrumbs: function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
-					var parts = that.collection.invoke( 'pick', [ 'title', 'errors', 'visible' ] )
+					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
 					return template( { parts: parts, currentIndex: that.collection.indexOf( that.model ) } );
 				},
 
 				renderProgressBar: function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-progress-bar' ).html() );
-					var currentIndex = that.collection.indexOf( that.model );
-					var percent = currentIndex / that.collection.length * 100;
+					var currentIndex = that.collection.getVisibleParts().indexOf( that.model );
+					var percent = currentIndex / that.collection.getVisibleParts().length * 100;
 					return template( { percent: percent } );
 				}
 			}

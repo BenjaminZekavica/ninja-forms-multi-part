@@ -25,6 +25,7 @@
 .nf-breadcrumbs li {
   float: left; }
   .nf-breadcrumbs li a {
+    font-size: 16px;
     margin-right: 16px;
     text-decoration: none; }
     .nf-breadcrumbs li a .nf-breadcrumb-error {

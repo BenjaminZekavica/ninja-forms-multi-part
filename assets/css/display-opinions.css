@@ -17,4 +17,9 @@
       content: "\f06a";
       left: 12px; }
 
+progress {
+  border: 1px;
+  height: 32px;
+  width: 100%; }
+
 /*# sourceMappingURL=display-opinions.css.map */

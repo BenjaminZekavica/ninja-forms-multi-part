@@ -35,3 +35,27 @@
         }
     }
 }
+
+progress {
+    border: 1px;
+    height: 32px;
+    //padding: 10px;
+    width: 100%;
+}
+
+// progress::-webkit-progress-bar {
+//     border: 0;
+//     height: 32px;
+// }
+
+// progress::-webkit-progress-bar {
+//     background-color: #e0eaf0;
+// }
+
+// progress::-webkit-progress-value {
+//     background-color: #329ad1;
+// }
+
+// progress::-moz-progress-bar {
+//     background-color: #329ad1;
+// }

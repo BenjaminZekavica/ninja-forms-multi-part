@@ -159,7 +159,6 @@ array(
 			    ),
 			  ),
 			),
-			'visible' 					=> true,
 	),
 	array(
 		'title'							=> 'Order Info',
@@ -238,7 +237,6 @@ array(
 			    ),
 			  ),
 			),
-		'visible'				=> false
 	)
 )
 

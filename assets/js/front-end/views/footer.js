@@ -1,7 +1,7 @@
 define( [], function() {
 	var view = Marionette.ItemView.extend( {
 		template: "#nf-tmpl-mp-footer",
- 		
+
 		initialize: function( options ) {
 			this.listenTo( this.collection, 'change:part', this.reRender );
 		},
@@ -33,7 +33,9 @@ define( [], function() {
 					if ( visibleParts.indexOf( that.model ) != 0 ) {
 						showPrevious = true;
 					}
-					
+
+					if ( ! showNext && ! showPrevious ) return '';
+
 					return template( { showNext: showNext, showPrevious: showPrevious } );
 				}
 			}

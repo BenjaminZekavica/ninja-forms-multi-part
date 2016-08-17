@@ -42,6 +42,6 @@ define( [], function() {
 			this.get( 'formContentData' ).validateFields();
 		}
 	} );
-	
+
 	return model;
 } );

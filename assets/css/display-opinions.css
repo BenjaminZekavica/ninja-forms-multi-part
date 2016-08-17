@@ -1,2 +1,14 @@
+.nf-next-previous li input {
+  font-size: 16px;
+  padding: 12px 18px; }
+
+.nf-breadcrumbs .nf-breadcrumb-error {
+  display: none; }
+
+.nf-breadcrumbs li a {
+  padding: 12px 18px; }
+
+.nf-breadcrumbs li.active a {
+  font-weight: normal; }
 
 /*# sourceMappingURL=display-opinions.css.map */

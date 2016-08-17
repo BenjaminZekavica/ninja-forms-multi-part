@@ -19,6 +19,13 @@ define( [], function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
 					var parts = that.collection.invoke( 'pick', [ 'title', 'errors', 'visible' ] )
 					return template( { parts: parts, currentIndex: that.collection.indexOf( that.model ) } );
+				},
+
+				renderProgressBar: function() {
+					var template = _.template( jQuery( '#nf-tmpl-mp-progress-bar' ).html() );
+					var currentIndex = that.collection.indexOf( that.model );
+					var percent = currentIndex / that.collection.length * 100;
+					return template( { percent: percent } );
 				}
 			}
 		},

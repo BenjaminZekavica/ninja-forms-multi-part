@@ -5,8 +5,7 @@
 </script>
 
 <script id="nf-tmpl-mp-header" type="text/template">
-	<% var percent = 70 %>
-	<progress style="width:100%" value="<%= percent %>" max="100"><%= percent %> %</progress>
+	<%= renderProgressBar() %>
 	<%= renderBreadcrumbs() %>
 	<h3>
 		<%= title %>
@@ -42,4 +41,8 @@
 			</li>
 		<% } ); %>
 	</ul>
+</script>
+
+<script id="nf-tmpl-mp-progress-bar" type="text/template">
+	<progress style="width:100%" value="<%= percent %>" max="100"><%= percent %> %</progress>
 </script>

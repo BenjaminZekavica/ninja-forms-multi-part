@@ -158,7 +158,8 @@ array(
 			      ),
 			    ),
 			  ),
-			)
+			),
+			'visible' 					=> false,
 	),
 	array(
 		'title'							=> 'Order Info',

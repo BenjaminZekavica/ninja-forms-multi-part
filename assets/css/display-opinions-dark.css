@@ -25,6 +25,7 @@
 .nf-breadcrumbs li {
   float: left; }
   .nf-breadcrumbs li a {
+    font-size: 16px;
     margin-right: 16px;
     text-decoration: none; }
     .nf-breadcrumbs li a .nf-breadcrumb-error {
@@ -38,19 +39,8 @@
     font-weight: bold; }
 
 progress {
-  background-color: #f3f3f3;
-  border: 0;
-  height: 1.5em;
+  margin-top: 20px;
   width: 100%; }
-
-progress::-webkit-progress-bar {
-  background-color: #e0eaf0; }
-
-progress::-webkit-progress-value {
-  background-color: #329ad1; }
-
-progress::-moz-progress-bar {
-  background-color: #329ad1; }
 
 .nf-next-previous li input {
   font-size: 16px;
@@ -70,5 +60,162 @@ progress::-moz-progress-bar {
       position: absolute;
       content: "\f06a";
       left: 12px; }
+
+progress {
+  border: 0;
+  height: 50px;
+  width: 100%; }
+  progress::-webkit-progress-bar {
+    background-color: #f1f1f1; }
+  progress::-webkit-progress-value {
+    background-color: #329ad1; }
+  progress::-moz-progress-bar {
+    background-color: #f1f1f1; }
+  progress::-moz-progress-value {
+    background-color: #329ad1; }
+
+/* ---------------------------------
+DEFAULT DARK COLORS
+----------------------------------*/
+.nf-breadcrumbs li a {
+  background: #fff;
+  color: #222;
+  -webkit-transition: all .5s;
+  transition: all .5s; }
+  .nf-breadcrumbs li a:hover {
+    background: #3c3c3c;
+    color: #888888;
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+
+.nf-breadcrumbs li.active a {
+  background: #3c3c3c;
+  color: #888888;
+  cursor: default; }
+
+.nf-breadcrumbs li.errors a {
+  background: red;
+  color: #fff;
+  cursor: help; }
+
+progress::-webkit-progress-bar {
+  background-color: #222; }
+
+progress::-webkit-progress-value {
+  background-color: #fff; }
+
+progress::-moz-progress-bar {
+  background-color: #222; }
+
+progress::-moz-progress-value {
+  background-color: #fff; }
+
+/* ---------------------------------
+DARK COLORS - nf-brown
+----------------------------------*/
+.nf-brown .nf-breadcrumbs li a {
+  background: #ea981b;
+  color: #3e2b13;
+  -webkit-transition: all .5s;
+  transition: all .5s; }
+  .nf-brown .nf-breadcrumbs li a:hover {
+    background: #65461f;
+    color: #ca9553;
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+
+.nf-brown .nf-breadcrumbs li.active a {
+  background: #65461f;
+  color: #ca9553;
+  cursor: default; }
+
+.nf-brown .nf-breadcrumbs li.errors a {
+  background: red;
+  color: #fff;
+  cursor: help; }
+
+.nf-brown progress::-webkit-progress-bar {
+  background-color: #3e2b13; }
+
+.nf-brown progress::-webkit-progress-value {
+  background-color: #ea981b; }
+
+.nf-brown progress::-moz-progress-bar {
+  background-color: #3e2b13; }
+
+.nf-brown progress::-moz-progress-value {
+  background-color: #ea981b; }
+
+/* ---------------------------------
+DARK COLORS - nf-red
+----------------------------------*/
+.nf-red .nf-breadcrumbs li a {
+  background: red;
+  color: #350000;
+  -webkit-transition: all .5s;
+  transition: all .5s; }
+  .nf-red .nf-breadcrumbs li a:hover {
+    background: #680000;
+    color: #ff0202;
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+
+.nf-red .nf-breadcrumbs li.active a {
+  background: #680000;
+  color: #ff0202;
+  cursor: default; }
+
+.nf-red .nf-breadcrumbs li.errors a {
+  background: red;
+  color: #fff;
+  cursor: help; }
+
+.nf-red progress::-webkit-progress-bar {
+  background-color: #350000; }
+
+.nf-red progress::-webkit-progress-value {
+  background-color: red; }
+
+.nf-red progress::-moz-progress-bar {
+  background-color: #350000; }
+
+.nf-red progress::-moz-progress-value {
+  background-color: red; }
+
+/* ---------------------------------
+DARK COLORS - nf-blue
+----------------------------------*/
+.nf-blue .nf-breadcrumbs li a {
+  background: #00AEFF;
+  color: #001C33;
+  -webkit-transition: all .5s;
+  transition: all .5s; }
+  .nf-blue .nf-breadcrumbs li a:hover {
+    background: #003866;
+    color: #008cff;
+    -webkit-transition: all .5s;
+    transition: all .5s; }
+
+.nf-blue .nf-breadcrumbs li.active a {
+  background: #003866;
+  color: #008cff;
+  cursor: default; }
+
+.nf-blue .nf-breadcrumbs li.errors a {
+  background: red;
+  color: #fff;
+  cursor: help; }
+
+.nf-blue progress::-webkit-progress-bar {
+  background-color: #001C33; }
+
+.nf-blue progress::-webkit-progress-value {
+  background-color: #00AEFF; }
+
+.nf-blue progress::-moz-progress-bar {
+  background-color: #001C33; }
+
+.nf-blue progress::-moz-progress-value {
+  background-color: #00AEFF; }
 
 /*# sourceMappingURL=display-opinions-dark.css.map */

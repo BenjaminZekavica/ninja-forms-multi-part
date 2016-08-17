@@ -25,6 +25,7 @@
 .nf-breadcrumbs li {
   float: left; }
   .nf-breadcrumbs li a {
+    font-size: 16px;
     margin-right: 16px;
     text-decoration: none; }
     .nf-breadcrumbs li a .nf-breadcrumb-error {
@@ -38,18 +39,7 @@
     font-weight: bold; }
 
 progress {
-  background-color: #f3f3f3;
-  border: 0;
-  height: 1.5em;
+  margin-top: 20px;
   width: 100%; }
-
-progress::-webkit-progress-bar {
-  background-color: #e0eaf0; }
-
-progress::-webkit-progress-value {
-  background-color: #329ad1; }
-
-progress::-moz-progress-bar {
-  background-color: #329ad1; }
 
 /*# sourceMappingURL=display-structure.css.map */

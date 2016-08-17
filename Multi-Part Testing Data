@@ -27,7 +27,7 @@ array(
 			'checkbox',
 			'firstname',
 			'lastname',
-		)
+		),
 	),
 	array(
 		'title'							=> 'Address Info',
@@ -36,7 +36,8 @@ array(
 			'city',
 			'liststate',
 			'zip',
-		)
+		),
+		'visible'						=> false,
 	),
 	array(
 		'title'							=> 'Order Info',
@@ -46,7 +47,7 @@ array(
 			'number',
 			'listcheckbox',
 			'submit',
-		)
+		),
 	)
 )
 

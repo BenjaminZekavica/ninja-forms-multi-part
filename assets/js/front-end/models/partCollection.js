@@ -67,6 +67,14 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			 */
 			this.currentElement.validateFields();
 			return this.currentElement.get( 'errors' );
+		},
+
+		validateFields: function() {
+			/*
+			 * call validateFields on each visible part
+			 */
+			var visibleParts = this.where( { visible: true } );
+			_.each( visibleParts, function( partModel ) { partModel.validateFields(); } );
 		}
 	} );
 

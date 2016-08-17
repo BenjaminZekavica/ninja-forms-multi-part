@@ -1,0 +1,24 @@
+.nf-next-previous {
+    li {
+        input {
+            font-size: 16px;
+            padding: 12px 18px;
+        }
+    }
+}
+
+.nf-breadcrumbs {
+    .nf-breadcrumb-error {
+        display: none;
+    }
+    li {
+        a {
+            padding: 12px 18px;
+        }
+        &.active {
+            a {
+                font-weight: normal;
+            }
+        }
+    }
+}

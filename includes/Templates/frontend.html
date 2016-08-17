@@ -35,7 +35,7 @@
 	<ul class="nf-breadcrumbs">
 		<% _.each( parts, function( part, index ) { %>
 			<li class="<%= ( currentIndex == index ) ? 'active' : '' %> <%= ( part.errors ) ? 'errors' : '' %>">
-				<a href="#" class="nf-breadcrumb" data-index="<%= index %>"><%= ( part.errors ) ? '(&#9888;)' : '' %> <%= part.title %></a>
+				<a href="#" class="nf-breadcrumb" data-index="<%= index %>"><%= ( part.errors ) ? '<span class="nf-breadcrumb-error">&#9888;</span>' : '' %> <%= part.title %></a>
 			</li>
 		<% } ); %>
 	</ul>

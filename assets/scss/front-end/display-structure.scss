@@ -33,6 +33,13 @@
         float: left;
         a {
             margin-right: 16px;
+            text-decoration: none;
+            .nf-breadcrumb-error {
+                background: red;
+                border-radius: 4px;
+                color: #fff;
+                padding: 2px 5px;
+            }
         }
         &:last-child {
             a {

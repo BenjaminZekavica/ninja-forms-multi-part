@@ -185,7 +185,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
     /*
      * TODO: Move this into the main class.
      */
-    function nf_mp_enqueue_all_the_things( $form_id ) {
+    function nf_mp_enqueue_all_the_display_things( $form_id ) {
         wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js' );
         
         if( Ninja_Forms()->get_setting( 'opinionated_styles' ) ) {
@@ -202,6 +202,13 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
 
     }
 
-    add_action( 'nf_display_enqueue_scripts', 'nf_mp_enqueue_all_the_things' );
+    add_action( 'nf_display_enqueue_scripts', 'nf_mp_enqueue_all_the_display_things' );
+
+    function nf_mp_enqueue_all_the_builder_things() {
+        wp_enqueue_style( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/css/builder.css' );
+        wp_enqueue_script( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/js/min/builder.js', array( 'nf-builder' ) );
+    }
+
+    add_action( 'nf_admin_enqueue_scripts', 'nf_mp_enqueue_all_the_builder_things' );
 
 }

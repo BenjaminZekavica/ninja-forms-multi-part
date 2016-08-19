@@ -1,8 +1,7 @@
-define( [ 'views/gutterLeft', 'views/gutterRight' ],function ( GutterLeftView, GutterRightView )	{
+define( [ 'controllers/loadControllers', 'views/gutterLeft', 'views/gutterRight' ],function ( LoadControllers, GutterLeftView, GutterRightView )	{
 	var controller = Marionette.Object.extend( {
 		initialize: function() {
 			this.listenTo( nfRadio.channel( 'app' ), 'after:loadControllers', this.loadControllers );
-			
 		},
 
 		loadControllers: function() {
@@ -17,7 +16,6 @@ define( [ 'views/gutterLeft', 'views/gutterRight' ],function ( GutterLeftView, G
 		},
 
 		getLeftView: function() {
-			console.log( 'return left view' );
 			return GutterLeftView;
 		},
 

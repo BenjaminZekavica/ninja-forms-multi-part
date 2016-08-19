@@ -1,6 +1,6 @@
 var nfRadio = Backbone.Radio;
 
-require( [ 'controllers/loadContent' ], function( LoadContent ) {
+require( [ 'controllers/loadControllers' ], function( LoadControllers ) {
 
 	var NFMultiPart = Marionette.Application.extend( {
 
@@ -9,7 +9,7 @@ require( [ 'controllers/loadContent' ], function( LoadContent ) {
 		},
 
 		onStart: function() {
-			new LoadContent();
+			new LoadControllers();
 		}
 	} );
 

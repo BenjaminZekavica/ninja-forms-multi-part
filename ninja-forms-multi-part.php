@@ -44,12 +44,12 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
 
         public function builder_templates()
         {
-            self::template( 'builder.html' );
+            self::template( 'builder.html.php' );
         }
 
         public function frontend_templates()
         {
-            self::template( 'frontend.html' );
+            self::template( 'frontend.html.php' );
         }
 
         /*

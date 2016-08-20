@@ -11,18 +11,20 @@ define(
 		'views/layout',
 		'views/gutterLeft',
 		'views/gutterRight',
+		'views/mainContentEmpty',
 		'models/partCollection',
 	],
 	function (
 		LayoutView,
 		GutterLeftView,
 		GutterRightView,
+		MainContentEmptyView,
 		PartCollection
 	)
 	{
 	var controller = Marionette.Object.extend( {
 		initialize: function() {
-			this.listenTo( nfRadio.channel( 'app' ), 'after:loadControllers', this.addFilters );
+			this.listenTo( nfRadio.channel( 'app' ), 'after:loadViews', this.addFilters );
 		},
 
 		addFilters: function() {
@@ -32,7 +34,8 @@ define(
 			nfRadio.channel( 'formContent' ).request( 'add:viewFilter', this.getContentView, 1 );
 			nfRadio.channel( 'formContent' ).request( 'add:saveFilter', this.formContentSave, 1 );
 			nfRadio.channel( 'formContent' ).request( 'add:loadFilter', this.formContentLoad, 1 );
-		
+			
+			this.emptyView();
 		},
 
 		getLeftView: function() {
@@ -74,6 +77,19 @@ define(
 			} );
 
 			return collectionClone.toJSON();
+		},
+
+		emptyView: function() {
+			this.defaultMainContentEmptyView = nfRadio.channel( 'views' ).request( 'get:mainContentEmpty' );
+			nfRadio.channel( 'views' ).reply( 'get:mainContentEmpty', this.getMainContentEmpty, this );
+		},
+
+		getMainContentEmpty: function() {
+			if ( 0 == nfRadio.channel( 'mp' ).request( 'get:collection' ).length ) {
+				return this.defaultMainContentEmptyView;
+			} else {
+				return MainContentEmptyView;
+			}
 		}
 
 	});

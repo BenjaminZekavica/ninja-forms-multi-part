@@ -44,7 +44,7 @@ define( [], function() {
 		changePart: function() {
 			this.mainContent.empty();
 			this.mainContent.show(  new this.formContentView( { collection: this.collection.getElement().get( 'formContentData' ) } ) );
-		},
+		}
 	});
 
 	return view;

@@ -3,16 +3,22 @@
  */
 define( 
 	[
-		'controllers/filters'
+		'controllers/data',
+		'controllers/filters',
+		'controllers/clickControls'
 	], 
 	function
 	(
-		Filters
+		Data,
+		Filters,
+		ClickControls
 	)
 	{
 	var controller = Marionette.Object.extend( {
 		initialize: function() {
+			new Data();
 			new Filters();
+			new ClickControls();
 		}
 
 	});

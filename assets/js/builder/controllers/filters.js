@@ -47,6 +47,8 @@ define(
 		},
 
 		formContentLoad: function( formContentData ) {
+			if ( true === formContentData instanceof Backbone.Collection ) return formContentData;
+			
 			var partCollection = new PartCollection( formContentData );
 			nfRadio.channel( 'mp' ).request( 'init:partCollection', partCollection );
 			return partCollection;

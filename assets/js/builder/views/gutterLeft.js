@@ -21,6 +21,7 @@ define( [], function() {
 		},
 
 		onRender: function() {
+			var that = this;
 			jQuery( this.el ).find( '.fa' ).droppable( {
 				// Activate by pointer
 				tolerance: 'pointer',
@@ -46,6 +47,8 @@ define( [], function() {
 					} else {
 						jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
 					}
+
+					// setTimeout( that.changePart, 3000, that );
 				},
 
 				/**
@@ -62,6 +65,11 @@ define( [], function() {
 					} else {
 						jQuery( '#nf-main' ).find( '.nf-sortable-removed' ).addClass( 'nf-fields-sortable-placeholder' );
 					}
+					
+					/*
+					 * If we hover over our droppable for more than x seconds, change the part.
+					 */
+					// clearTimeout( that.changePart );
 				},
 
 				/**
@@ -73,7 +81,23 @@ define( [], function() {
 				 * @return void
 				 */
 				drop: function( e, ui ) {
-					console.log( 'drop on arrow' );
+					ui.draggable.dropping = true;
+					/*
+					 * Check to see if we have a next part.
+					 */
+					if ( that.collection.hasPrevious() ) {
+						/*
+						 * Add the dragged field to the next part.
+						 */
+						var fieldModel = nfRadio.channel( 'fields' ).request( 'get:field', jQuery( ui.draggable ).data( 'id' ) );
+						that.collection.getElement().get( 'formContentData' ).trigger( 'remove:field', fieldModel );
+						that.collection.at( that.collection.indexOf( that.collection.getElement() ) - 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+					}
+
+					/*
+					 * If we hover over our droppable for more than x seconds, change the part.
+					 */
+					// clearTimeout( that.changePart );
 				}
 			} );
 		},
@@ -89,6 +113,10 @@ define( [], function() {
 					return that.collection.hasPrevious();
 				}
 			}
+		},
+
+		changePart: function( context ) {
+			context.collection.previous();
 		}
 	});
 

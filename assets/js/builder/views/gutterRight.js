@@ -20,9 +20,11 @@ define( [], function() {
 		initialize: function() {
 			this.collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
 			this.listenTo( this.collection, 'change:part', this.render );
+			this.listenTo( this.collection, 'add', this.render );
 		},
 
 		onRender: function() {
+			var that = this;
 			jQuery( this.el ).find( '.fa' ).droppable( {
 				// Activate by pointer
 				tolerance: 'pointer',
@@ -48,6 +50,8 @@ define( [], function() {
 					} else {
 						jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
 					}
+
+					// setTimeout( that.changePart, 1000, that );
 				},
 
 				/**
@@ -64,6 +68,11 @@ define( [], function() {
 					} else {
 						jQuery( '#nf-main' ).find( '.nf-sortable-removed' ).addClass( 'nf-fields-sortable-placeholder' );
 					}
+					ui.cancel = false;
+					/*
+					 * If we hover over our droppable for more than x seconds, change the part.
+					 */
+					// clearTimeout( that.changePart );
 				},
 
 				/**
@@ -75,11 +84,32 @@ define( [], function() {
 				 * @return void
 				 */
 				drop: function( e, ui ) {
-					console.log( 'drop on arrow' );
+					ui.draggable.dropping = true;
+					var fieldModel = nfRadio.channel( 'fields' ).request( 'get:field', jQuery( ui.draggable ).data( 'id' ) );
+					/*
+					 * Check to see if we have a next part.
+					 */
+					if ( that.collection.hasNext() ) {
+						/*
+						 * Add the dragged field to the next part.
+						 */
+						that.collection.getElement().get( 'formContentData' ).trigger( 'remove:field', fieldModel );
+						that.collection.at( that.collection.indexOf( that.collection.getElement() ) + 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+					} else {
+						/*
+						 * Add the dragged field to a new part.
+						 */
+						that.collection.getElement().get( 'formContentData' ).trigger( 'remove:field', fieldModel );
+						that.collection.add( { formContentData: [ fieldModel.get( 'key' ) ] } );
+					}
+
+					/*
+					 * If we hover over our droppable for more than x seconds, change the part.
+					 */
+					// clearTimeout( that.changePart );
 				}
 			} );
 		},
-
 
 		clickNext: function( e ) {
 			nfRadio.channel( 'mp' ).trigger( 'click:next', e );
@@ -96,6 +126,10 @@ define( [], function() {
 					return that.collection.hasNext();
 				}
 			}
+		},
+
+		changePart: function( context ) {
+			context.collection.next();
 		}
 	});
 

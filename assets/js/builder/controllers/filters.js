@@ -87,7 +87,7 @@ define(
 		},
 
 		getMainContentEmpty: function() {
-			if ( 0 == nfRadio.channel( 'mp' ).request( 'get:collection' ).length ) {
+			if ( 1 == nfRadio.channel( 'mp' ).request( 'get:collection' ).length ) {
 				return this.defaultMainContentEmptyView;
 			} else {
 				return MainContentEmptyView;

@@ -35,6 +35,7 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 
 		addField: function( fieldModel ) {
 			this.collection.getElement().get( 'formContentData' ).trigger( 'add:field', fieldModel );
+			this.collection.getElement().get( 'formContentData' ).trigger( 'reset' );
 		}
 
 	});

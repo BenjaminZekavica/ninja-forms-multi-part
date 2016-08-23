@@ -13,10 +13,16 @@ define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
 
 		initialize: function() {
 			var template = _.template( jQuery( '#nf-tmpl-mp-top-drawer-pagination-left' ).html() );
-			this.leftPagination = '<li>' + template() + '</li>';
+			this.leftPagination = '<li class="no-sort">' + template() + '</li>';
 
 			template = _.template( jQuery( '#nf-tmpl-mp-top-drawer-pagination-right' ).html() );
-			this.rightPagination = '<li>' + template() + '</li>';
+			this.rightPagination = '<li class="no-sort">' + template() + '</li>';
+		},
+
+		onShow: function() {
+			jQuery( this.el ).sortable( {
+				items: 'li:not(.no-sort)'
+			} );
 		},
 
 		// The default implementation:

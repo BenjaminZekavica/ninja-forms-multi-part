@@ -51,6 +51,7 @@ define(	[],	function () {
 			ui.draggable.dropping = true;
 			ui.item = ui.draggable;
 			nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
+			nfRadio.channel( 'fields' ).request( 'sort:fields', null, null, false );					
 		},
 
 		dropLeft: function( ui, partCollection ) {

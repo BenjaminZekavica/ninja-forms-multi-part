@@ -23,3 +23,7 @@
         <p><?php _e( 'Get started by adding your first form field.', 'ninja-forms' ); ?> <a class="nf-open-drawer" title="Add New Field" href="#" data-drawerid="addField"><?php _e( 'Just click here and select the fields you want.', 'ninja-forms' ); ?></a>
     </div>
 </script>
+
+<script id="nf-tmpl-mp-top-drawer-item" type="text/template">
+	<%= getIndex() %>
+</script>

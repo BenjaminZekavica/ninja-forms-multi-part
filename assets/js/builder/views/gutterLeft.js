@@ -3,7 +3,7 @@
  * 
  * @package Ninja Forms builder
  * @subpackage App
- * @copyright (c) 2015 WP Ninjas
+ * @copyright (c) 2016 WP Ninjas
  * @since 3.0
  */
 define( [], function() {

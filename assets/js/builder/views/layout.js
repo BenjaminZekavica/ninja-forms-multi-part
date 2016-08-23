@@ -10,7 +10,7 @@
  * @copyright (c) 2015 WP Ninjas
  * @since 3.0
  */
-define( [], function() {
+define( [ 'views/topDrawerCollection' ], function( TopDrawerCollectionView ) {
 	var view = Marionette.LayoutView.extend({
 		tagName: 'div',
 		template: '#nf-tmpl-mp-layout',
@@ -25,6 +25,9 @@ define( [], function() {
 		},
 
 		onShow: function() {
+			this.topDrawer.show( new TopDrawerCollectionView( { collection: this.collection } ) );
+
+
 			/*
 			 * Check our fieldContentViewsFilter to see if we have any defined.
 			 * If we do, overwrite our default with the view returned from the filter.

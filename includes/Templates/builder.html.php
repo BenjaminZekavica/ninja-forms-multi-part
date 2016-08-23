@@ -27,3 +27,11 @@
 <script id="nf-tmpl-mp-top-drawer-item" type="text/template">
 	<%= getIndex() %>
 </script>
+
+<script id="nf-tmpl-mp-top-drawer-pagination-left" type="text/template">
+	LEFT
+</script>
+
+<script id="nf-tmpl-mp-top-drawer-pagination-right" type="text/template">
+	RIGHT
+</script>

@@ -48,7 +48,14 @@ define( [], function() {
 						jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
 					}
 
-					// setTimeout( that.changePart, 3000, that );
+					// Trigger Ninja Forms default handler for being over a field sortable.
+					ui.item = ui.draggable;
+					nfRadio.channel( 'app' ).request( 'over:fieldsSortable', ui );
+					
+					/*
+					 * If we hover over our droppable for more than x seconds, change the part.
+					 */
+					// setTimeout( that.changePart, 1000, that );
 				},
 
 				/**
@@ -66,6 +73,10 @@ define( [], function() {
 						jQuery( '#nf-main' ).find( '.nf-sortable-removed' ).addClass( 'nf-fields-sortable-placeholder' );
 					}
 					
+					// Trigger Ninja Forms default handler for being out of a field sortable.
+					ui.item = ui.draggable;
+					nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
+
 					/*
 					 * If we hover over our droppable for more than x seconds, change the part.
 					 */

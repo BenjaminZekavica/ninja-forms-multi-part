@@ -28,10 +28,20 @@ define( [], function() {
 			this.set( 'formContentData', callback( this.get( 'formContentData' ) ) );
 		
 			this.listenTo( this.get( 'formContentData' ), 'change:order', this.sortFormContentData );
+			/*
+			 * When we remove a field from our field collection, remove it from this part if it exists there.
+			 */
+			var fieldCollection = nfRadio.channel( 'fields' ).request( 'get:collection' );
+			this.listenTo( fieldCollection, 'remove', this.triggerRemove );
 		},
 
 		sortFormContentData: function() {
 			this.get( 'formContentData' ).sort();
+		},
+
+		triggerRemove: function( fieldModel ) {
+			console.log( this.get( 'formContentData' ) );
+			this.get( 'formContentData' ).trigger( 'remove:field', fieldModel );
 		}
 
 	} );

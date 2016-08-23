@@ -42,7 +42,7 @@ define( [], function() {
 			 * Before we display anything, if we don't have any parts, create a new, empty part
 			 */
 			if ( 0 == this.collection.length ) {
-				this.collection.add({});
+				this.collection.add( {} );
 			}
 
 			this.mainContent.show(  new this.formContentView( { collection: this.collection.getElement().get( 'formContentData' ) } ) );

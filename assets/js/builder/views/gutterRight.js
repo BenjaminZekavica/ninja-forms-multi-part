@@ -10,7 +10,6 @@ define( [], function() {
 	var view = Marionette.ItemView.extend({
 		tagName: 'div',
 		template: '#nf-tmpl-mp-gutter-right',
-		dropped: false,
 
 		events: {
 			'click .next': 'clickNext',
@@ -43,7 +42,6 @@ define( [], function() {
 				 * @return void
 				 */
 				over: function( e, ui ) {
-					this.dropped = false;
 					if ( jQuery( ui.helper ).hasClass( 'nf-field-type-draggable' ) ) {
 						jQuery( ui.helper ).css( 'width', 300 );
 						jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
@@ -51,6 +49,13 @@ define( [], function() {
 						jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
 					}
 
+					// Trigger Ninja Forms default handler for being over a field sortable.
+					ui.item = ui.draggable;
+					nfRadio.channel( 'app' ).request( 'over:fieldsSortable', ui );
+					
+					/*
+					 * If we hover over our droppable for more than x seconds, change the part.
+					 */
 					// setTimeout( that.changePart, 1000, that );
 				},
 
@@ -68,7 +73,11 @@ define( [], function() {
 					} else {
 						jQuery( '#nf-main' ).find( '.nf-sortable-removed' ).addClass( 'nf-fields-sortable-placeholder' );
 					}
-					ui.cancel = false;
+
+					// Trigger Ninja Forms default handler for being out of a field sortable.
+					ui.item = ui.draggable;
+					nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
+
 					/*
 					 * If we hover over our droppable for more than x seconds, change the part.
 					 */

@@ -40,22 +40,7 @@ define( [], function() {
 				 * @return void
 				 */
 				over: function( e, ui ) {
-					this.dropped = false;
-					if ( jQuery( ui.helper ).hasClass( 'nf-field-type-draggable' ) ) {
-						jQuery( ui.helper ).css( 'width', 300 );
-						jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
-					} else {
-						jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
-					}
-
-					// Trigger Ninja Forms default handler for being over a field sortable.
-					ui.item = ui.draggable;
-					nfRadio.channel( 'app' ).request( 'over:fieldsSortable', ui );
-					
-					/*
-					 * If we hover over our droppable for more than x seconds, change the part.
-					 */
-					// setTimeout( that.changePart, 1000, that );
+					nfRadio.channel( 'mp' ).trigger( 'over:gutter', ui, this );
 				},
 
 				/**
@@ -67,20 +52,7 @@ define( [], function() {
 				 * @return void
 				 */
 				out: function( e, ui ) {
-					if ( jQuery( ui.helper ).hasClass( 'nf-field-type-draggable' ) ) {
-						jQuery( '#nf-main' ).find( '.nf-sortable-removed' ).addClass( 'nf-fields-sortable-placeholder' );
-					} else {
-						jQuery( '#nf-main' ).find( '.nf-sortable-removed' ).addClass( 'nf-fields-sortable-placeholder' );
-					}
-					
-					// Trigger Ninja Forms default handler for being out of a field sortable.
-					ui.item = ui.draggable;
-					nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
-
-					/*
-					 * If we hover over our droppable for more than x seconds, change the part.
-					 */
-					// clearTimeout( that.changePart );
+					nfRadio.channel( 'mp' ).trigger( 'out:gutter', ui, this );
 				},
 
 				/**

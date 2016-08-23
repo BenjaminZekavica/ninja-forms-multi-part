@@ -40,7 +40,7 @@ define( [], function() {
 				 * @return void
 				 */
 				over: function( e, ui ) {
-					nfRadio.channel( 'mp' ).trigger( 'over:gutter', ui, this );
+					nfRadio.channel( 'mp' ).trigger( 'over:gutter', ui, that.collection );
 				},
 
 				/**
@@ -52,7 +52,7 @@ define( [], function() {
 				 * @return void
 				 */
 				out: function( e, ui ) {
-					nfRadio.channel( 'mp' ).trigger( 'out:gutter', ui, this );
+					nfRadio.channel( 'mp' ).trigger( 'out:gutter', ui, that.collection );
 				},
 
 				/**
@@ -64,23 +64,7 @@ define( [], function() {
 				 * @return void
 				 */
 				drop: function( e, ui ) {
-					ui.draggable.dropping = true;
-					/*
-					 * Check to see if we have a next part.
-					 */
-					if ( that.collection.hasPrevious() ) {
-						/*
-						 * Add the dragged field to the next part.
-						 */
-						var fieldModel = nfRadio.channel( 'fields' ).request( 'get:field', jQuery( ui.draggable ).data( 'id' ) );
-						that.collection.getElement().get( 'formContentData' ).trigger( 'remove:field', fieldModel );
-						that.collection.at( that.collection.indexOf( that.collection.getElement() ) - 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
-					}
-
-					/*
-					 * If we hover over our droppable for more than x seconds, change the part.
-					 */
-					// clearTimeout( that.changePart );
+					nfRadio.channel( 'mp' ).trigger( 'drop:leftGutter', ui, that.collection );
 				}
 			} );
 		},

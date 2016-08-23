@@ -20,7 +20,7 @@ define( [], function() {
 			this.collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
 			this.listenTo( this.collection, 'change:part', this.render );
 			this.listenTo( this.collection, 'add', this.render );
-		},
+	},
 
 		onRender: function() {
 			var that = this;
@@ -42,7 +42,7 @@ define( [], function() {
 				 * @return void
 				 */
 				over: function( e, ui ) {
-					nfRadio.channel( 'mp' ).trigger( 'over:gutter', ui, this );
+					nfRadio.channel( 'mp' ).trigger( 'over:gutter', ui, that.collection );
 				},
 
 				/**
@@ -54,7 +54,7 @@ define( [], function() {
 				 * @return void
 				 */
 				out: function( e, ui ) {
-					nfRadio.channel( 'mp' ).trigger( 'out:gutter', ui, this );
+					nfRadio.channel( 'mp' ).trigger( 'out:gutter', ui, that.collection );
 				},
 
 				/**
@@ -66,7 +66,7 @@ define( [], function() {
 				 * @return void
 				 */
 				drop: function( e, ui ) {
-					nfRadio.channel( 'mp' ).trigger( 'drop:rightGutter', ui, this );
+					nfRadio.channel( 'mp' ).trigger( 'drop:rightGutter', ui, that.collection );
 				}
 			} );
 		},

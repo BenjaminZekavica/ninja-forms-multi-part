@@ -40,7 +40,6 @@ define( [], function() {
 		},
 
 		triggerRemove: function( fieldModel ) {
-			console.log( this.get( 'formContentData' ) );
 			this.get( 'formContentData' ).trigger( 'remove:field', fieldModel );
 		}
 

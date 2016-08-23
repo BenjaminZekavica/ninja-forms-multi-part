@@ -48,12 +48,12 @@ define( [ 'views/topDrawerCollection' ], function( TopDrawerCollectionView ) {
 				this.collection.add( {} );
 			}
 
-			this.mainContent.show(  new this.formContentView( { collection: this.collection.getElement().get( 'formContentData' ) } ) );
+			this.mainContent.show(  new this.formContentView( { collection: this.collection.getFormContentData() } ) );
 		},
 
 		changePart: function() {
 			this.mainContent.empty();
-			this.mainContent.show(  new this.formContentView( { collection: this.collection.getElement().get( 'formContentData' ) } ) );
+			this.mainContent.show(  new this.formContentView( { collection: this.collection.getFormContentData() } ) );
 		}
 	});
 

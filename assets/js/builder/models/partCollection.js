@@ -55,6 +55,10 @@ define( [ 'models/partModel' ], function( PartModel ) {
 
 		hasPrevious: function() {
 			return 0 != this.indexOf( this.getElement() )
+		},
+
+		getFormContentData: function() {
+			return this.getElement().get( 'formContentData' );
 		}
 	} );
 

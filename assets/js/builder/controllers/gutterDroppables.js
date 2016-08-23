@@ -12,9 +12,10 @@ define(	[],	function () {
 			this.listenTo( nfRadio.channel( 'mp' ), 'over:gutter', this.over );
 			this.listenTo( nfRadio.channel( 'mp' ), 'out:gutter', this.out );
 			this.listenTo( nfRadio.channel( 'mp' ), 'drop:rightGutter', this.dropRight );
+			this.listenTo( nfRadio.channel( 'mp' ), 'drop:leftGutter', this.dropLeft );
 		},
 
-		over: function( ui, gutterView ) {
+		over: function( ui, partCollection ) {
 			/*
 			 * Remove any other draggable placeholders.
 			 */
@@ -27,10 +28,10 @@ define(	[],	function () {
 			/*
 			 * If we hover over our droppable for more than x seconds, change the part.
 			 */
-			// setTimeout( that.changePart, 1000, that );
+			// setTimeout( gutterView.changePart, 1000, that );
 		},
 
-		out: function( ui, gutterView ) {
+		out: function( ui, partCollection ) {
 			/*
 			 * Re-add any draggable placeholders that we removed.
 			 */
@@ -43,48 +44,152 @@ define(	[],	function () {
 			/*
 			 * If we hover over our droppable for more than x seconds, change the part.
 			 */
-			// clearTimeout( that.changePart );
+			// clearTimeout( gutterView.changePart );
 		},
 
-		drop: function( ui, gutterView ) {
+		drop: function( ui, partCollection, dir ) {
 			ui.draggable.dropping = true;
+			ui.item = ui.draggable;
+			nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
 		},
 
-		dropRight: function( ui, gutterView ) {
-				this.drop( ui, gutterView );
+		dropLeft: function( ui, partCollection ) {
+			this.drop( ui, partCollection, 'left' );
+			/*
+			 * Check to see if we have a previous part.
+			 */
+			if ( ! partCollection.hasPrevious() ) return;
+			/*
+			 * If we're dealing with a field that already exists on our form, handle moving it.
+			 */
+			if ( jQuery( ui.draggable ).hasClass( 'nf-field-wrap' ) ) {
+				var fieldModel = nfRadio.channel( 'fields' ).request( 'get:field', jQuery( ui.draggable ).data( 'id' ) );
 				/*
-				 * If we're dealing with a field that already exists on our form, handle moving it.
+				 * Add the dragged field to the previous part.
 				 */
-				if ( jQuery( ui.draggable ).hasClass( 'nf-field-wrap' ) ) {
-					console.log( 'drop existing field' );
-					var fieldModel = nfRadio.channel( 'fields' ).request( 'get:field', jQuery( ui.draggable ).data( 'id' ) );
+				partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
+				partCollection.at( partCollection.indexOf( partCollection.getElement() ) - 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+			} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
+				var type = jQuery( ui.draggable ).data( 'id' );
+				var fieldModel = this.addField( type, partCollection );
+				/*
+				 * We have a previous part. Add the new field to it.
+				 */
+				partCollection.at( partCollection.indexOf( partCollection.getElement() ) - 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+			} else {
+				/*
+				 * We are dropping a stage
+				 */
+				
+				// Make sure that our staged fields are sorted properly.	
+				nfRadio.channel( 'fields' ).request( 'sort:staging' );
+				// Grab our staged fields.
+				var stagedFields = nfRadio.channel( 'fields' ).request( 'get:staging' );
+
+				_.each( stagedFields.models, function( field, index ) {
+					// Add our field.
+					
+					var fieldModel = this.addField( field.get( 'slug' ), partCollection );
+					partCollection.at( partCollection.indexOf( partCollection.getElement() ) - 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+				}, this );
+
+				// Clear our staging
+				nfRadio.channel( 'fields' ).request( 'clear:staging' );
+			}
+
+			/*
+			 * If we hover over our droppable for more than x seconds, change the part.
+			 */
+			// clearTimeout( gutterView.changePart );
+		},
+
+		dropRight: function( ui, partCollection ) {
+			this.drop( ui, partCollection );
+			/*
+			 * If we're dealing with a field that already exists on our form, handle moving it.
+			 */
+			if ( jQuery( ui.draggable ).hasClass( 'nf-field-wrap' ) ) {
+				var fieldModel = nfRadio.channel( 'fields' ).request( 'get:field', jQuery( ui.draggable ).data( 'id' ) );
+				/*
+				 * Check to see if we have a next part.
+				 */
+				if ( partCollection.hasNext() ) {
 					/*
-					 * Check to see if we have a next part.
+					 * Add the dragged field to the next part.
 					 */
-					if ( that.collection.hasNext() ) {
-						/*
-						 * Add the dragged field to the next part.
-						 */
-						that.collection.getElement().get( 'formContentData' ).trigger( 'remove:field', fieldModel );
-						that.collection.at( that.collection.indexOf( that.collection.getElement() ) + 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
-					} else {
-						/*
-						 * Add the dragged field to a new part.
-						 */
-						that.collection.getElement().get( 'formContentData' ).trigger( 'remove:field', fieldModel );
-						that.collection.add( { formContentData: [ fieldModel.get( 'key' ) ] } );
-					}						
-				} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
-					console.log( 'new field type' );
+					partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
+					partCollection.at( partCollection.indexOf( partCollection.getElement() ) + 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
 				} else {
-					console.log( 'staging' );
+					/*
+					 * Add the dragged field to a new part.
+					 */
+					partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
+					var newPart = partCollection.add( { formContentData: [ fieldModel.get( 'key' ) ] } );
+					partCollection.setElement( newPart );
+				}
+			} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
+				var type = jQuery( ui.draggable ).data( 'id' );
+				var fieldModel = this.addField( type, partCollection );
+				if ( partCollection.hasNext() ) {
+					/*
+					 * We have a next part. Add the new field to it.
+					 */
+					partCollection.at( partCollection.indexOf( partCollection.getElement() ) + 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+					return false;
+				} else {
+					/*
+					 * We don't have a next part, so add a new one, then add this field to it.
+					 */
+					var newPart = partCollection.add( { formContentData: [ fieldModel.get( 'key' ) ] } );
+					partCollection.setElement( newPart );
+					return newPart;
+				}
+			} else {
+				// Make sure that our staged fields are sorted properly.	
+				nfRadio.channel( 'fields' ).request( 'sort:staging' );
+				// Grab our staged fields.
+				var stagedFields = nfRadio.channel( 'fields' ).request( 'get:staging' );
+				
+				var keys = [];
+				_.each( stagedFields.models, function( field, index ) {
+					// Add our field.
+					var fieldModel = this.addField( field.get( 'slug' ), partCollection );
+					if ( partCollection.hasNext() ) {
+						partCollection.at( partCollection.indexOf( partCollection.getElement() ) + 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+					} else {
+						keys.push( fieldModel.get( 'key' ) );
+					}
+					
+				}, this );
+
+				if ( ! partCollection.hasNext() ) {
+					/*
+					 * Add each of our fields to our next part
+					 */
+					var newPart = partCollection.add( { formContentData: keys } );
+					partCollection.setElement( newPart );					
 				}
 
+				// Clear our staging
+				nfRadio.channel( 'fields' ).request( 'clear:staging' );
+			}
 
-				/*
-				 * If we hover over our droppable for more than x seconds, change the part.
-				 */
-				// clearTimeout( that.changePart );
+			/*
+			 * If we hover over our droppable for more than x seconds, change the part.
+			 */
+			// clearTimeout( gutterView.changePart );
+		},
+
+		addField: function( type, collection ) {
+			var fieldType = nfRadio.channel( 'fields' ).request( 'get:type', type ); 
+			// Add our field
+			var fieldModel = nfRadio.channel( 'fields' ).request( 'add', {
+				label: fieldType.get( 'nicename' ),
+				type: type
+			} );
+
+			collection.getFormContentData().trigger( 'remove:field', fieldModel );
+			return fieldModel;
 		}
 
 	});

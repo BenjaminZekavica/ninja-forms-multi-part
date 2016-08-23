@@ -18,6 +18,7 @@ define( [], function() {
 		initialize: function() {
 			this.collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
 			this.listenTo( this.collection, 'change:part', this.render );
+			this.listenTo( this.collection, 'sort', this.render );
 		},
 
 		onRender: function() {

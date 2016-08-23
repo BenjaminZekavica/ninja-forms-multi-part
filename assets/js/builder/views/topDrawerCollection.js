@@ -20,8 +20,17 @@ define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
 		},
 
 		onShow: function() {
+			var that = this;
 			jQuery( this.el ).sortable( {
-				items: 'li:not(.no-sort)'
+				items: 'li:not(.no-sort)',
+
+				update: function( e, ui ) {
+					var order = jQuery( this ).sortable( 'toArray' );
+					_.each( order, function( cid, index ) {
+						that.collection.get( { cid: cid } ).set( 'order', index );
+					}, this );
+					that.collection.sort();
+				}
 			} );
 		},
 
@@ -40,11 +49,12 @@ define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
 					/*
 					 * Remove our last item (right pagination)
 					 */
-					jQuery( collectionView.el ).find( 'li:last' ).remove();
+					jQuery( collectionView.el ).find( '.no-sort' ).remove();
 					collectionView._insertAfter(childView);
 					/*
-					 * Add our last item (right pagination)
+					 * Add our pagination lis
 					 */
+					jQuery( collectionView.el ).prepend( this.leftPagination );
 					jQuery( collectionView.el ).append( this.rightPagination );
 				}
 			}
@@ -52,6 +62,7 @@ define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
 
 		// Called after all children have been appended into the elBuffer
 		attachBuffer: function(collectionView, buffer) {
+			collectionView.$el.find( '.no-sort' ).remove();
 			collectionView.$el.prepend( this.leftPagination );
 			collectionView.$el.append( buffer );
 			collectionView.$el.append( this.rightPagination );

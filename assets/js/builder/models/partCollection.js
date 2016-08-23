@@ -7,6 +7,13 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		initialize: function( models, options ){
 
 		},
+
+		append: function( data ) {
+			data = data || {};
+			var order = this.length - 1;
+			data = _.extend( { order: order }, data );
+			return this.add( data );
+		},
 		
 		getElement: function() {
 			/*

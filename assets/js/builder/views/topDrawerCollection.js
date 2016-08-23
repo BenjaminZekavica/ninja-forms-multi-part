@@ -52,7 +52,7 @@ define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
 					jQuery( collectionView.el ).find( '.no-sort' ).remove();
 					collectionView._insertAfter(childView);
 					/*
-					 * Add our pagination lis
+					 * Add our pagination LIs
 					 */
 					jQuery( collectionView.el ).prepend( this.leftPagination );
 					jQuery( collectionView.el ).append( this.rightPagination );

@@ -125,7 +125,7 @@ define(	[],	function () {
 					 * Add the dragged field to a new part.
 					 */
 					partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
-					var newPart = partCollection.add( { formContentData: [ fieldModel.get( 'key' ) ] } );
+					var newPart = partCollection.append( { formContentData: [ fieldModel.get( 'key' ) ] } );
 					partCollection.setElement( newPart );
 				}
 			} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
@@ -141,7 +141,7 @@ define(	[],	function () {
 					/*
 					 * We don't have a next part, so add a new one, then add this field to it.
 					 */
-					var newPart = partCollection.add( { formContentData: [ fieldModel.get( 'key' ) ] } );
+					var newPart = partCollection.append( { formContentData: [ fieldModel.get( 'key' ) ] } );
 					partCollection.setElement( newPart );
 					return newPart;
 				}
@@ -167,7 +167,7 @@ define(	[],	function () {
 					/*
 					 * Add each of our fields to our next part
 					 */
-					var newPart = partCollection.add( { formContentData: keys } );
+					var newPart = partCollection.append( { formContentData: keys } );
 					partCollection.setElement( newPart );					
 				}
 

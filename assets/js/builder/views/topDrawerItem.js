@@ -16,7 +16,7 @@ define( [], function() {
 		},
 
 		click: function( e ) {
-			console.log( this.model.get( 'title' ) );
+			this.model.collection.setElement( this.model );
 		},
 
 		templateHelpers: function() {

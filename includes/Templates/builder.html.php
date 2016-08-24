@@ -29,9 +29,9 @@
 </script>
 
 <script id="nf-tmpl-mp-top-drawer-pagination-left" type="text/template">
-	LEFT
+	<i class="fa fa-chevron-left" aria-hidden="true"></i>
 </script>
 
 <script id="nf-tmpl-mp-top-drawer-pagination-right" type="text/template">
-	RIGHT
+	<i class="fa fa-chevron-right" aria-hidden="true"></i>
 </script>

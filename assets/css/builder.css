@@ -1,3 +1,28 @@
+#nf-mp-top-drawer {
+  background: #EBEDEE;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 60px; }
+  #nf-mp-top-drawer ul {
+    margin: 5px; }
+    #nf-mp-top-drawer ul li {
+      background: #fff;
+      border: 2px solid #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      float: left;
+      font-size: 20px;
+      line-height: 50px;
+      margin-right: 5px;
+      height: 50px;
+      width: 50px;
+      text-align: center; }
+      #nf-mp-top-drawer ul li.active {
+        border: 2px solid #84CC1E;
+        font-weight: bold; }
+
 .mp-circle-active {
   color: #1EA9EA !important; }
 

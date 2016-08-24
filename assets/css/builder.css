@@ -22,8 +22,6 @@
       #nf-mp-top-drawer ul li.active {
         border: 2px solid #84CC1E;
         font-weight: bold; }
-      #nf-mp-top-drawer ul li.ui-sortable-helper {
-        visibility: hidden; }
 
 #nf-mp-top-drawer .ui-sortable-placeholder {
   background: #84CC1E;

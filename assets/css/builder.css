@@ -18,7 +18,8 @@
       margin-right: 14px;
       height: 50px;
       width: 50px;
-      text-align: center; }
+      text-align: center;
+      position: relative; }
       #nf-mp-top-drawer ul li.active {
         border: 2px solid #84CC1E;
         font-weight: bold; }
@@ -31,6 +32,61 @@
   visibility: visible !important;
   margin-left: -11px;
   margin-right: 3px; }
+
+#nf-mp-top-drawer .nf-part-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
+
+#nf-mp-top-drawer .ui-sortable-helper .nf-part-controls {
+  display: none; }
+
+#nf-mp-top-drawer .nf-part-control {
+  bottom: -2px;
+  width: 46px;
+  height: 40px;
+  text-align: center;
+  opacity: 0;
+  position: absolute;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
+  #nf-mp-top-drawer .nf-part-control a {
+    background: #1EA9EA;
+    border: 1px solid #1EA9EA;
+    border-radius: 50px;
+    color: #fff;
+    width: 34px;
+    height: 28px;
+    padding: 3px 6px; }
+    #nf-mp-top-drawer .nf-part-control a:hover {
+      background: #fff;
+      border: 1px solid #1EA9EA;
+      border-radius: 50px;
+      color: #1EA9EA; }
+
+#nf-mp-top-drawer li:hover .nf-part-control {
+  bottom: -38px;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
+
+#nf-mp-top-drawer li:hover .nf-part-edit {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
+
+#nf-mp-top-drawer li:hover .nf-part-duplicate {
+  left: -40px;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
+
+#nf-mp-top-drawer li:hover .nf-part-delete {
+  right: -40px;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
 
 .mp-circle-active {
   color: #1EA9EA !important; }

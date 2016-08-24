@@ -87,18 +87,22 @@
                 bottom: -38px;
                 opacity: 1;
                 transition: all 0.5s ease;
+                transition-delay: 1s;
             }
             .nf-part-edit {
                 //left: 42%;
                 transition: all 0.5s ease;
+                transition-delay: 1s;
             }
             .nf-part-duplicate {
                 left: -40px;
                 transition: all 0.5s ease;
+                transition-delay: 1s;
             }
             .nf-part-delete {
                 right: -40px;
                 transition: all 0.5s ease;
+                transition-delay: 1s;
             }
         }
     }

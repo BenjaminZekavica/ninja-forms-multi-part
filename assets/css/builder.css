@@ -72,21 +72,29 @@
   bottom: -38px;
   opacity: 1;
   -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease; }
+  transition: all 0.5s ease;
+  -webkit-transition-delay: 1s;
+          transition-delay: 1s; }
 
 #nf-mp-top-drawer li:hover .nf-part-edit {
   -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease; }
+  transition: all 0.5s ease;
+  -webkit-transition-delay: 1s;
+          transition-delay: 1s; }
 
 #nf-mp-top-drawer li:hover .nf-part-duplicate {
   left: -40px;
   -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease; }
+  transition: all 0.5s ease;
+  -webkit-transition-delay: 1s;
+          transition-delay: 1s; }
 
 #nf-mp-top-drawer li:hover .nf-part-delete {
   right: -40px;
   -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease; }
+  transition: all 0.5s ease;
+  -webkit-transition-delay: 1s;
+          transition-delay: 1s; }
 
 .mp-circle-active {
   color: #1EA9EA !important; }

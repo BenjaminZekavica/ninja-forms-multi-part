@@ -1,0 +1,42 @@
+#nf-mp-top-drawer {
+    background: #EBEDEE;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 60px;
+    ul {
+        margin: 5px;
+        li {
+            background: #fff;
+            border: 2px solid #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            float: left;
+            font-size: 20px;
+            line-height: 50px;
+            margin-right: 14px;
+            height: 50px;
+            width: 50px;
+            text-align: center;
+            &.active {
+                border: 2px solid $accent_color;
+                font-weight: bold;
+            }
+            &.ui-sortable-helper {
+                //visibility: hidden;
+            }
+        }
+    }
+}
+#nf-mp-top-drawer {
+    .ui-sortable-placeholder {
+        background: $accent_color;
+        border: 2px solid $accent_color;
+        border-radius: 0;
+        width: 8px;
+        visibility: visible !important;
+        margin-left: -11px;
+        margin-right: 3px;
+    }
+}

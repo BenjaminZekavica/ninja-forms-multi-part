@@ -10,6 +10,13 @@ define( [], function() {
 	var view = Marionette.ItemView.extend({
 		tagName: 'li',
 		template: '#nf-tmpl-mp-top-drawer-item',
+
+		className: function() {
+			if ( this.model == this.model.collection.getElement() ) {
+				return 'active';
+			}
+		},
+
 		attributes: function() {
 			return {
 				id: this.model.cid

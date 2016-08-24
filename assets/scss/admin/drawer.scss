@@ -24,8 +24,10 @@
                 border: 2px solid $accent_color;
                 font-weight: bold;
             }
-            &.ui-sortable-helper {
-                //visibility: hidden;
+            &.mp-top-drag-hover {
+                background: $cta_color !important;
+                border: 2px solid $cta_color;
+                color: #fff;
             }
         }
     }

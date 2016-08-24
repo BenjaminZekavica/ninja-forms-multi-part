@@ -4,14 +4,12 @@
 define( 
 	[
 		'controllers/data',
-		'controllers/filters',
 		'controllers/clickControls',
 		'controllers/gutterDroppables'
 	], 
 	function
 	(
 		Data,
-		Filters,
 		ClickControls,
 		GutterDroppables
 	)
@@ -19,7 +17,6 @@ define(
 	var controller = Marionette.Object.extend( {
 		initialize: function() {
 			new Data();
-			new Filters();
 			new ClickControls();
 			new GutterDroppables();
 		}

@@ -40,3 +40,7 @@
 <script id="nf-tmpl-mp-top-drawer-pagination-right" type="text/template">
 	<i class="fa fa-chevron-right" aria-hidden="true"></i>
 </script>
+
+<script id="nf-tmpl-mp-form-title" type="text/template">
+    <h2><%= renderFormTitle() %> - <i class="fa fa-cog" aria-hidden="true"></i> <%= renderPartTitle() %></h2>
+</script>

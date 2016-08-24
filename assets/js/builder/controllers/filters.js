@@ -33,8 +33,9 @@ define(
 		
 			nfRadio.channel( 'formContent' ).request( 'add:viewFilter', this.getContentView, 1 );
 			nfRadio.channel( 'formContent' ).request( 'add:saveFilter', this.formContentSave, 1 );
-			nfRadio.channel( 'formContent' ).request( 'add:loadFilter', this.formContentLoad, 1 );
 			
+			nfRadio.channel( 'formContent' ).request( 'add:loadFilter', this.formContentLoad, 1 );
+
 			this.emptyView();
 		},
 
@@ -93,7 +94,6 @@ define(
 				return MainContentEmptyView;
 			}
 		}
-
 	});
 
 	return controller;

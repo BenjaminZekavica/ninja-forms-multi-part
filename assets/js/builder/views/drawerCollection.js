@@ -1,21 +1,21 @@
 /**
- * Top drawer collection view.
+ * Drawer collection view.
  * 
  * @package Ninja Forms builder
  * @subpackage App
  * @copyright (c) 2016 WP Ninjas
  * @since 3.0
  */
-define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
+define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 	var view = Marionette.CollectionView.extend( {
 		tagName: 'ul',
-		childView: TopDrawerItemView,
+		childView: DrawerItemView,
 
 		initialize: function() {
-			var template = _.template( jQuery( '#nf-tmpl-mp-top-drawer-pagination-left' ).html() );
+			var template = _.template( jQuery( '#nf-tmpl-mp-drawer-pagination-left' ).html() );
 			this.leftPagination = '<li class="no-sort">' + template() + '</li>';
 
-			template = _.template( jQuery( '#nf-tmpl-mp-top-drawer-pagination-right' ).html() );
+			template = _.template( jQuery( '#nf-tmpl-mp-drawer-pagination-right' ).html() );
 			this.rightPagination = '<li class="no-sort">' + template() + '</li>';
 
 			this.listenTo( this.collection, 'change:part', this.render );

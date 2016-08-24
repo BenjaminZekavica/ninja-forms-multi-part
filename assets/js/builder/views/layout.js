@@ -3,21 +3,21 @@
  *
  * Regions:
  * mainContent
- * topDrawer
+ * drawer
  * 
  * @package Ninja Forms builder
  * @subpackage App
  * @copyright (c) 2015 WP Ninjas
  * @since 3.0
  */
-define( [ 'views/topDrawerCollection' ], function( TopDrawerCollectionView ) {
+define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 	var view = Marionette.LayoutView.extend({
 		tagName: 'div',
 		template: '#nf-tmpl-mp-layout',
 
 		regions: {
 			mainContent: '#nf-mp-main-content',
-			topDrawer: '#nf-mp-top-drawer'
+			drawer: '#nf-mp-drawer'
 		},
 
 		initialize: function() {
@@ -25,7 +25,7 @@ define( [ 'views/topDrawerCollection' ], function( TopDrawerCollectionView ) {
 		},
 
 		onShow: function() {
-			this.topDrawer.show( new TopDrawerCollectionView( { collection: this.collection } ) );
+			this.drawer.show( new DrawerCollectionView( { collection: this.collection } ) );
 
 
 			/*

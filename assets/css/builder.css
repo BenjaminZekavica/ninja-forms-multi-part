@@ -1,13 +1,13 @@
-#nf-mp-top-drawer {
+#nf-mp-drawer {
   background: #EBEDEE;
   height: 60px;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 60px; }
-  #nf-mp-top-drawer ul {
+  #nf-mp-drawer ul {
     margin: 5px; }
-    #nf-mp-top-drawer ul li {
+    #nf-mp-drawer ul li {
       background: #fff;
       border: 2px solid #fff;
       border-radius: 4px;
@@ -20,15 +20,15 @@
       padding: 0 16px;
       text-align: center;
       position: relative; }
-      #nf-mp-top-drawer ul li.active {
+      #nf-mp-drawer ul li.active {
         border: 2px solid #84CC1E;
         font-weight: bold; }
-      #nf-mp-top-drawer ul li.mp-top-drag-hover {
+      #nf-mp-drawer ul li.mp-drag-hover {
         background: #1EA9EA !important;
         border: 2px solid #1EA9EA;
         color: #fff; }
 
-#nf-mp-top-drawer .ui-sortable-placeholder {
+#nf-mp-drawer .ui-sortable-placeholder {
   background: #84CC1E;
   border: 2px solid #84CC1E;
   border-radius: 0;
@@ -37,7 +37,7 @@
   margin-left: -11px;
   margin-right: 3px; }
 
-#nf-mp-top-drawer .nf-part-controls {
+#nf-mp-drawer .nf-part-controls {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -46,11 +46,11 @@
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease; }
 
-#nf-mp-top-drawer .ui-sortable-helper .nf-part-controls {
+#nf-mp-drawer .ui-sortable-helper .nf-part-controls {
   display: none; }
 
-#nf-mp-top-drawer .nf-part-control {
-  bottom: -2px;
+#nf-mp-drawer .nf-part-control {
+  top: -62px;
   width: 46px;
   height: 40px;
   text-align: center;
@@ -58,7 +58,7 @@
   position: absolute;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease; }
-  #nf-mp-top-drawer .nf-part-control a {
+  #nf-mp-drawer .nf-part-control a {
     background: #1EA9EA;
     border: 1px solid #1EA9EA;
     border-radius: 50px;
@@ -66,13 +66,13 @@
     width: 34px;
     height: 28px;
     padding: 3px 6px; }
-    #nf-mp-top-drawer .nf-part-control a:hover {
+    #nf-mp-drawer .nf-part-control a:hover {
       background: #fff;
       border: 1px solid #1EA9EA;
       border-radius: 50px;
       color: #1EA9EA; }
 
-#nf-mp-top-drawer li:hover .nf-part-control {
+#nf-mp-drawer li:hover .nf-part-control {
   bottom: -38px;
   opacity: 1;
   -webkit-transition: all 0.5s ease;
@@ -80,20 +80,20 @@
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
 
-#nf-mp-top-drawer li:hover .nf-part-edit {
+#nf-mp-drawer li:hover .nf-part-edit {
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
 
-#nf-mp-top-drawer li:hover .nf-part-duplicate {
+#nf-mp-drawer li:hover .nf-part-duplicate {
   left: -40px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
 
-#nf-mp-top-drawer li:hover .nf-part-delete {
+#nf-mp-drawer li:hover .nf-part-delete {
   right: -40px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;

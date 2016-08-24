@@ -9,7 +9,7 @@
 define( [], function() {
 	var view = Marionette.ItemView.extend({
 		tagName: 'li',
-		template: '#nf-tmpl-mp-top-drawer-item',
+		template: '#nf-tmpl-mp-drawer-item',
 
 		className: function() {
 			if ( this.model == this.model.collection.getElement() ) {
@@ -26,8 +26,8 @@ define( [], function() {
 		onShow: function() {
 			var that = this;
 			jQuery( this.el ).droppable( {
-				activeClass: 'mp-top-drag-active',
-				hoverClass: 'mp-top-drag-hover',
+				activeClass: 'mp-drag-active',
+				hoverClass: 'mp-drag-hover',
 				accept: '.nf-field-type-draggable, .nf-field-wrap, .nf-stage',
 				tolerance: 'pointer',
 

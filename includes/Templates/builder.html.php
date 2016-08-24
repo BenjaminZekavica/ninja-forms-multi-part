@@ -14,7 +14,7 @@
 
 <script id="nf-tmpl-mp-layout" type="text/template">
 	<div id="nf-mp-main-content"></div>
-	<div id="nf-mp-top-drawer"></div>
+	<div id="nf-mp-drawer"></div>
 </script>
 
 <script id="nf-tmpl-mp-main-content-fields-empty" type="text/template">
@@ -24,7 +24,7 @@
     </div>
 </script>
 
-<script id="nf-tmpl-mp-top-drawer-item" type="text/template">
+<script id="nf-tmpl-mp-drawer-item" type="text/template">
 	<%= title %>
     <div class="nf-part-controls"><div>
         <div class="nf-part-edit nf-part-control"><a href="#" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
@@ -33,11 +33,11 @@
     </div></div>
 </script>
 
-<script id="nf-tmpl-mp-top-drawer-pagination-left" type="text/template">
+<script id="nf-tmpl-mp-drawer-pagination-left" type="text/template">
 	<i class="fa fa-chevron-left" aria-hidden="true"></i>
 </script>
 
-<script id="nf-tmpl-mp-top-drawer-pagination-right" type="text/template">
+<script id="nf-tmpl-mp-drawer-pagination-right" type="text/template">
 	<i class="fa fa-chevron-right" aria-hidden="true"></i>
 </script>
 

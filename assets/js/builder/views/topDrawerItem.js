@@ -22,6 +22,7 @@ define( [], function() {
 				activeClass: '',
 				hoverClass: '',
 				accept: '.nf-field-type-draggable, .nf-field-wrap, .nf-stage',
+				tolerance: 'pointer',
 
 				over: function( e, ui ) {
 					// Trigger Ninja Forms default handler for being over a field sortable.
@@ -93,6 +94,26 @@ define( [], function() {
 			this.model.get( 'formContentData' ).trigger( 'append:field', fieldModel );
 		},
 
+		dropStaging: function( e, ui ) {
+			/*
+			 * We are dropping a stage
+			 */
+			
+			// Make sure that our staged fields are sorted properly.	
+			nfRadio.channel( 'fields' ).request( 'sort:staging' );
+			// Grab our staged fields.
+			var stagedFields = nfRadio.channel( 'fields' ).request( 'get:staging' );
+
+			_.each( stagedFields.models, function( field, index ) {
+				// Add our field.
+				var fieldModel = this.addField( field.get( 'slug' ), this.model.collection );
+				this.model.get( 'formContentData' ).trigger( 'append:field', fieldModel );
+			}, this );
+
+			// Clear our staging
+			nfRadio.channel( 'fields' ).request( 'clear:staging' );
+		},	
+
 		addField: function( type, collection ) {
 			var fieldType = nfRadio.channel( 'fields' ).request( 'get:type', type ); 
 			// Add our field
@@ -104,6 +125,7 @@ define( [], function() {
 			collection.getFormContentData().trigger( 'remove:field', fieldModel );
 			return fieldModel;
 		}
+
 	});
 
 	return view;

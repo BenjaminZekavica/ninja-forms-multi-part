@@ -25,7 +25,7 @@
 </script>
 
 <script id="nf-tmpl-mp-top-drawer-item" type="text/template">
-	<%= getIndex() %>
+	<%= title %>
     <div class="nf-part-controls"><div>
         <div class="nf-part-edit nf-part-control"><a href="#" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
         <div class="nf-part-duplicate nf-part-control"><a href="#" title="Duplicate (^ + C + click)"><i class="nf-duplicate fa fa-files-o" aria-hidden="true"></i></a></div>

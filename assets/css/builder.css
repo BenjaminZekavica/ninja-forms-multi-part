@@ -15,13 +15,24 @@
       float: left;
       font-size: 20px;
       line-height: 50px;
-      margin-right: 5px;
+      margin-right: 14px;
       height: 50px;
       width: 50px;
       text-align: center; }
       #nf-mp-top-drawer ul li.active {
         border: 2px solid #84CC1E;
         font-weight: bold; }
+      #nf-mp-top-drawer ul li.ui-sortable-helper {
+        visibility: hidden; }
+
+#nf-mp-top-drawer .ui-sortable-placeholder {
+  background: #84CC1E;
+  border: 2px solid #84CC1E;
+  border-radius: 0;
+  width: 8px;
+  visibility: visible !important;
+  margin-left: -11px;
+  margin-right: 3px; }
 
 .mp-circle-active {
   color: #1EA9EA !important; }

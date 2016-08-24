@@ -69,7 +69,7 @@ define( [ 'views/topDrawerCollection' ], function( TopDrawerCollectionView ) {
 			 */
 			jQuery( this.mainContent.el ).hide( 'slide', { direction: hideDir }, 300, function() {
 				that.mainContent.empty();
-				that.mainContent.show(  new that.formContentView( { collection: that.collection.getFormContentData() } ) );
+				that.mainContent.show( new that.formContentView( { collection: that.collection.getFormContentData() } ) );
 			} );
 
 			jQuery( that.mainContent.el ).show( 'slide', { direction: showDir }, 200 );

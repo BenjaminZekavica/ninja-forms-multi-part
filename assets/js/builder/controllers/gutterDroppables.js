@@ -28,7 +28,7 @@ define(	[],	function () {
 			/*
 			 * If we hover over our droppable for more than x seconds, change the part.
 			 */
-			setTimeout( this.changePart, 1500, ui, partCollection );
+			// setTimeout( this.changePart, 1500, ui, partCollection );
 		},
 
 		out: function( ui, partCollection ) {
@@ -44,7 +44,7 @@ define(	[],	function () {
 			/*
 			 * If we hover over our droppable for more than x seconds, change the part.
 			 */
-			clearTimeout( this.changePart );
+			// clearTimeout( this.changePart );
 		},
 
 		drop: function( ui, partCollection, dir ) {
@@ -56,7 +56,7 @@ define(	[],	function () {
 			/*
 			 * If we hover over our droppable for more than x seconds, change the part.
 			 */
-			clearTimeout( this.changePart );				
+			// clearTimeout( this.changePart );				
 		},
 
 		dropLeft: function( ui, partCollection ) {

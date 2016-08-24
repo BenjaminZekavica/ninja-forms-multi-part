@@ -26,27 +26,55 @@ define( [], function() {
 		onShow: function() {
 			var that = this;
 			jQuery( this.el ).droppable( {
-				activeClass: '',
-				hoverClass: '',
+				activeClass: 'mp-top-drag-active',
+				hoverClass: 'mp-top-drag-hover',
 				accept: '.nf-field-type-draggable, .nf-field-wrap, .nf-stage',
 				tolerance: 'pointer',
 
 				over: function( e, ui ) {
+					/*
+					 * Remove any other draggable placeholders.
+					 */
+					jQuery( '#nf-main' ).find( '.nf-fields-sortable-placeholder' ).addClass( 'nf-sortable-removed' ).removeClass( 'nf-fields-sortable-placeholder' );
+
 					// Trigger Ninja Forms default handler for being over a field sortable.
 					ui.item = ui.draggable;
-					nfRadio.channel( 'app' ).request( 'over:fieldsSortable', ui );
+
+					if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) || jQuery( ui.draggable ).hasClass( 'nf-stage' ) ) {
+						nfRadio.channel( 'app' ).request( 'over:fieldsSortable', ui );
+					} else {
+						jQuery( ui.helper ).css( { 'width': '300px', 'height': '50px', 'opacity': '0.7' } );
+					}
 				},
 
 				out: function( e, ui ) {
+					/*
+					 * Re-add any draggable placeholders that we removed.
+					 */
+					jQuery( '#nf-main' ).find( '.nf-sortable-removed' ).addClass( 'nf-fields-sortable-placeholder' );
+
 					// Trigger Ninja Forms default handler for being out of a field sortable.
 					ui.item = ui.draggable;
-					nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
+					if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) || jQuery( ui.draggable ).hasClass( 'nf-stage' ) ) {
+						nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
+					} else {
+						// Get our sortable element.
+						var sortableEl = nfRadio.channel( 'fields' ).request( 'get:sortableEl' );
+						// Get our fieldwidth.
+						var fieldWidth = jQuery( sortableEl ).width();
+						var fieldHeight = jQuery( sortableEl ).height();
+
+						jQuery( ui.helper ).css( { 'width': fieldWidth, 'height': '', 'opacity': '' } );
+					}
 				},
 
 				drop: function( e, ui ) {
+					ui.draggable.dropping = true;
 					// Trigger Ninja Forms default handler for being out of a field sortable.
 					ui.item = ui.draggable;
 					nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
+
+					jQuery( ui.draggable ).effect( 'transfer', { to: jQuery( that.el ) }, 500 );
 
 					if ( jQuery( ui.draggable ).hasClass( 'nf-field-wrap' ) ) { // Dropping a field that already exists
 						that.dropField( e, ui );

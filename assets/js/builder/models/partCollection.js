@@ -27,7 +27,7 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		  
 		setElement: function( model, silent ) {
 			silent = silent || false;
-
+			this.previousElement = this.currentElement;
 			this.currentElement = model;
 			if ( ! silent ) {
 				this.trigger( 'change:part', this );	

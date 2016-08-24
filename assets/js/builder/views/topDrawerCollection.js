@@ -17,12 +17,15 @@ define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
 
 			template = _.template( jQuery( '#nf-tmpl-mp-top-drawer-pagination-right' ).html() );
 			this.rightPagination = '<li class="no-sort">' + template() + '</li>';
+
+			this.listenTo( this.collection, 'change:part', this.render );
 		},
 
 		onShow: function() {
 			var that = this;
 			jQuery( this.el ).sortable( {
 				items: 'li:not(.no-sort)',
+				helper: 'clone',
 
 				update: function( e, ui ) {
 					var order = jQuery( this ).sortable( 'toArray' );
@@ -30,6 +33,21 @@ define( [ 'views/topDrawerItem' ], function( TopDrawerItemView ) {
 						that.collection.get( { cid: cid } ).set( 'order', index );
 					}, this );
 					that.collection.sort();
+				},
+
+				start: function( e, ui ) {
+					// If we aren't dragging an item in from types or staging, update our change log.
+					if( ! jQuery( ui.item ).hasClass( 'nf-field-type-draggable' ) && ! jQuery( ui.item ).hasClass( 'nf-stage' ) ) { 
+						jQuery( ui.item ).css( 'opacity', '0.5' ).show();
+						jQuery( ui.helper ).css( 'opacity', '0.95' );
+					}
+				},
+
+				stop: function( e, ui ) {
+					// If we aren't dragging an item in from types or staging, update our change log.
+					if( ! jQuery( ui.item ).hasClass( 'nf-field-type-draggable' ) && ! jQuery( ui.item ).hasClass( 'nf-stage' ) ) { 
+						jQuery( ui.item ).css( 'opacity', '' );
+					}
 				}
 			} );
 		},

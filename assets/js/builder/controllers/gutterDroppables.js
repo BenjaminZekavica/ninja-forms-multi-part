@@ -28,7 +28,7 @@ define(	[],	function () {
 			/*
 			 * If we hover over our droppable for more than x seconds, change the part.
 			 */
-			// setTimeout( gutterView.changePart, 1000, that );
+			setTimeout( this.changePart, 1500, ui, partCollection );
 		},
 
 		out: function( ui, partCollection ) {
@@ -44,14 +44,19 @@ define(	[],	function () {
 			/*
 			 * If we hover over our droppable for more than x seconds, change the part.
 			 */
-			// clearTimeout( gutterView.changePart );
+			clearTimeout( this.changePart );
 		},
 
 		drop: function( ui, partCollection, dir ) {
 			ui.draggable.dropping = true;
 			ui.item = ui.draggable;
 			nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
-			nfRadio.channel( 'fields' ).request( 'sort:fields', null, null, false );					
+			nfRadio.channel( 'fields' ).request( 'sort:fields', null, null, false );
+
+			/*
+			 * If we hover over our droppable for more than x seconds, change the part.
+			 */
+			clearTimeout( this.changePart );				
 		},
 
 		dropLeft: function( ui, partCollection ) {
@@ -97,11 +102,6 @@ define(	[],	function () {
 				// Clear our staging
 				nfRadio.channel( 'fields' ).request( 'clear:staging' );
 			}
-
-			/*
-			 * If we hover over our droppable for more than x seconds, change the part.
-			 */
-			// clearTimeout( gutterView.changePart );
 		},
 
 		dropRight: function( ui, partCollection ) {
@@ -174,11 +174,6 @@ define(	[],	function () {
 				// Clear our staging
 				nfRadio.channel( 'fields' ).request( 'clear:staging' );
 			}
-
-			/*
-			 * If we hover over our droppable for more than x seconds, change the part.
-			 */
-			// clearTimeout( gutterView.changePart );
 		},
 
 		addField: function( type, collection ) {
@@ -191,6 +186,11 @@ define(	[],	function () {
 
 			collection.getFormContentData().trigger( 'remove:field', fieldModel );
 			return fieldModel;
+		},
+
+		changePart: function( ui, partCollection ) {
+			partCollection.next();
+			jQuery( ui.helper ).draggable();
 		}
 
 	});

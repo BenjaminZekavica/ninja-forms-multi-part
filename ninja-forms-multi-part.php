@@ -206,7 +206,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
 
     function nf_mp_enqueue_all_the_builder_things() {
         wp_enqueue_style( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/css/builder.css' );
-        wp_enqueue_script( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/js/min/builder.js', array( 'nf-builder' ) );
+        wp_enqueue_script( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/js/min/builder.js', array( 'nf-builder', 'jquery-effects-slide' ) );
     }
 
     add_action( 'nf_admin_enqueue_scripts', 'nf_mp_enqueue_all_the_builder_things' );

@@ -52,8 +52,27 @@ define( [ 'views/topDrawerCollection' ], function( TopDrawerCollectionView ) {
 		},
 
 		changePart: function() {
-			this.mainContent.empty();
-			this.mainContent.show(  new this.formContentView( { collection: this.collection.getFormContentData() } ) );
+			var currentIndex = this.collection.indexOf( this.collection.getElement() );
+			var previousIndex = this.collection.indexOf( this.collection.previousElement );
+
+			if ( currentIndex > previousIndex ) {
+				var hideDir = 'left';
+				var showDir = 'right';
+			} else {
+				var hideDir = 'right';
+				var showDir = 'left';
+			}
+
+			var that = this;
+			/*
+			 * Start our current part sliding out.
+			 */
+			jQuery( this.mainContent.el ).hide( 'slide', { direction: hideDir }, 300, function() {
+				that.mainContent.empty();
+				that.mainContent.show(  new that.formContentView( { collection: that.collection.getFormContentData() } ) );
+			} );
+
+			jQuery( that.mainContent.el ).show( 'slide', { direction: showDir }, 200 );
 		}
 	});
 

@@ -4,7 +4,7 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 60px; }
+  right: 0; }
   #nf-mp-drawer ul.ui-sortable {
     margin: 5px; }
     #nf-mp-drawer ul.ui-sortable > li {
@@ -29,13 +29,14 @@
         color: #fff; }
 
 #nf-mp-drawer .ui-sortable-placeholder {
-  background: #84CC1E;
-  border: 2px solid #84CC1E;
-  border-radius: 0;
-  width: 8px;
+  background: #84CC1E !important;
+  border: 2px solid #84CC1E !important;
+  border-radius: 0 !important;
+  width: 8px !important;
+  padding: 0 !important;
   visibility: visible !important;
-  margin-left: -11px;
-  margin-right: 3px; }
+  margin-left: -11px !important;
+  margin-right: 2px !important; }
 
 #nf-mp-drawer .nf-part-controls {
   opacity: 0;

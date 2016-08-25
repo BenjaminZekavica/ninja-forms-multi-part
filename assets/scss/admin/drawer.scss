@@ -2,10 +2,11 @@
     background: #EBEDEE;
     height: 60px;
     position: fixed;
-    bottom: 0;
+    bottom: -60px;
     left: 0;
     right: 0;
     z-index: 100;
+    transition: all 0.5s ease;
     ul.ui-sortable {
         margin: 5px;
         > li {
@@ -112,5 +113,19 @@
                 transition-delay: 1s;
             }
         }
+    }
+}
+.nf-has-parts {
+    #nf-mp-drawer {
+        bottom: 0;
+        transition: all 0.5s ease;
+    }
+    .nf-master-control {
+        bottom: 80px;
+    }
+}
+.nf-drawer-opened {
+    #nf-mp-drawer {
+        right: 50%;
     }
 }

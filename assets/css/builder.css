@@ -2,10 +2,12 @@
   background: #EBEDEE;
   height: 60px;
   position: fixed;
-  bottom: 0;
+  bottom: -60px;
   left: 0;
   right: 0;
-  z-index: 100; }
+  z-index: 100;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
   #nf-mp-drawer ul.ui-sortable {
     margin: 5px; }
     #nf-mp-drawer ul.ui-sortable > li {
@@ -100,6 +102,17 @@
   transition: all 0.5s ease;
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
+
+.nf-has-parts #nf-mp-drawer {
+  bottom: 0;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
+
+.nf-has-parts .nf-master-control {
+  bottom: 80px; }
+
+.nf-drawer-opened #nf-mp-drawer {
+  right: 50%; }
 
 .mp-circle-active {
   color: #1EA9EA !important; }

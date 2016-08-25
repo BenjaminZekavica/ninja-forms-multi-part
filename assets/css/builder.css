@@ -4,7 +4,8 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0; }
+  right: 0;
+  z-index: 100; }
   #nf-mp-drawer ul.ui-sortable {
     margin: 5px; }
     #nf-mp-drawer ul.ui-sortable > li {

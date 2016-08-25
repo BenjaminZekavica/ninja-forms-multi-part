@@ -24,7 +24,7 @@
             position: relative;
             &.active {
                 border: 2px solid $accent_color;
-                font-weight: bold;
+                color: $accent_color;
             }
             &.mp-drag-hover {
                 background: $cta_color !important;

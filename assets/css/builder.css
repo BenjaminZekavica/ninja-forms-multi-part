@@ -5,9 +5,9 @@
   bottom: 0;
   left: 0;
   right: 60px; }
-  #nf-mp-drawer ul {
+  #nf-mp-drawer ul.ui-sortable {
     margin: 5px; }
-    #nf-mp-drawer ul li {
+    #nf-mp-drawer ul.ui-sortable > li {
       background: #fff;
       border: 2px solid #fff;
       border-radius: 4px;
@@ -20,10 +20,10 @@
       padding: 0 16px;
       text-align: center;
       position: relative; }
-      #nf-mp-drawer ul li.active {
+      #nf-mp-drawer ul.ui-sortable > li.active {
         border: 2px solid #84CC1E;
         font-weight: bold; }
-      #nf-mp-drawer ul li.mp-drag-hover {
+      #nf-mp-drawer ul.ui-sortable > li.mp-drag-hover {
         background: #1EA9EA !important;
         border: 2px solid #1EA9EA;
         color: #fff; }
@@ -38,11 +38,12 @@
   margin-right: 3px; }
 
 #nf-mp-drawer .nf-part-controls {
+  opacity: 0;
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
-  right: 0;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease; }
 
@@ -50,51 +51,49 @@
   display: none; }
 
 #nf-mp-drawer .nf-part-control {
-  top: -62px;
-  width: 46px;
+  width: 40px;
   height: 40px;
-  text-align: center;
-  opacity: 0;
   position: absolute;
+  top: 0;
+  left: 0;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease; }
   #nf-mp-drawer .nf-part-control a {
     background: #1EA9EA;
     border: 1px solid #1EA9EA;
-    border-radius: 50px;
+    border-radius: 50%;
     color: #fff;
-    width: 34px;
-    height: 28px;
-    padding: 3px 6px; }
+    width: 40px;
+    height: 40px;
+    padding: 3px;
+    text-decoration: none;
+    display: block; }
     #nf-mp-drawer .nf-part-control a:hover {
       background: #fff;
       border: 1px solid #1EA9EA;
       border-radius: 50px;
       color: #1EA9EA; }
+    #nf-mp-drawer .nf-part-control a .fa {
+      display: block;
+      line-height: 32px; }
 
-#nf-mp-drawer li:hover .nf-part-control {
-  bottom: -38px;
+#nf-mp-drawer li:hover .nf-part-controls {
   opacity: 1;
-  -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  -webkit-transition-delay: 1s;
-          transition-delay: 1s; }
-
-#nf-mp-drawer li:hover .nf-part-edit {
+  top: -42px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
 
 #nf-mp-drawer li:hover .nf-part-duplicate {
-  left: -40px;
+  left: 42px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
 
 #nf-mp-drawer li:hover .nf-part-delete {
-  right: -40px;
+  left: 84px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   -webkit-transition-delay: 1s;

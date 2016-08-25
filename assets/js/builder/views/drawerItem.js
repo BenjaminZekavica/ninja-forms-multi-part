@@ -92,7 +92,24 @@ define( [], function() {
 		},
 
 		click: function( e ) {
-			this.model.collection.setElement( this.model );
+			/*
+			 * Because our items are stacked, we have to do a bit of investigation to see what the user actually clicked on.
+			 */
+			if ( jQuery( e.target ).hasClass( 'nf-part-edit' ) ) {
+				nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: this.model, groupCollection: type.get( 'settingGroups' ) } );
+			} else if ( jQuery( e.target ).hasClass( 'nf-part-duplicate' ) ) {
+				console.log( 'duplicate' );
+			} else if ( jQuery( e.target ).hasClass( 'nf-part-delete' ) ) {
+				console.log( 'delete' );
+			} else {
+				if ( this.model != this.model.collection.getElement() ) {
+					this.model.collection.setElement( this.model );
+				}				
+			}
+		},
+
+		clickEditPart: function( e ) {
+			console.log( 'click edit part' );
 		},
 
 		templateHelpers: function() {

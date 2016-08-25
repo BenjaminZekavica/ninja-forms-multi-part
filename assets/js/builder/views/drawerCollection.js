@@ -28,11 +28,13 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 				helper: 'clone',
 
 				update: function( e, ui ) {
+					jQuery( ui.item ).css( 'opacity', '' );
 					var order = jQuery( this ).sortable( 'toArray' );
 					_.each( order, function( cid, index ) {
 						that.collection.get( { cid: cid } ).set( 'order', index );
 					}, this );
 					that.collection.sort();
+					
 				},
 
 				start: function( e, ui ) {

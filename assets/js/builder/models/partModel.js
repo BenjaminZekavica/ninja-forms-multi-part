@@ -9,12 +9,19 @@
 define( [], function() {
 	var model = Backbone.Model.extend( {
 		defaults: {
-			title: '',
 			formContentData: [],
-			order: 0
+			order: 0,
+			type: 'part'
 		},
 
 		initialize: function() {
+			/*
+			 * If we don't have a part title, set a default one.
+			 */
+			if ( ! this.get( 'title' ) ) {
+				this.set( 'title', 'Part Title' );
+			}
+
 			this.filterFormContentData();
 		
 			this.listenTo( this.get( 'formContentData' ), 'change:order', this.sortFormContentData );

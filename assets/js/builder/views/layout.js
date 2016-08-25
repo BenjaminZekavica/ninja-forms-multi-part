@@ -49,6 +49,12 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 			}
 
 			this.mainContent.show(  new this.formContentView( { collection: this.collection.getFormContentData() } ) );
+		
+			/*
+			 * Add a class to the builder if we have multiple parts
+			 */
+			var builderEl = nfRadio.channel( 'app' ).request( 'get:builderEl' );
+			jQuery( builderEl ).addClass( 'nf-has-parts' );
 		},
 
 		changePart: function() {

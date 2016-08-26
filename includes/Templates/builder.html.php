@@ -7,7 +7,7 @@
 <script id="nf-tmpl-mp-gutter-right" type="text/template">
 	<% if ( hasNext() ) { %>
 		<i class="fa fa-chevron-circle-right next" aria-hidden="true"></i>
-	<% } else { %>
+	<% } else if ( hasContent() ) { %>
 		<i class="fa fa-plus-circle new" aria-hidden="true"></i>
 	<% } %>
 </script>
@@ -27,7 +27,7 @@
 <script id="nf-tmpl-mp-drawer-item" type="text/template">
 	<%= title %>
     <ul class="nf-part-controls">
-        <li class="nf-part-edit nf-part-control"><a href="#" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
+        <li class="nf-part-edit nf-part-control"><a href="#" title="Edit" class="nf-edit"><i class="fa fa-pencil nf-edit" aria-hidden="true"></i></a></li>
         <li class="nf-part-duplicate nf-part-control"><a href="#" title="Duplicate (^ + C + click)"><i class="nf-duplicate fa fa-files-o" aria-hidden="true"></i></a></li>
         <li class="nf-part-delete nf-part-control"><a href="#" title="Delete (^ + D + click)"><i class="nf-delete fa fa-trash" aria-hidden="true"></i></a></li>
     </ul>

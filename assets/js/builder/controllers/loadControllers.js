@@ -5,13 +5,15 @@ define(
 	[
 		'controllers/data',
 		'controllers/clickControls',
-		'controllers/gutterDroppables'
+		'controllers/gutterDroppables',
+		'controllers/partSettings'
 	], 
 	function
 	(
 		Data,
 		ClickControls,
-		GutterDroppables
+		GutterDroppables,
+		PartSettings
 	)
 	{
 	var controller = Marionette.Object.extend( {
@@ -19,6 +21,7 @@ define(
 			new Data();
 			new ClickControls();
 			new GutterDroppables();
+			new PartSettings();
 		}
 
 	});

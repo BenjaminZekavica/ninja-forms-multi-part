@@ -5,7 +5,49 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		comparator: 'order',
 
 		initialize: function( models, options ){
+			models = models || [];
 
+			this.on( 'remove', this.changeCurrentPart );
+			this.on( 'remove', this.maybeChangeBuilderClass );
+			this.on( 'add', this.maybeChangeBuilderClass );
+
+			this.maybeChangeBuilderClass( models.length );
+		},
+
+		maybeChangeBuilderClass: function( count, collection, options ) {
+			
+			if ( true === count instanceof Backbone.Model ) {
+				count = this.length;
+			}
+
+			this.changeBuilderClass( 1 < count );
+		},
+
+		changeBuilderClass: function( hasParts ) {
+			var builderEl = nfRadio.channel( 'app' ).request( 'get:builderEl' );
+			if ( hasParts ) {
+				jQuery( builderEl ).addClass( 'nf-has-parts' );
+			} else {
+				jQuery( builderEl ).removeClass( 'nf-has-parts' );
+			}
+		},
+
+		changeCurrentPart: function( model, collection, options ) {
+			/*
+			 * When we remove the current part, change the current part in our collection.
+			 *
+			 * TODO: Find a way to pass index to has previous or has next for proper testing.
+			 * Since the model has been removed, it will always return a -1.
+			 */
+			if ( this.getElement() == model ) {
+				if ( 0 == options.index ) {
+					this.setElement( this.at( 0 ) );
+				} else {
+					this.setElement( this.at( options.index - 1 ) );
+				}
+			} else if ( 1 == this.length ) {
+				this.setElement( this.at( 0 ) );
+			}
 		},
 
 		append: function( data ) {
@@ -57,11 +99,13 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		},
 
 		hasNext: function() {
+			if ( 0 == this.length ) return false;
 			return this.length - 1 != this.indexOf( this.getElement() );
 		},
 
 		hasPrevious: function() {
-			return 0 != this.indexOf( this.getElement() )
+			if ( 0 == this.length ) return false;
+			return 0 != this.indexOf( this.getElement() );
 		},
 
 		getFormContentData: function() {

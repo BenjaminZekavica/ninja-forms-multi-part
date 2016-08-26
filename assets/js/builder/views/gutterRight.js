@@ -20,8 +20,15 @@ define( [], function() {
 			this.collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
 			this.listenTo( this.collection, 'change:part', this.render );
 			this.listenTo( this.collection, 'sort', this.render );
+			this.listenTo( this.collection, 'remove', this.render );
 			this.listenTo( this.collection, 'add', this.render );
-	},
+
+			this.listenTo( nfRadio.channel( 'fields' ), 'add:field', this.render );
+		},
+
+		test: function() {
+			console.log( 'test test test' );
+		},
 
 		onRender: function() {
 			var that = this;
@@ -85,6 +92,10 @@ define( [], function() {
 			return {
 				hasNext: function() {
 					return that.collection.hasNext();
+				},
+
+				hasContent: function() {
+					return 0 != nfRadio.channel( 'fields' ).request( 'get:collection' ).length;
 				}
 			}
 		},

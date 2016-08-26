@@ -95,12 +95,14 @@ define( [], function() {
 			/*
 			 * Because our items are stacked, we have to do a bit of investigation to see what the user actually clicked on.
 			 */
-			if ( jQuery( e.target ).hasClass( 'nf-part-edit' ) ) {
-				nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: this.model, groupCollection: type.get( 'settingGroups' ) } );
-			} else if ( jQuery( e.target ).hasClass( 'nf-part-duplicate' ) ) {
+			if ( jQuery( e.target ).hasClass( 'nf-edit' ) ) {
+				var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
+				console.log( settingGroupCollection );
+				// nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: this.model, groupCollection: type.get( 'settingGroups' ) } );
+			} else if ( jQuery( e.target ).hasClass( 'nf-duplicate' ) ) {
 				console.log( 'duplicate' );
-			} else if ( jQuery( e.target ).hasClass( 'nf-part-delete' ) ) {
-				console.log( 'delete' );
+			} else if ( jQuery( e.target ).hasClass( 'nf-delete' ) ) {
+				this.model.collection.remove( this.model );
 			} else {
 				if ( this.model != this.model.collection.getElement() ) {
 					this.model.collection.setElement( this.model );

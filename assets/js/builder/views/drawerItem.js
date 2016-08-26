@@ -11,6 +11,10 @@ define( [], function() {
 		tagName: 'li',
 		template: '#nf-tmpl-mp-drawer-item',
 
+		initialize: function() {
+			this.listenTo( this.model, 'change:title', this.render );
+		},
+
 		className: function() {
 			if ( this.model == this.model.collection.getElement() ) {
 				return 'active';
@@ -97,8 +101,7 @@ define( [], function() {
 			 */
 			if ( jQuery( e.target ).hasClass( 'nf-edit' ) ) {
 				var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
-				console.log( settingGroupCollection );
-				// nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: this.model, groupCollection: type.get( 'settingGroups' ) } );
+				nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: this.model, groupCollection: settingGroupCollection } );
 			} else if ( jQuery( e.target ).hasClass( 'nf-duplicate' ) ) {
 				console.log( 'duplicate' );
 			} else if ( jQuery( e.target ).hasClass( 'nf-delete' ) ) {

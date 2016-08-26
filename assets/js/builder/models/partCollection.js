@@ -9,10 +9,15 @@ define( [ 'models/partModel' ], function( PartModel ) {
 
 			this.on( 'remove', this.changeCurrentPart );
 			this.on( 'remove', this.maybeChangeBuilderClass );
+			this.on( 'add', this.updateOrder );
 			this.on( 'add', this.maybeChangeBuilderClass );
 			this.on( 'add', this.openDrawer );
 
 			this.maybeChangeBuilderClass( models.length );
+		},
+
+		updateOrder: function( model ) {
+			model.set( 'order', this.length - 1 );
 		},
 
 		maybeChangeBuilderClass: function( count, collection, options ) {
@@ -128,6 +133,13 @@ define( [ 'models/partModel' ], function( PartModel ) {
 
 		getFormContentData: function() {
 			return this.getElement().get( 'formContentData' );
+		},
+
+		updateOrder: function() {
+			this.each( function( model, index ) {
+				model.set( 'order', index );
+			} );
+			this.sort();
 		}
 	} );
 

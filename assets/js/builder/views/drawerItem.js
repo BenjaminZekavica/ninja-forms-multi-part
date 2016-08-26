@@ -103,7 +103,11 @@ define( [], function() {
 				var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
 				nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: this.model, groupCollection: settingGroupCollection } );
 			} else if ( jQuery( e.target ).hasClass( 'nf-duplicate' ) ) {
-				console.log( 'duplicate' );
+				var partClone = nfRadio.channel( 'app' ).request( 'clone:modelDeep', this.model );
+				this.model.collection.add( partClone );
+				partClone.set( 'order', this.model.get( 'order' ) );
+				this.model.collection.updateOrder();
+				this.model.collection.setElement( partClone );
 			} else if ( jQuery( e.target ).hasClass( 'nf-delete' ) ) {
 				this.model.collection.remove( this.model );
 			} else {

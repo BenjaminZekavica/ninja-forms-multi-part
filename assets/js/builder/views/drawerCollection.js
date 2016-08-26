@@ -29,19 +29,18 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 
 				update: function( e, ui ) {
 					jQuery( ui.item ).css( 'opacity', '' );
-					var order = jQuery( this ).sortable( 'toArray' );
+					var order = _.without( jQuery( this ).sortable( 'toArray' ), '' );
 					_.each( order, function( cid, index ) {
 						that.collection.get( { cid: cid } ).set( 'order', index );
 					}, this );
 					that.collection.sort();
-					
 				},
 
 				start: function( e, ui ) {
 					// If we aren't dragging an item in from types or staging, update our change log.
 					if( ! jQuery( ui.item ).hasClass( 'nf-field-type-draggable' ) && ! jQuery( ui.item ).hasClass( 'nf-stage' ) ) { 
 						jQuery( ui.item ).css( 'opacity', '0.5' ).show();
-						jQuery( ui.helper ).css( 'opacity', '0.95' );
+						jQuery( ui.helper ).css( 'opacity', '0.75' );
 					}
 				},
 

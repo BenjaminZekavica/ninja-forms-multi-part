@@ -81,7 +81,7 @@
       display: block;
       line-height: 32px; }
 
-#nf-mp-drawer li:hover .nf-part-controls {
+#nf-mp-drawer li.active:hover .nf-part-controls {
   opacity: 1;
   top: -42px;
   -webkit-transition: all 0.5s ease;
@@ -89,14 +89,14 @@
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
 
-#nf-mp-drawer li:hover .nf-part-duplicate {
+#nf-mp-drawer li.active:hover .nf-part-duplicate {
   left: 42px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   -webkit-transition-delay: 1s;
           transition-delay: 1s; }
 
-#nf-mp-drawer li:hover .nf-part-delete {
+#nf-mp-drawer li.active:hover .nf-part-delete {
   left: 84px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;

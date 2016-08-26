@@ -28,8 +28,6 @@ define(	[],	function () {
 			var collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
 			var newPart = collection.append();
 			collection.setElement( newPart );
-			var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
-			nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: collection.getElement(), groupCollection: settingGroupCollection } );
 		}
 
 	});

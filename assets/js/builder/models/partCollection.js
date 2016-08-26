@@ -10,6 +10,7 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			this.on( 'remove', this.changeCurrentPart );
 			this.on( 'remove', this.maybeChangeBuilderClass );
 			this.on( 'add', this.maybeChangeBuilderClass );
+			this.on( 'add', this.openDrawer );
 
 			this.maybeChangeBuilderClass( models.length );
 		},
@@ -21,6 +22,23 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			}
 
 			this.changeBuilderClass( 1 < count );
+		},
+		
+		openDrawer: function( model ) {
+			var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
+			nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: model, groupCollection: settingGroupCollection } );
+		
+			/*
+			 * When the drawer opens, focus the input box.
+			 */
+			nfRadio.channel( 'drawer' ).on( 'opened', this.focusTitle );
+		},
+
+		focusTitle: function() {
+			var drawerEl = nfRadio.channel( 'app' ).request( 'get:drawerEl' );
+			jQuery( drawerEl ).find( '#title' ).select();
+			jQuery( drawerEl ).find( '#title' ).focus();
+			nfRadio.channel( 'drawer' ).off( 'opened', this.focusTitle );
 		},
 
 		changeBuilderClass: function( hasParts ) {

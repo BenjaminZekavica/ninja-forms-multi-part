@@ -34,11 +34,15 @@
 </script>
 
 <script id="nf-tmpl-mp-drawer-pagination-left" type="text/template">
-	<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	<li class="no-sort">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</li>
 </script>
 
 <script id="nf-tmpl-mp-drawer-pagination-right" type="text/template">
-	<i class="fa fa-chevron-right" aria-hidden="true"></i>
+	<li class="no-sort">
+		<i class="fa fa-chevron-right" aria-hidden="true"></i>
+	</li>
 </script>
 
 <script id="nf-tmpl-mp-form-title" type="text/template">

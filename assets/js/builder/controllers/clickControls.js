@@ -26,8 +26,8 @@ define(	[],	function () {
 
 		clickNew: function( e ) {
 			var collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
-			var newPart = collection.append();
-			collection.setElement( newPart );
+			var newPart = collection.append({});
+			// collection.sort();
 		}
 
 	});

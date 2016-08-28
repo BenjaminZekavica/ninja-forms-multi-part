@@ -11,14 +11,22 @@ define( [], function() {
 		tagName: 'li',
 		template: '#nf-tmpl-mp-drawer-item',
 
-		initialize: function() {
-			this.listenTo( this.model, 'change:title', this.render );
-		},
-
 		className: function() {
 			if ( this.model == this.model.collection.getElement() ) {
 				return 'active';
 			}
+
+			return '';
+		},
+
+		initialize: function() {
+			this.listenTo( this.model, 'change:title', this.render );
+			this.listenTo( this.model.collection, 'change:part', this.maybeChangeActive );
+		},
+
+		maybeChangeActive: function() {
+			jQuery( this.el ).removeClass( 'active' );
+			jQuery( this.el ).addClass( this.className() );
 		},
 
 		attributes: function() {
@@ -115,10 +123,6 @@ define( [], function() {
 					this.model.collection.setElement( this.model );
 				}				
 			}
-		},
-
-		clickEditPart: function( e ) {
-			console.log( 'click edit part' );
 		},
 
 		templateHelpers: function() {

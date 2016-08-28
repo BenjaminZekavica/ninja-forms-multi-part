@@ -7,21 +7,33 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		initialize: function( models, options ){
 			models = models || [];
 
-			this.on( 'remove', this.changeCurrentPart );
-			this.on( 'remove', this.maybeChangeBuilderClass );
-			this.on( 'add', this.updateOrder );
-			this.on( 'add', this.maybeChangeBuilderClass );
-			this.on( 'add', this.openDrawer );
+			this.on( 'remove', this.afterRemove );
+			this.on( 'add', this.afterAdd );
 
 			this.maybeChangeBuilderClass( models.length );
 		},
 
-		updateOrder: function( model ) {
+		afterRemove: function( model, collection, options ) {
+			this.changeCurrentPart( model, collection, options );
+			this.maybeChangeBuilderClass( model, collection, options );
+			/*
+			 * If our drawer is open, close it.
+			 */
+			nfRadio.channel( 'app' ).request( 'close:drawer' );	
+		},
+
+		afterAdd: function( model ) {
+			this.moveToEnd( model );
+			this.maybeChangeBuilderClass( model );
+			this.openDrawer( model );
+			this.setElement( model );
+		},
+
+		moveToEnd: function( model ) {
 			model.set( 'order', this.length - 1 );
 		},
 
 		maybeChangeBuilderClass: function( count, collection, options ) {
-			
 			if ( true === count instanceof Backbone.Model ) {
 				count = this.length;
 			}
@@ -91,10 +103,18 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		},
 		  
 		setElement: function( model, silent ) {
+			if ( model == this.currentElement ) return;
 			silent = silent || false;
 			this.previousElement = this.currentElement;
 			this.currentElement = model;
 			if ( ! silent ) {
+				/*
+				 * Close the drawer for editing this title if it is open.
+				 */
+				var currentDrawer = nfRadio.channel( 'app' ).request( 'get:currentDrawer' );
+				if ( currentDrawer && 'editSettings' == currentDrawer.get( 'id' ) ) {
+					// nfRadio.channel( 'app' ).request( 'close:drawer' );
+				}
 				this.trigger( 'change:part', this );	
 			}
 		},
@@ -140,6 +160,16 @@ define( [ 'models/partModel' ], function( PartModel ) {
 				model.set( 'order', index );
 			} );
 			this.sort();
+		},
+
+		append: function( model ) {
+		    var order = _.max( this.pluck( 'order' ) ) + 1;
+		    if( model instanceof Backbone.Model ) {
+		        model.set( 'order', order );
+		    } else {
+		        model.order = order;
+		    }
+		    this.add( model );
 		}
 	} );
 

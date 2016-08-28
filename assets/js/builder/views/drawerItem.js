@@ -11,14 +11,6 @@ define( [], function() {
 		tagName: 'li',
 		template: '#nf-tmpl-mp-drawer-item',
 
-		className: function() {
-			if ( this.model == this.model.collection.getElement() ) {
-				return 'active';
-			}
-
-			return '';
-		},
-
 		initialize: function() {
 			this.listenTo( this.model, 'change:title', this.render );
 			this.listenTo( this.model.collection, 'change:part', this.maybeChangeActive );

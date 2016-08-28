@@ -11,17 +11,13 @@ define( [], function() {
 		defaults: {
 			formContentData: [],
 			order: 0,
-			type: 'part'
+			type: 'part',
+			clean: true,
+			title: 'Part Title'
 		},
 
 		initialize: function() {
-			/*
-			 * If we don't have a part title, set a default one.
-			 */
-			if ( ! this.get( 'title' ) ) {
-				this.set( 'title', 'Part Title' );
-			}
-
+			this.on( 'change:title', this.unclean );
 			this.filterFormContentData();
 		
 			this.listenTo( this.get( 'formContentData' ), 'change:order', this.sortFormContentData );
@@ -30,6 +26,10 @@ define( [], function() {
 			 */
 			var fieldCollection = nfRadio.channel( 'fields' ).request( 'get:collection' );
 			this.listenTo( fieldCollection, 'remove', this.triggerRemove );
+		},
+
+		unclean: function() {
+			this.set( 'clean', false );
 		},
 
 		sortFormContentData: function() {

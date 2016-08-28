@@ -11,13 +11,9 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 		tagName: 'ul',
 		childView: DrawerItemView,
 		reorderOnSort: true,
-
+		
 		initialize: function() {
-			var template = _.template( jQuery( '#nf-tmpl-mp-drawer-pagination-left' ).html() );
-			this.leftPagination = template();
 
-			template = _.template( jQuery( '#nf-tmpl-mp-drawer-pagination-right' ).html() );
-			this.rightPagination = template();
 		},
 
 		onShow: function() {
@@ -50,9 +46,15 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 					}
 				}
 			} );
+
+			
 		},
 
-		// The default implementation:
+		// onAttach: function() {
+		// 	console.log( jQuery( this.el ).width() );
+		// },
+
+		// // The default implementation:
 		// attachHtml: function(collectionView, childView, index){
 		// 	if (collectionView.isBuffering) {
 		// 		// buffering happens on reset events and initial renders
@@ -64,9 +66,9 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 		// 		// the new child into the correct order if we need to. Otherwise
 		// 		// append to the end.
 		// 		if ( ! collectionView._insertBefore( childView, index ) ) {
-		// 			/*
+					
 		// 			 * Remove our last item (right pagination)
-		// 			 */
+					 
 		// 			jQuery( collectionView.el ).find( '.no-sort' ).remove();
 		// 			collectionView._insertAfter(childView);
 		// 			/*

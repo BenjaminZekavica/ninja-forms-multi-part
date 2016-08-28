@@ -48,3 +48,15 @@
 <script id="nf-tmpl-mp-form-title" type="text/template">
     <h2><%= renderFormTitle() %> - <i class="fa fa-cog" aria-hidden="true"></i> <%= renderPartTitle() %></h2>
 </script>
+
+<script id="nf-tmpl-mp-drawer-layout" type="text/template">
+	<div class="nf-mp-drawer-scroll-previous">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</div>
+
+	<div id="nf-mp-drawer-viewport" class="als-viewport"></div>
+
+	<div class="nf-mp-drawer-scroll-next">
+		<i class="fa fa-chevron-right" aria-hidden="true"></i>
+	</div>
+</script>

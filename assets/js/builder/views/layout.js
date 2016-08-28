@@ -10,7 +10,7 @@
  * @copyright (c) 2015 WP Ninjas
  * @since 3.0
  */
-define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
+define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 	var view = Marionette.LayoutView.extend({
 		tagName: 'div',
 		template: '#nf-tmpl-mp-layout',
@@ -25,8 +25,7 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 		},
 
 		onShow: function() {
-			this.drawer.show( new DrawerCollectionView( { collection: this.collection } ) );
-
+			this.drawer.show( new DrawerLayoutView( { collection: this.collection } ) );
 
 			/*
 			 * Check our fieldContentViewsFilter to see if we have any defined.

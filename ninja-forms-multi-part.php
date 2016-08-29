@@ -37,9 +37,19 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
 
         public function __construct()
         {
+            // Ninja Forms Hooks
+            add_action( 'ninja_forms_loaded', array( $this, 'setup_admin' ) );
+
             add_action( 'admin_init', array( $this, 'setup_license') );
             add_action( 'ninja_forms_builder_templates', array( $this, 'builder_templates' ) );
             add_action( 'ninja_forms_enqueue_scripts', array( $this, 'frontend_templates' ) );
+        }
+
+        public function setup_admin()
+        {
+            if( ! is_admin() ) return;
+
+            new NF_MultiPart_Admin_Settings();
         }
 
         public function builder_templates()
@@ -122,7 +132,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
             $class_name = str_replace( self::PREFIX, '', $class_name );
             $classes_dir = realpath(plugin_dir_path(__FILE__)) . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
             $class_file = str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
-
+            
             if ( file_exists( $classes_dir . $class_file ) ) {
                 require_once $classes_dir . $class_file;
             }

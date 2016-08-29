@@ -35,6 +35,7 @@ define( [ 'views/formContent', 'models/partCollection' ], function( FormContentV
 		 */
 		formContentLoad: function( partData, formModel ) {
 			var partCollection = new PartCollection();
+			partCollection.formModel = formModel;
 			_.each( partData, function( part ) {
 				var formContentLoadFilters = nfRadio.channel( 'formContent' ).request( 'get:loadFilters' );
 				/* 

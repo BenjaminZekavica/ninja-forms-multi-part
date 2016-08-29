@@ -55,7 +55,7 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		},
 
 		partErrors: function() {
-			if ( ! this.currentElement.get( 'validate' ) ) return false;
+			if ( 'undefined' == typeof this.formModel.get( 'settings' ).mp_validate || 0 == this.formModel.get( 'settings' ).mp_validate ) return false;
 			/*
 			 * Check to see if our parts have any errors.
 			 */

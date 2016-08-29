@@ -81,7 +81,20 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 		},
 
 		resizeViewport: function( viewportEl, targetWidth ) {
-			targetWidth = targetWidth || jQuery( window ).width() - 140;
+			var builderEl = nfRadio.channel( 'app' ).request( 'get:builderEl' );
+			if ( jQuery( builderEl ).hasClass( 'nf-drawer-opened' ) ) {
+				/*
+				 * If our drawer is open, then the default target width is the drawer size - margins.
+				 */	
+				var drawerEl = nfRadio.channel( 'app' ).request( 'get:drawerEl' );
+				targetWidth = targetWidth || jQuery( drawerEl ).outerWidth() - 140;
+			} else {
+				/*
+				 * If our drawer is closed, then the default target width is the window size - margins.
+				 */
+				targetWidth = targetWidth || jQuery( window ).width() - 140;
+			}
+			
 			jQuery( viewportEl ).width( targetWidth );
 		}
 	});

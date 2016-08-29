@@ -12,7 +12,7 @@ define(	[],	function () {
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:previous', this.clickPrevious );
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:next', this.clickNext );
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:new', this.clickNew );
-			this.listenTo( nfRadio.channel( 'mp' ), 'click:partControl', this.clickPartControl );
+			this.listenTo( nfRadio.channel( 'mp' ), 'click:part', this.clickPart );
 		},
 
 		clickPrevious: function( e ) {
@@ -50,6 +50,21 @@ define(	[],	function () {
 			};
 
 			var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'addPart', model, null, label, data );
+		},
+
+		clickPart: function( e, partModel ) {
+			if ( partModel == partModel.collection.getElement( partModel ) ) {
+				/*
+				 * If we are on the active part, open the drawer for that part.
+				 */
+				var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
+				nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: partModel, groupCollection: settingGroupCollection } );
+			} else {
+				/*
+				 * If we aren't on the active part, move to it.
+				 */
+				partModel.collection.setElement( partModel );
+			}
 		},
 
 		clickPartControl: function( e, partModel ) {

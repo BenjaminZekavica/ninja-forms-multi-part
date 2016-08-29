@@ -54,11 +54,11 @@ define( [], function() {
 		},
 
 		events: {
-			'click': 'click'
+			'click': 'click',
 		},
 
 		click: function( e ) {
-			nfRadio.channel( 'mp' ).trigger( 'click:partControl', e, this.model );
+			nfRadio.channel( 'mp' ).trigger( 'click:part', e, this.model );
 		},
 
 		templateHelpers: function() {

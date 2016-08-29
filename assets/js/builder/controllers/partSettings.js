@@ -31,12 +31,22 @@ define( [], function( SettingGroupCollection ) {
 							name: 'title',
 							type: 'textbox',
 							label: 'Part Title',
-							placeholder: '',
 							width: 'full',
-							value: ''
+						},
+						{
+							name: 'mp_remove',
+							type: 'html',
+							width: 'one-half',
+							value: '<a href="#" class="extra">Remove Part</a>'
+						},
+						{
+							name: 'mp_duplicate',
+							type: 'html',
+							width: 'one-half',
+							value: '<a href="#" class="extra">Duplicate Part</a>'
 						}
 					]
-				}
+				},
 			] );
 		},
 

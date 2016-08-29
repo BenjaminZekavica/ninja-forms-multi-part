@@ -13,6 +13,10 @@ define(	[],	function () {
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:next', this.clickNext );
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:new', this.clickNew );
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:part', this.clickPart );
+
+			this.listenTo( nfRadio.channel( 'setting-name-mp_remove' ), 'click:extra', this.clickRemove );
+			this.listenTo( nfRadio.channel( 'setting-name-mp_duplicate' ), 'click:extra', this.clickDuplicate );
+
 		},
 
 		clickPrevious: function( e ) {
@@ -67,26 +71,19 @@ define(	[],	function () {
 			}
 		},
 
-		clickPartControl: function( e, partModel ) {
+		clickRemove: function( e, settingModel, partModel, settingView ) {
 			/*
-			 * Because our items are stacked, we have to do a bit of investigation to see what the user actually clicked on.
+			 * Close the drawer and remove our part.
 			 */
-			if ( jQuery( e.target ).hasClass( 'nf-edit' ) ) {
-				var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
-				nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: partModel, groupCollection: settingGroupCollection } );
-			} else if ( jQuery( e.target ).hasClass( 'nf-duplicate' ) ) {
-				var partClone = nfRadio.channel( 'app' ).request( 'clone:modelDeep', partModel );
-				partModel.collection.add( partClone );
-				partClone.set( 'order', partModel.get( 'order' ) );
-				partModel.collection.updateOrder();
-				partModel.collection.setElement( partClone );
-			} else if ( jQuery( e.target ).hasClass( 'nf-delete' ) ) {
-				partModel.collection.remove( partModel );
-			} else {
-				if ( partModel != partModel.collection.getElement() ) {
-					partModel.collection.setElement( partModel );
-				}				
-			}
+			partModel.collection.remove( partModel );
+		},
+
+		clickDuplicate: function( e, settingModel, partModel, settingView ) {
+			var partClone = nfRadio.channel( 'app' ).request( 'clone:modelDeep', partModel );
+			partModel.collection.add( partClone );
+			partClone.set( 'order', partModel.get( 'order' ) );
+			partModel.collection.updateOrder();
+			partModel.collection.setElement( partClone );
 		}
 
 	});

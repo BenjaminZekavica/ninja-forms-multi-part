@@ -18,7 +18,9 @@ define( [], function() {
 
 		maybeChangeActive: function() {
 			jQuery( this.el ).removeClass( 'active' );
-			jQuery( this.el ).addClass( this.className() );
+			if ( this.model == this.model.collection.getElement() ) {
+				jQuery( this.el ).addClass( 'active' );
+			}
 		},
 
 		attributes: function() {
@@ -89,6 +91,8 @@ define( [], function() {
 					}
 				}
 			} );
+
+			this.maybeChangeActive();
 		},
 
 		events: {

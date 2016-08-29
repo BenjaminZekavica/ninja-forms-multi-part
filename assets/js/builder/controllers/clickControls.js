@@ -27,8 +27,29 @@ define(	[],	function () {
 
 		clickNew: function( e ) {
 			var collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
-			var newPart = collection.append({});
-			// collection.sort();
+			var model = collection.append({});
+			
+			/*
+			 * Register our new part to the change manager.
+			 */
+			// Set our 'clean' status to false so that we get a notice to publish changes
+			nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+			// Update our preview
+			nfRadio.channel( 'app' ).request( 'update:db' );
+
+			// Add our field addition to our change log.
+			var label = {
+				object: 'Part',
+				label: model.get( 'title' ),
+				change: 'Added',
+				dashicon: 'plus-alt'
+			};
+
+			var data = {
+				collection: model.collection
+			};
+
+			var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'addPart', model, null, label, data );
 		},
 
 		clickPartControl: function( e, partModel ) {

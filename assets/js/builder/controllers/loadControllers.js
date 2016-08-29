@@ -8,7 +8,8 @@ define(
 		'controllers/gutterDroppables',
 		'controllers/partSettings',
 		'controllers/partDroppable',
-		'controllers/partSortable'
+		'controllers/partSortable',
+		'controllers/undo'
 	], 
 	function
 	(
@@ -17,7 +18,8 @@ define(
 		GutterDroppables,
 		PartSettings,
 		PartDroppable,
-		PartSortable
+		PartSortable,
+		Undo
 	)
 	{
 	var controller = Marionette.Object.extend( {
@@ -28,6 +30,7 @@ define(
 			new PartSettings();
 			new PartDroppable();
 			new PartSortable();
+			new Undo();
 		}
 
 	});

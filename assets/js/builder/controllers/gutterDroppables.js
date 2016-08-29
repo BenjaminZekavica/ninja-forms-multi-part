@@ -121,12 +121,38 @@ define(	[],	function () {
 					partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
 					partCollection.at( partCollection.indexOf( partCollection.getElement() ) + 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
 				} else {
+					var oldPart = partCollection.getElement();
 					/*
 					 * Add the dragged field to a new part.
 					 */
 					partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
 					var newPart = partCollection.append( { formContentData: [ fieldModel.get( 'key' ) ] } );
 					partCollection.setElement( newPart );
+
+					/*
+					 * Register our new part to the change manager.
+					 */
+					// Set our 'clean' status to false so that we get a notice to publish changes
+					nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+					// Update our preview
+					nfRadio.channel( 'app' ).request( 'update:db' );
+
+					// Add our field addition to our change log.
+					var label = {
+						object: 'Part',
+						label: newPart.get( 'title' ),
+						change: 'Added',
+						dashicon: 'plus-alt'
+					};
+
+					var data = {
+						collection: newPart.collection,
+						oldPart: oldPart,
+						fieldModel: fieldModel
+					};
+
+					var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'addPart', newPart, null, label, data );
+
 				}
 			} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
 				var type = jQuery( ui.draggable ).data( 'id' );
@@ -143,6 +169,30 @@ define(	[],	function () {
 					 */
 					var newPart = partCollection.append( { formContentData: [ fieldModel.get( 'key' ) ] } );
 					partCollection.setElement( newPart );
+
+					/*
+					 * Register our new part to the change manager.
+					 */
+					// Set our 'clean' status to false so that we get a notice to publish changes
+					nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+					// Update our preview
+					nfRadio.channel( 'app' ).request( 'update:db' );
+
+					// Add our field addition to our change log.
+					var label = {
+						object: 'Part',
+						label: newPart.get( 'title' ),
+						change: 'Added',
+						dashicon: 'plus-alt'
+					};
+
+					var data = {
+						collection: newPart.collection,
+
+					};
+
+					var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'addPart', newPart, null, label, data );
+
 					return newPart;
 				}
 			} else {
@@ -168,7 +218,29 @@ define(	[],	function () {
 					 * Add each of our fields to our next part
 					 */
 					var newPart = partCollection.append( { formContentData: keys } );
-					partCollection.setElement( newPart );					
+					partCollection.setElement( newPart );
+
+					/*
+					 * Register our new part to the change manager.
+					 */
+					// Set our 'clean' status to false so that we get a notice to publish changes
+					nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+					// Update our preview
+					nfRadio.channel( 'app' ).request( 'update:db' );
+
+					// Add our field addition to our change log.
+					var label = {
+						object: 'Part',
+						label: newPart.get( 'title' ),
+						change: 'Added',
+						dashicon: 'plus-alt'
+					};
+
+					var data = {
+						collection: newPart.collection
+					};
+
+					var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'addPart', newPart, null, label, data );				
 				}
 
 				// Clear our staging

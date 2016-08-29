@@ -19,10 +19,11 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			/*
 			 * If our drawer is open, close it.
 			 */
-			nfRadio.channel( 'app' ).request( 'close:drawer' );	
+			nfRadio.channel( 'app' ).request( 'close:drawer' );
 		},
 
 		afterAdd: function( model ) {
+			
 			/*
 			 * If we only have one model and it's set to clean, open a drawer so that the user can edit its title.
 			 */
@@ -35,7 +36,7 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			} else {
 				this.openDrawer( model );
 				this.setElement( model );
-				this.maybeChangeBuilderClass( model );			
+				this.maybeChangeBuilderClass( model );
 			}
 		},
 
@@ -198,7 +199,7 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		    } else {
 		        model.order = order;
 		    }
-		    this.add( model );
+		    return this.add( model );
 		}
 	} );
 

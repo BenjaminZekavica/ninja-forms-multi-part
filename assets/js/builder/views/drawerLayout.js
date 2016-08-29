@@ -52,13 +52,33 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 		},
 
 		onAttach: function() {
+			/*
+			 * Set our initial part UL size.
+			 */
 			var ulWidth = 157;
 			jQuery( this.viewport.el ).find( 'li' ).each( function() {
 				ulWidth += jQuery( this ).outerWidth();
 			} );
 
 			jQuery( this.viewport.el ).find( 'ul' ).width( ulWidth );
-			this.resizeViewport( this.viewport.el );
+
+			/*
+			 * If our UL width is > than our available space, accounting for the drawer:
+			 * 
+			 *  Set our viewport size.
+			 *  Show pagination arrows.
+			 *  
+			 */
+			if ( ulWidth >= jQuery( window ).width() ) {
+			 	/*
+			 	 * Set viewport size
+			 	 */
+				this.resizeViewport( this.viewport.el );
+				/*
+				 * Show pagination arrows
+				 */
+				jQuery( this.el ).find( '.nf-mp-drawer-scroll' ).show();
+			}
 		},
 
 		resizeEvent: function( e ) {
@@ -67,6 +87,21 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 
 		beforeDrawerClose: function() {
 			var targetWidth = jQuery( window ).width() - 140;
+
+			var ulWidth = jQuery( this.viewport.el ).find( 'ul' ).width();
+
+			if ( ulWidth >= targetWidth ) {
+				/*
+				 * Show pagination arrows
+				 */
+				jQuery( this.el ).find( '.nf-mp-drawer-scroll' ).show();
+			} else {
+				/*
+				 * Hide pagination arrows
+				 */
+				jQuery( this.el ).find( '.nf-mp-drawer-scroll' ).hide();
+			}
+
 			jQuery( this.viewport.el ).animate( {
 				width: targetWidth
 			}, 500 );
@@ -75,12 +110,29 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 		beforeDrawerOpen: function() {
 			var drawerEl = nfRadio.channel( 'app' ).request( 'get:drawerEl' );
 			var targetWidth = jQuery( drawerEl ).width() - 60;
+
+			var ulWidth = jQuery( this.viewport.el ).find( 'ul' ).width();
+
+			if ( ulWidth >= targetWidth ) {
+				/*
+				 * Show pagination arrows
+				 */
+				jQuery( this.el ).find( '.nf-mp-drawer-scroll' ).show();
+			} else {
+				/*
+				 * Hide pagination arrows
+				 */
+				jQuery( this.el ).find( '.nf-mp-drawer-scroll' ).hide();
+			}
+			
 			jQuery( this.viewport.el ).animate( {
 				width: targetWidth
 			}, 300 );
 		},
 
 		resizeViewport: function( viewportEl, targetWidth ) {
+
+
 			var builderEl = nfRadio.channel( 'app' ).request( 'get:builderEl' );
 			if ( jQuery( builderEl ).hasClass( 'nf-drawer-opened' ) ) {
 				/*
@@ -93,6 +145,20 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 				 * If our drawer is closed, then the default target width is the window size - margins.
 				 */
 				targetWidth = targetWidth || jQuery( window ).width() - 140;
+			}
+
+			var ulWidth = jQuery( this.viewport.el ).find( 'ul' ).width();
+
+			if ( ulWidth >= targetWidth ) {
+				/*
+				 * Show pagination arrows
+				 */
+				jQuery( this.el ).find( '.nf-mp-drawer-scroll' ).show();
+			} else {
+				/*
+				 * Hide pagination arrows
+				 */
+				jQuery( this.el ).find( '.nf-mp-drawer-scroll' ).hide();
 			}
 			
 			jQuery( viewportEl ).width( targetWidth );

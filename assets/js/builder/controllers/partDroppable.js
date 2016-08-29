@@ -1,5 +1,5 @@
 /**
- * Listen for clicks on our previous and next buttons
+ * Handles events for the part items in our bottom drawer.
  * 
  * @package Ninja Forms Multi-Part
  * @subpackage Fields

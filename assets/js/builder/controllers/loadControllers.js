@@ -7,7 +7,8 @@ define(
 		'controllers/clickControls',
 		'controllers/gutterDroppables',
 		'controllers/partSettings',
-		'controllers/partDroppable'
+		'controllers/partDroppable',
+		'controllers/partSortable'
 	], 
 	function
 	(
@@ -15,7 +16,8 @@ define(
 		ClickControls,
 		GutterDroppables,
 		PartSettings,
-		PartDroppable
+		PartDroppable,
+		PartSortable
 	)
 	{
 	var controller = Marionette.Object.extend( {
@@ -25,6 +27,7 @@ define(
 			new GutterDroppables();
 			new PartSettings();
 			new PartDroppable();
+			new PartSortable();
 		}
 
 	});

@@ -12,10 +12,6 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 		childView: DrawerItemView,
 		reorderOnSort: true,
 		
-		initialize: function() {
-
-		},
-
 		onShow: function() {
 			var that = this;
 			jQuery( this.el ).sortable( {
@@ -23,70 +19,19 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 				helper: 'clone',
 
 				update: function( e, ui ) {
-					jQuery( ui.item ).css( 'opacity', '' );
-					var order = _.without( jQuery( this ).sortable( 'toArray' ), '' );
-					_.each( order, function( cid, index ) {
-						that.collection.get( { cid: cid } ).set( 'order', index );
-					}, this );
-					that.collection.sort();
+					nfRadio.channel( 'mp' ).trigger( 'update:partSortable', e, ui, that.collection, that );
 				},
 
 				start: function( e, ui ) {
-					// If we aren't dragging an item in from types or staging, update our change log.
-					if( ! jQuery( ui.item ).hasClass( 'nf-field-type-draggable' ) && ! jQuery( ui.item ).hasClass( 'nf-stage' ) ) { 
-						jQuery( ui.item ).css( 'opacity', '0.5' ).show();
-						jQuery( ui.helper ).css( 'opacity', '0.75' );
-					}
+					nfRadio.channel( 'mp' ).trigger( 'start:partSortable', e, ui, that.collection, that );
 				},
 
 				stop: function( e, ui ) {
-					// If we aren't dragging an item in from types or staging, update our change log.
-					if( ! jQuery( ui.item ).hasClass( 'nf-field-type-draggable' ) && ! jQuery( ui.item ).hasClass( 'nf-stage' ) ) { 
-						jQuery( ui.item ).css( 'opacity', '' );
-					}
+					nfRadio.channel( 'mp' ).trigger( 'stop:partSortable', e, ui, that.collection, that );
 				}
 			} );
-
-			
+		
 		},
-
-		// onAttach: function() {
-		// 	console.log( jQuery( this.el ).width() );
-		// },
-
-		// // The default implementation:
-		// attachHtml: function(collectionView, childView, index){
-		// 	if (collectionView.isBuffering) {
-		// 		// buffering happens on reset events and initial renders
-		// 		// in order to reduce the number of inserts into the
-		// 		// document, which are expensive.
-		// 		collectionView._bufferedChildren.splice( index, 0, childView );
-		// 	} else {
-		// 		// If we've already rendered the main collection, append
-		// 		// the new child into the correct order if we need to. Otherwise
-		// 		// append to the end.
-		// 		if ( ! collectionView._insertBefore( childView, index ) ) {
-					
-		// 			 * Remove our last item (right pagination)
-					 
-		// 			jQuery( collectionView.el ).find( '.no-sort' ).remove();
-		// 			collectionView._insertAfter(childView);
-		// 			/*
-		// 			 * Add our pagination LIs
-		// 			 */
-		// 			jQuery( collectionView.el ).prepend( this.leftPagination );
-		// 			jQuery( collectionView.el ).append( this.rightPagination );
-		// 		}
-		// 	}
-		// },
-
-		// // Called after all children have been appended into the elBuffer
-		// attachBuffer: function(collectionView, buffer) {
-		// 	collectionView.$el.find( '.no-sort' ).remove();
-		// 	collectionView.$el.prepend( this.leftPagination );
-		// 	collectionView.$el.append( buffer );
-		// 	collectionView.$el.append( this.rightPagination );
-		// },
 	} );
 
 	return view;

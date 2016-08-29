@@ -12,6 +12,7 @@ define(	[],	function () {
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:previous', this.clickPrevious );
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:next', this.clickNext );
 			this.listenTo( nfRadio.channel( 'mp' ), 'click:new', this.clickNew );
+			this.listenTo( nfRadio.channel( 'mp' ), 'click:partControl', this.clickPartControl );
 		},
 
 		clickPrevious: function( e ) {
@@ -28,6 +29,28 @@ define(	[],	function () {
 			var collection = nfRadio.channel( 'mp' ).request( 'get:collection' );
 			var newPart = collection.append({});
 			// collection.sort();
+		},
+
+		clickPartControl: function( e, partModel ) {
+			/*
+			 * Because our items are stacked, we have to do a bit of investigation to see what the user actually clicked on.
+			 */
+			if ( jQuery( e.target ).hasClass( 'nf-edit' ) ) {
+				var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
+				nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: partModel, groupCollection: settingGroupCollection } );
+			} else if ( jQuery( e.target ).hasClass( 'nf-duplicate' ) ) {
+				var partClone = nfRadio.channel( 'app' ).request( 'clone:modelDeep', partModel );
+				partModel.collection.add( partClone );
+				partClone.set( 'order', partModel.get( 'order' ) );
+				partModel.collection.updateOrder();
+				partModel.collection.setElement( partClone );
+			} else if ( jQuery( e.target ).hasClass( 'nf-delete' ) ) {
+				partModel.collection.remove( partModel );
+			} else {
+				if ( partModel != partModel.collection.getElement() ) {
+					partModel.collection.setElement( partModel );
+				}				
+			}
 		}
 
 	});

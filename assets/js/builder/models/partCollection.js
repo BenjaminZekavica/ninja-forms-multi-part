@@ -143,7 +143,8 @@ define( [ 'models/partModel' ], function( PartModel ) {
 				 */
 				var currentDrawer = nfRadio.channel( 'app' ).request( 'get:currentDrawer' );
 				if ( currentDrawer && 'editSettings' == currentDrawer.get( 'id' ) ) {
-					// nfRadio.channel( 'app' ).request( 'close:drawer' );
+					var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
+					nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: model, groupCollection: settingGroupCollection } );
 				}
 				this.trigger( 'change:part', this );	
 			}

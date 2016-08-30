@@ -11,6 +11,20 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 		tagName: 'ul',
 		childView: DrawerItemView,
 		reorderOnSort: true,
+		
+		initialize: function( options ) {
+			this.drawerLayoutView = options.drawerLayoutView;
+
+			/*
+			 * When we resize our window, maybe show/hide pagination.
+			 */
+			jQuery( window ).on( 'resize', { context: this }, this.resizeEvent );
+		},
+
+		resizeEvent: function( e ) {
+			e.data.context.showHidePagination( e.data.context );
+		},
+
 		childViewOptions: function( model, index ){
 			var that = this;
 			return {
@@ -46,6 +60,11 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 		 */
 		onAttach: function() {
 			this.setULWidth( this.el );
+
+			/*
+			 * When load, hide the pagination arrows if they aren't needed.
+			 */
+			this.showHidePagination();
 		},
 
 		/**
@@ -82,6 +101,15 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 
 		onBeforeAddChild: function( childView ) {
 			jQuery( this.el ).css( 'width', '+=100' );
+		},
+
+		showHidePagination: function( context ) {
+			context = context || this;
+			if ( jQuery( context.el ).width() >= ( jQuery( context.el ).parent().parent().width() - 120 ) ) {
+				jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).show();
+			} else {
+				jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).hide();
+			}
 		}
 
 	} );

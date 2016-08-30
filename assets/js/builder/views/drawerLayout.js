@@ -18,7 +18,7 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 			viewport: '#nf-mp-drawer-viewport',
 		},
 
-		initialize: function() {
+		initialize: function( options ) {
 			/*
 			 * Make sure that our drawer resizes to match our screen upon resize or drawer open/close.
 			 */
@@ -33,7 +33,7 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 		},
 
 		onShow: function() {
-			this.viewport.show( new DrawerCollectionView( { collection: this.collection } ) );
+			this.viewport.show( new DrawerCollectionView( { collection: this.collection, drawerLayoutView: this } ) );
 		},
 
 		/**

@@ -19,6 +19,12 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 			 * When we resize our window, maybe show/hide pagination.
 			 */
 			jQuery( window ).on( 'resize', { context: this }, this.resizeEvent );
+
+			/*
+			 * When we open and close our drawer, we should resize our UL
+			 */
+			// this.listenTo( nfRadio.channel( 'drawer' ), 'before:open', this.showHidePagination );
+			// this.listenTo( nfRadio.channel( 'drawer' ), 'before:close', this.showHidePagination );
 		},
 
 		resizeEvent: function( e ) {
@@ -103,15 +109,17 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 			jQuery( this.el ).css( 'width', '+=100' );
 		},
 
-		showHidePagination: function( context ) {
+		showHidePagination: function( context, viewportWidth ) {
 			context = context || this;
-			if ( jQuery( context.el ).width() >= ( jQuery( context.el ).parent().parent().width() - 120 ) ) {
+
+			viewportWidth = viewportWidth || jQuery( context.el ).parent().parent().width() - 120;
+
+			if ( jQuery( context.el ).width() >= viewportWidth ) {
 				jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).show();
 			} else {
 				jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).hide();
 			}
 		}
-
 	} );
 
 	return view;

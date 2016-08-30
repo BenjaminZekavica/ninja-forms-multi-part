@@ -81,10 +81,12 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 		},
 
 		beforeDrawerOpen: function() {
+			var that = this;
 			var drawerEl = nfRadio.channel( 'app' ).request( 'get:drawerEl' );
 			var targetWidth = jQuery( drawerEl ).width() - 60;
-
 			var ulWidth = jQuery( this.viewport.el ).find( 'ul' ).width();
+			
+			this.viewport.currentView.showHidePagination( null, targetWidth );
 
 			jQuery( this.viewport.el ).animate( {
 				width: targetWidth
@@ -94,7 +96,9 @@ define( [ 'views/drawerCollection' ], function( DrawerCollectionView ) {
 		beforeDrawerClose: function() {
 			var targetWidth = jQuery( window ).width() - 140;
 			var ulWidth = jQuery( this.viewport.el ).find( 'ul' ).width();
-
+			
+			this.viewport.currentView.showHidePagination( null, targetWidth );
+			
 			jQuery( this.viewport.el ).animate( {
 				width: targetWidth
 			}, 500 );

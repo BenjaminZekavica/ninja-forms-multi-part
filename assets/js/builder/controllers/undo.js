@@ -47,7 +47,7 @@ define( [], function() {
 			oldPart.get( 'formContentData' ).trigger( 'append:field', fieldModel );
 			
 			fieldModel.set( 'order', oldOrder );
-			
+
 			this.maybeRemoveChange( change, undoAll );
 		},
 

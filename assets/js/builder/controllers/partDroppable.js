@@ -77,11 +77,40 @@ define(	[],	function () {
 			nfRadio.channel( 'fields' ).request( 'sort:fields', null, null, false );
 			nfRadio.channel( 'app' ).request( 'out:fieldsSortable', ui );
 			var fieldModel = nfRadio.channel( 'fields' ).request( 'get:field', jQuery( ui.draggable ).data( 'id' ) );
+			var oldOrder = fieldModel.get( 'order' );
+			var oldPart = partModel.collection.getElement();
+			var newPart = partModel;
+
 			/*
 			 * Add the dragged field to the previous part.
 			 */
 			partModel.collection.getFormContentData().trigger( 'remove:field', fieldModel );
 			partModel.get( 'formContentData' ).trigger( 'append:field', fieldModel );
+
+			/*
+			 * Register our part change to the change manager.
+			 */
+			// Set our 'clean' status to false so that we get a notice to publish changes
+			nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+			// Update our preview
+			nfRadio.channel( 'app' ).request( 'update:db' );
+
+			// Add our field addition to our change log.
+			var label = {
+				object: 'Field',
+				label: fieldModel.get( 'label' ),
+				change: 'Changed Part',
+				dashicon: 'image-flip-horizontal'
+			};
+
+			var data = {
+				oldPart: oldPart,
+				newPart: newPart,
+				fieldModel: fieldModel,
+				oldOrder: oldOrder
+			};
+
+			var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'fieldChangePart', partModel, null, label, data );
 		},
 
 		dropNewField: function( e, ui, partModel, partView ) {

@@ -10,6 +10,7 @@ define( [], function() {
 	var controller = Marionette.Object.extend( {
 		initialize: function() {
 			nfRadio.channel( 'changes' ).reply( 'undo:addPart', this.undoAddPart, this );
+			nfRadio.channel( 'changes' ).reply( 'undo:fieldChangePart', this.undoFieldChangePart, this );
 		},
 
 		undoAddPart: function( change, undoAll ) {
@@ -31,6 +32,21 @@ define( [], function() {
 			 */
 			var changeCollection = nfRadio.channel( 'changes' ).request( 'get:collection' );
 			changeCollection.remove( changeCollection.filter( { model: partModel } ) );
+			
+			this.maybeRemoveChange( change, undoAll );
+		},
+
+		undoFieldChangePart: function( change, undoAll ) {
+			var newPart = change.get( 'model' );
+			var data = change.get( 'data' );
+			var oldPart = data.oldPart;
+			var fieldModel = data.fieldModel;
+			var oldOrder = data.oldOrder;
+
+			newPart.get( 'formContentData' ).trigger( 'remove:field', fieldModel );
+			oldPart.get( 'formContentData' ).trigger( 'append:field', fieldModel );
+			
+			fieldModel.set( 'order', oldOrder );
 			
 			this.maybeRemoveChange( change, undoAll );
 		},

@@ -73,8 +73,37 @@ define(	[],	function () {
 				/*
 				 * Add the dragged field to the previous part.
 				 */
+				var oldOrder = fieldModel.get( 'order' );
+
 				partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
-				partCollection.at( partCollection.indexOf( partCollection.getElement() ) - 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+				var previousPart = partCollection.at( partCollection.indexOf( partCollection.getElement() ) - 1 );
+				previousPart.get( 'formContentData' ).trigger( 'append:field', fieldModel );
+				
+				/*
+				 * Register our part change to the change manager.
+				 */
+				// Set our 'clean' status to false so that we get a notice to publish changes
+				nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+				// Update our preview
+				nfRadio.channel( 'app' ).request( 'update:db' );
+
+				// Add our field addition to our change log.
+				var label = {
+					object: 'Field',
+					label: fieldModel.get( 'label' ),
+					change: 'Changed Part',
+					dashicon: 'image-flip-horizontal'
+				};
+
+				var data = {
+					oldPart: partCollection.getElement(),
+					newPart: previousPart,
+					fieldModel: fieldModel,
+					oldOrder: oldOrder
+				};
+
+				var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'fieldChangePart', previousPart, null, label, data );
+
 			} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
 				var type = jQuery( ui.draggable ).data( 'id' );
 				var fieldModel = this.addField( type, partCollection );
@@ -118,8 +147,37 @@ define(	[],	function () {
 					/*
 					 * Add the dragged field to the next part.
 					 */
+					var oldOrder = fieldModel.get( 'order' );
+
 					partCollection.getFormContentData().trigger( 'remove:field', fieldModel );
-					partCollection.at( partCollection.indexOf( partCollection.getElement() ) + 1 ).get( 'formContentData' ).trigger( 'append:field', fieldModel );
+					var nextPart = partCollection.at( partCollection.indexOf( partCollection.getElement() ) + 1 );
+					nextPart.get( 'formContentData' ).trigger( 'append:field', fieldModel );
+				
+					/*
+					 * Register our part change to the change manager.
+					 */
+					// Set our 'clean' status to false so that we get a notice to publish changes
+					nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+					// Update our preview
+					nfRadio.channel( 'app' ).request( 'update:db' );
+
+					// Add our field addition to our change log.
+					var label = {
+						object: 'Field',
+						label: fieldModel.get( 'label' ),
+						change: 'Changed Part',
+						dashicon: 'image-flip-horizontal'
+					};
+
+					var data = {
+						oldPart: partCollection.getElement(),
+						newPart: nextPart,
+						fieldModel: fieldModel,
+						oldOrder: oldOrder
+					};
+
+					var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'fieldChangePart', nextPart, null, label, data );
+
 				} else {
 					var oldPart = partCollection.getElement();
 					/*

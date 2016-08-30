@@ -139,14 +139,15 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			this.currentElement = model;
 			if ( ! silent ) {
 				/*
-				 * Close the drawer for editing this title if it is open.
+				 * If we are editing a part and we change parts, update the data being displayed in the drawer to match the new part.
 				 */
 				var currentDrawer = nfRadio.channel( 'app' ).request( 'get:currentDrawer' );
 				if ( currentDrawer && 'editSettings' == currentDrawer.get( 'id' ) ) {
 					var settingGroupCollection = nfRadio.channel( 'mp' ).request( 'get:settingGroupCollection' );
 					nfRadio.channel( 'app' ).request( 'open:drawer', 'editSettings', { model: model, groupCollection: settingGroupCollection } );
 				}
-				this.trigger( 'change:part', this );	
+
+				this.trigger( 'change:part', this );
 			}
 		},
 		

@@ -73,7 +73,28 @@ define(	[],	function () {
 
 		clickRemove: function( e, settingModel, partModel, settingView ) {
 			/*
-			 * Close the drawer and remove our part.
+			 * Register our change.
+			 */
+			// Set our 'clean' status to false so that we get a notice to publish changes
+			nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+			// Update our preview
+			nfRadio.channel( 'app' ).request( 'update:db' );
+
+			// Add our field addition to our change log.
+			var label = {
+				object: 'Part',
+				label: partModel.get( 'title' ),
+				change: 'Removed',
+				dashicon: 'dismiss'
+			};
+
+			var data = {
+				collection: partModel.collection
+			};
+
+			var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'removePart', partModel, null, label, data );
+			/*
+			 * Remove our part.
 			 */
 			partModel.collection.remove( partModel );
 		},

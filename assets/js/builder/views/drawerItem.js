@@ -11,9 +11,15 @@ define( [], function() {
 		tagName: 'li',
 		template: '#nf-tmpl-mp-drawer-item',
 
-		initialize: function() {
-			this.listenTo( this.model, 'change:title', this.render );
+		initialize: function( options ) {
+			this.collectionView = options.collectionView;
+			this.listenTo( this.model, 'change:title', this.updatedTitle );
 			this.listenTo( this.model.collection, 'change:part', this.maybeChangeActive );
+		},
+
+		updatedTitle: function() {
+			this.render();
+			this.collectionView.setULWidth( this.collectionView.el );
 		},
 
 		maybeChangeActive: function() {

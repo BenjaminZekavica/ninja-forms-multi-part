@@ -74,7 +74,7 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 				/*
 				 * When we change parts, make sure that our main builder gutters are in the correct places.
 				 */
-				nfRadio.channel( 'app' ).request( 'update:gutters' );			
+				// nfRadio.channel( 'app' ).request( 'update:gutters' );			
 			} );
 
 			jQuery( that.mainContent.el ).show( 'slide', { direction: showDir }, 200 );

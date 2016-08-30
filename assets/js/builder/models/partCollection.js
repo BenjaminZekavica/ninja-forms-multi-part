@@ -23,7 +23,6 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		},
 
 		afterAdd: function( model ) {
-			
 			/*
 			 * If we only have one model and it's set to clean, open a drawer so that the user can edit its title.
 			 */

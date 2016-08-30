@@ -33,13 +33,13 @@
 </script>
 
 <script id="nf-tmpl-mp-drawer-layout" type="text/template">
-	<div class="nf-mp-drawer-scroll-previous nf-mp-drawer-scroll" style="display:none;">
+	<div class="nf-mp-drawer-scroll-previous nf-mp-drawer-scroll" style="">
 		<i class="fa fa-chevron-left" aria-hidden="true"></i>
 	</div>
 
 	<div id="nf-mp-drawer-viewport" class="als-viewport"></div>
 
-	<div class="nf-mp-drawer-scroll-next nf-mp-drawer-scroll" style="display:none;">
+	<div class="nf-mp-drawer-scroll-next nf-mp-drawer-scroll" style="">
 		<i class="fa fa-chevron-right" aria-hidden="true"></i>
 	</div>
 </script>

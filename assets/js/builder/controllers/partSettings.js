@@ -34,16 +34,16 @@ define( [], function( SettingGroupCollection ) {
 							width: 'full',
 						},
 						{
-							name: 'mp_remove',
-							type: 'html',
-							width: 'one-half',
-							value: '<a href="#" class="extra">Remove Part</a>'
-						},
-						{
 							name: 'mp_duplicate',
 							type: 'html',
 							width: 'one-half',
-							value: '<a href="#" class="extra">Duplicate Part</a>'
+							value: '<a href="#" class="nf-duplicate-part button-secondary extra">Duplicate Part</a>'
+						},
+						{
+							name: 'mp_remove',
+							type: 'html',
+							width: 'one-half',
+							value: '<a href="#" class="nf-remove-part button-secondary extra">Remove Part</a>'
 						}
 					]
 				},

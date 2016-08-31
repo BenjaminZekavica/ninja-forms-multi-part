@@ -11,6 +11,7 @@ define( [], function() {
 		initialize: function() {
 			nfRadio.channel( 'changes' ).reply( 'undo:addPart', this.undoAddPart, this );
 			nfRadio.channel( 'changes' ).reply( 'undo:removePart', this.undoRemovePart, this );
+			nfRadio.channel( 'changes' ).reply( 'undo:duplicatePart', this.undoDupilcatePart, this );
 			nfRadio.channel( 'changes' ).reply( 'undo:fieldChangePart', this.undoFieldChangePart, this );
 		},
 
@@ -57,6 +58,29 @@ define( [], function() {
 			var data = change.get( 'data' );
 			var partCollection = data.collection;
 			partCollection.add( partModel );
+			
+			this.maybeRemoveChange( change, undoAll );
+		},
+
+		undoDupilcatePart: function( change, undoAll ) {
+			var partModel = change.get( 'model' );
+			var data = change.get( 'data' );
+			var partCollection = data.collection;
+			partCollection.remove( partModel );
+
+			/*
+			 * If we have a fieldModel, then we dragged an existing field to create our part.
+			 * Undoing should put that field back where it was.
+			 */
+			if ( 'undefined' != typeof data.fieldModel ) {
+				data.oldPart.get( 'formContentData' ).trigger( 'add:field', data.fieldModel );
+			}
+
+			/*
+			 * Remove any changes that have this model.
+			 */
+			var changeCollection = nfRadio.channel( 'changes' ).request( 'get:collection' );
+			changeCollection.remove( changeCollection.filter( { model: partModel } ) );
 			
 			this.maybeRemoveChange( change, undoAll );
 		},

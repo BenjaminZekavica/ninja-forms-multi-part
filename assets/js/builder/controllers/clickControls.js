@@ -105,6 +105,25 @@ define(	[],	function () {
 			partClone.set( 'order', partModel.get( 'order' ) );
 			partModel.collection.updateOrder();
 			partModel.collection.setElement( partClone );
+
+			// Set our 'clean' status to false so that we get a notice to publish changes
+			nfRadio.channel( 'app' ).request( 'update:setting', 'clean', false );
+			// Update our preview
+			nfRadio.channel( 'app' ).request( 'update:db' );
+
+			// Add our field addition to our change log.
+			var label = {
+				object: 'Part',
+				label: partClone.get( 'title' ),
+				change: 'Duplicated',
+				dashicon: 'admin-page'
+			};
+
+			var data = {
+				collection: partClone.collection
+			};
+
+			var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'duplicatePart', partClone, null, label, data );
 		}
 
 	});

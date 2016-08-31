@@ -24,6 +24,8 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 			this.listenTo( this.collection, 'change:part', this.changePart );
 		},
 
+
+
 		onShow: function() {
 			this.drawer.show( new DrawerLayoutView( { collection: this.collection } ) );
 
@@ -49,6 +51,57 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 
 			this.mainContent.show(  new this.formContentView( { collection: this.collection.getFormContentData() } ) );
 
+		},
+
+		events: {
+			'click .nf-mp-drawer-scroll-previous': 'clickPrevious',
+			'click .nf-mp-drawer-scroll-next': 'clickNext'
+		},
+
+		clickPrevious: function( e ) {
+			var that = this;
+			var scrollLeft = jQuery( this.drawer.currentView.viewport.el ).scrollLeft();
+			var lis = jQuery( this.drawer.currentView.viewport.currentView.el ).find( 'li' );
+
+			jQuery( lis ).each( function( index ) {
+				/*
+				 * If scrollLeft <= the left of this li, then we know we're at the first visible LI.
+				 * Move our scroll to the previous LI and return false.
+				 */
+				if ( 0 < jQuery( this ).offset().left ) {
+					var marginLeft = parseInt( jQuery( this ).css( 'marginLeft' ).replace( 'px', '' ) );
+					var scrollLeft = jQuery( jQuery( lis )[ index - 1 ] ).outerWidth() + marginLeft + 5
+					jQuery( that.drawer.currentView.viewport.el ).animate( {
+						scrollLeft: '-=' + scrollLeft
+					}, 300 );
+					return false;			
+				}
+			} );
+			
+
+		},
+
+		clickNext: function( e ) {
+			var that = this;
+			var ULWidth = jQuery( this.drawer.currentView.viewport.currentView.el ).width();
+			var viewportWidth = jQuery( this.drawer.currentView.viewport.el ).width();
+			var scrollLeft = jQuery( this.drawer.currentView.viewport.el ).scrollLeft();
+			var lis = jQuery( this.drawer.currentView.viewport.currentView.el ).find( 'li' );
+			var viewportTotal = viewportWidth + scrollLeft;
+			var widthCounter = 0;
+			var scrollLeft = 0;
+
+			jQuery( lis ).each( function( index ) {
+				var marginLeft = parseInt( jQuery( this ).css( 'marginLeft' ).replace( 'px', '' ) );
+				widthCounter += ( jQuery( this ).outerWidth() + marginLeft + 5 );
+				if ( widthCounter >= viewportTotal ) {
+					scrollLeft = jQuery( this ).outerWidth() + marginLeft + 5;
+					jQuery( that.drawer.currentView.viewport.el ).animate( {
+						scrollLeft: '+=' + scrollLeft
+					}, 300 );					
+					return false;
+				}
+			} );
 		},
 
 		changePart: function() {
@@ -78,7 +131,6 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 			} );
 
 			jQuery( that.mainContent.el ).show( 'slide', { direction: showDir }, 200 );
-
 		}
 	});
 

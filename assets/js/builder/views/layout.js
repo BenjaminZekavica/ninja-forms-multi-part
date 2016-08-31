@@ -120,17 +120,12 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 			/*
 			 * Start our current part sliding out.
 			 */
-			jQuery( this.mainContent.el ).hide( 'slide', { direction: hideDir }, 300, function() {
+			jQuery( this.mainContent.el ).hide( 'slide', { direction: hideDir }, 100, function() {
 				that.mainContent.empty();
 				that.mainContent.show( new that.formContentView( { collection: that.collection.getFormContentData() } ) );
-
-				/*
-				 * When we change parts, make sure that our main builder gutters are in the correct places.
-				 */
-				// nfRadio.channel( 'app' ).request( 'update:gutters' );			
 			} );
 
-			jQuery( that.mainContent.el ).show( 'slide', { direction: showDir }, 200 );
+			jQuery( that.mainContent.el ).show( 'slide', { direction: showDir }, 100 );
 		}
 	});
 

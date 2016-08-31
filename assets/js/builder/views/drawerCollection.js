@@ -21,10 +21,22 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 			jQuery( window ).on( 'resize', { context: this }, this.resizeEvent );
 
 			/*
-			 * When we open and close our drawer, we should resize our UL
+			 * If our new part title is off screen in the drawer, scroll to it.
 			 */
-			// this.listenTo( nfRadio.channel( 'drawer' ), 'before:open', this.showHidePagination );
-			// this.listenTo( nfRadio.channel( 'drawer' ), 'before:close', this.showHidePagination );
+			this.listenTo( this.collection, 'change:part', this.maybeScroll );
+				
+		},
+
+		maybeScroll: function( partCollection ) {
+			var li = jQuery( this.el ).children( '#' + partCollection.getElement().cid );
+			if ( 0 == jQuery( li ).length ) return false;
+			var marginLeft = parseInt( jQuery( li ).css( 'marginLeft' ).replace( 'px', '' ) );
+			var viewportWidth = jQuery( this.drawerLayoutView.viewport.el ).width();
+			var diff = jQuery( li ).offset().left + jQuery( li ).outerWidth() + marginLeft - viewportWidth;
+		
+			jQuery( this.drawerLayoutView.viewport.el ).animate( {
+				scrollLeft: '+=' + diff
+			}, 100 );
 		},
 
 		resizeEvent: function( e ) {
@@ -103,6 +115,8 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 			 * Change the size of our collection UL
 			 */
 			this.setULWidth( this.el );
+
+			this.maybeScroll( this.collection );
 		},
 
 		onBeforeAddChild: function( childView ) {
@@ -115,9 +129,14 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 			viewportWidth = viewportWidth || jQuery( context.el ).parent().parent().width() - 120;
 
 			if ( jQuery( context.el ).width() >= viewportWidth ) {
-				jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).show();
+				if ( ! jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).is( ':visible' ) ) {
+					jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).show();
+				}
 			} else {
-				jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).hide();
+				if ( jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).is( ':visible' ) ) {
+					jQuery( context.drawerLayoutView.el ).find( '.nf-mp-drawer-scroll' ).hide();
+					nfRadio.channel( 'app' ).request( 'update:gutters' );
+				}
 			}
 		}
 	} );

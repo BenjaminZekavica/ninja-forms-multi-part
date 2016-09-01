@@ -22,8 +22,7 @@ define( [], function() {
 		},
 
 		changePartVisibility: function( conditionModel, then, visible ) {
-			var formModel = nfRadio.channel( 'app' ).request( 'get:form', conditionModel.collection.formModel.get( 'id' ) );
-			var partCollection = formModel.get( 'formContentData' );
+			var partCollection = conditionModel.collection.formModel.get( 'formContentData' );
 			partCollection.findWhere( { key: then.key } ).set( 'visible', visible );
 		}
 

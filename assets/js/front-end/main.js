@@ -5,8 +5,9 @@ require( [ 'controllers/loadFilters', 'controllers/loadControllers' ], function(
 	var NFMultiPart = Marionette.Application.extend( {
 
 		initialize: function( options ) {
+			// console.log( 'init mp' );
 			this.listenTo( nfRadio.channel( 'form' ), 'before:filterData', this.loadFilters );
-			this.listenTo( nfRadio.channel( 'form' ), 'after:loaded', this.loadControllers );
+			this.listenTo( nfRadio.channel( 'form' ), 'loaded', this.loadControllers );
 		},
 
 		loadFilters: function( formModel ) {

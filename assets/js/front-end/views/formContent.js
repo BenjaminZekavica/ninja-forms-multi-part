@@ -30,7 +30,7 @@ define( [ 'views/header', 'views/footer' ], function( HeaderView, FooterView ) {
 			var sortedArray = _.without( formContentViewFilters, undefined );
 			var callback = sortedArray[1];
 			this.formContentView = callback();
-			
+
 			this.body.show(  new this.formContentView( { collection: this.collection.getElement().get( 'formContentData' ) } ) );
 			this.footer.show( new FooterView( { collection: this.collection, model: this.collection.getElement() } ) );
 		},

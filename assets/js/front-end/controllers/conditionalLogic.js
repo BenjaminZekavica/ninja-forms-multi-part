@@ -9,18 +9,15 @@
 define( [], function() {
 	var controller = Marionette.Object.extend( {
 		initialize: function() {
-			console.log( 'register condition handler' );
 			nfRadio.channel( 'condition:trigger' ).reply( 'show_part', this.showPart, this );
 			nfRadio.channel( 'condition:trigger' ).reply( 'hide_part', this.hidePart, this );
 		},
 
 		showPart: function( conditionModel, then ) {
-			console.log( 'show part' );
 			this.changePartVisibility( conditionModel, then, true );
 		},
 
 		hidePart: function( conditionModel, then ) {
-			console.log( 'hide part' );
 			this.changePartVisibility( conditionModel, then, false );
 		},
 

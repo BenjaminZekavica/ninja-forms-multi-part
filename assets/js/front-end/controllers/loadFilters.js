@@ -38,6 +38,7 @@ define( [ 'views/formContent', 'models/partCollection' ], function( FormContentV
 			partCollection.formModel = formModel;
 			_.each( partData, function( part ) {
 				var formContentLoadFilters = nfRadio.channel( 'formContent' ).request( 'get:loadFilters' );
+				
 				/* 
 				* Get our second filter, this will be the one with the highest priority after MP Forms.
 				*/

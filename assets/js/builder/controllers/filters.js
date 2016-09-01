@@ -59,9 +59,25 @@ define(
 		},
 
 		formContentLoad: function( formContentData ) {
-			if ( true === formContentData instanceof Backbone.Collection ) return formContentData;
+			/*
+			 * If the data has already been converted, just return it.
+			 */
+			if ( true === formContentData instanceof PartCollection ) return formContentData;
+			/*
+			 * If the data isn't converted, but is an array, let's make sure it's part data.
+			 */
+			if ( _.isArray( formContentData ) && 'part' == _.first( formContentData ).type ) {
+				/*
+				 * We have multi-part data. Let's convert it to a collection.
+				 */
+				var partCollection = new PartCollection( formContentData );
+			} else {
+				/*
+				 * We have unknown data. Create a new part collection and use the data as the content.
+				 */
+				var partCollection = new PartCollection( { formContentData: formContentData } );
+			}
 			
-			var partCollection = new PartCollection( formContentData );
 			nfRadio.channel( 'mp' ).request( 'init:partCollection', partCollection );
 			return partCollection;
 		},

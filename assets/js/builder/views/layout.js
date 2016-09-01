@@ -24,8 +24,6 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 			this.listenTo( this.collection, 'change:part', this.changePart );
 		},
 
-
-
 		onShow: function() {
 			this.drawer.show( new DrawerLayoutView( { collection: this.collection } ) );
 
@@ -42,15 +40,7 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 			var callback = sortedArray[1];
 			this.formContentView = callback();
 
-			/*
-			 * Before we display anything, if we don't have any parts, create a new, empty part
-			 */
-			if ( 0 == this.collection.length ) {
-				this.collection.add( {}, { silent: true } );
-			}
-
 			this.mainContent.show(  new this.formContentView( { collection: this.collection.getFormContentData() } ) );
-
 		},
 
 		events: {

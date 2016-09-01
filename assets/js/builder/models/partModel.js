@@ -19,7 +19,6 @@ define( [], function() {
 		initialize: function() {
 			this.on( 'change:title', this.unclean );
 			this.filterFormContentData();
-		
 			this.listenTo( this.get( 'formContentData' ), 'change:order', this.sortFormContentData );
 			/*
 			 * When we remove a field from our field collection, remove it from this part if it exists there.
@@ -44,7 +43,7 @@ define( [], function() {
 		},
 
 		triggerRemove: function( fieldModel ) {
-			if ( jQuery.isArray( this.get( 'formContentData' ) ) ) {
+			if ( _.isArray( this.get( 'formContentData' ) ) ) {
 				this.filterFormContentData();
 			}
 			this.get( 'formContentData' ).trigger( 'remove:field', fieldModel );

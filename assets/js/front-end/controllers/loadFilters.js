@@ -49,6 +49,8 @@ define( [ 'views/formContent', 'models/partCollection' ], function( FormContentV
 
 			partCollection.add( partData );
 
+			
+
 			return partCollection;
 		}
 	});

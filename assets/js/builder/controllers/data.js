@@ -22,7 +22,7 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			/*
 			 * When we add a field to our field collection, collection, trigger an "add:model"
 			 */
-			this.listenTo( nfRadio.channel( 'fields' ), 'add:field', this.addField );
+			this.listenTo( nfRadio.channel( 'fields' ), 'render:newField', this.addField );
 		},
 
 		initPartCollection: function( partCollection ) {

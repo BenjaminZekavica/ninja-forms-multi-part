@@ -13,6 +13,7 @@ define( [], function() {
 			nfRadio.channel( 'changes' ).reply( 'undo:removePart', this.undoRemovePart, this );
 			nfRadio.channel( 'changes' ).reply( 'undo:duplicatePart', this.undoDupilcatePart, this );
 			nfRadio.channel( 'changes' ).reply( 'undo:fieldChangePart', this.undoFieldChangePart, this );
+			nfRadio.channel( 'changes' ).reply( 'undo:sortParts', this.undoSortParts, this );
 		},
 
 		undoAddPart: function( change, undoAll ) {
@@ -82,6 +83,18 @@ define( [], function() {
 			var changeCollection = nfRadio.channel( 'changes' ).request( 'get:collection' );
 			changeCollection.remove( changeCollection.filter( { model: partModel } ) );
 			
+			this.maybeRemoveChange( change, undoAll );
+		},
+
+		undoSortParts: function( change, undoAll ) {
+			var collection = change.get( 'data' ).collection;
+			var oldOrder = change.get( 'data' ).oldOrder;
+
+			collection.each( function( partModel ) {
+				partModel.set( 'order', oldOrder[ partModel.get( 'key' ) ] );
+			} );
+			collection.sort();
+
 			this.maybeRemoveChange( change, undoAll );
 		},
 

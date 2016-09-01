@@ -31,7 +31,7 @@ define( [], function() {
 
 		attributes: function() {
 			return {
-				id: this.model.cid
+				id: this.model.get( 'key' )
 			}
 		},
 

@@ -36,6 +36,17 @@ define(
 			
 			nfRadio.channel( 'formContent' ).request( 'add:loadFilter', this.formContentLoad, 1 );
 
+			/*
+			 * Add a filter so that we can add a "Parts" group to the advanced conditions selects.
+			 */
+			nfRadio.channel( 'conditions' ).request( 'add:groupFilter', this.conditionsFilter );
+			nfRadio.channel( 'conditions-part' ).reply( 'get:triggers', this.conditionTriggers );
+
+			/*
+			 * Listen to changes on our "then" statement.
+			 */
+			this.listenTo( nfRadio.channel( 'conditions' ), 'change:then', this.maybeAddElse );
+
 			this.emptyView();
 		},
 
@@ -92,6 +103,64 @@ define(
 				return this.defaultMainContentEmptyView;
 			} else {
 				return MainContentEmptyView;
+			}
+		},
+
+		conditionsFilter: function( groups, modelType ) {
+			var partCollection = nfRadio.channel( 'mp' ).request( 'get:collection' );
+			if ( 0 == partCollection.length || 'when' == modelType ) return groups;
+
+			var partOptions = partCollection.map( function( part ) {
+				return { key: part.get( 'key' ), label: part.get( 'title' ) };
+			} );
+
+			groups.unshift( { label: 'Parts', type: 'part', options: partOptions } );
+			return groups;
+		},
+
+		conditionTriggers: function( defaultTriggers ) {
+			return {
+				show_field: {
+					label: 'Show Part',
+					value: 'show_part'
+				},
+
+				hide_field: {
+					label: 'Hide Part',
+					value: 'hide_part'
+				}
+			};
+		},
+
+		/**
+		 * When we change our then condition, if we are show/hiding a part add the opposite.
+		 * 
+		 * @since  3.0
+		 * @param  {[type]} e         [description]
+		 * @param  {[type]} thenModel [description]
+		 * @return {[type]}           [description]
+		 */
+		maybeAddElse: function( e, thenModel ) {
+			var opposite = false;
+			/*
+			 * TODO: Make this more dynamic.
+			 * Currently, show, hide, show option, and hide option are hard-coded here.
+			 */
+			var trigger = jQuery( e.target ).val();
+			switch( trigger ) {
+				case 'show_part':
+					opposite = 'hide_part';
+					break;
+				case 'hide_part':
+					opposite = 'show_part';
+					break;
+			}
+
+			if ( opposite ) {
+				var conditionModel = thenModel.collection.options.conditionModel;
+				if( 'undefined' == typeof conditionModel.get( 'else' ).findWhere( { 'key': thenModel.get( 'key' ), 'trigger': opposite } ) ) {
+					conditionModel.get( 'else' ).add( { type: thenModel.get( 'type' ), key: thenModel.get( 'key' ), trigger: opposite } );
+				}
 			}
 		}
 	});

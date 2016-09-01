@@ -12,9 +12,10 @@ define( [ 'views/header', 'views/footer' ], function( HeaderView, FooterView ) {
 			this.formModel = options.formModel;
 			this.collection = options.data;
 			this.listenTo( this.collection, 'change:part', this.changePart );
+			this.listenTo( this.collection, 'change:visible', this.render );
 		},
 
-		onShow: function() {
+		onRender: function() {
 			this.header.show( new HeaderView( { collection: this.collection, model: this.collection.getElement() } ) );
 
 			/*

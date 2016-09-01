@@ -26,6 +26,13 @@ define( [], function() {
 			 */
 			var fieldCollection = nfRadio.channel( 'fields' ).request( 'get:collection' );
 			this.listenTo( fieldCollection, 'remove', this.triggerRemove );
+
+			/*
+			 * Set a key for part.
+			 */
+			if ( ! this.get( 'key' ) ) {
+				this.set( 'key', Math.random().toString( 36 ).replace( /[^a-z]+/g, '' ).substr( 0, 8 ) );
+			}
 		},
 
 		unclean: function() {

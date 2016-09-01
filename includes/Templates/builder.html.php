@@ -7,7 +7,6 @@
 	</script>
 <?php else: ?>
 	<script id="nf-tmpl-mp-gutter-left" type="text/template">
-		There
 		<% if ( hasPrevious() ) { %>
 		<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
 		<% } %>

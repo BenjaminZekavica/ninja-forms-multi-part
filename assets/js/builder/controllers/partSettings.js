@@ -1,6 +1,6 @@
 /**
  * Stores part setting information.
- * 
+ *
  * @package Ninja Forms builder
  * @subpackage App - Edit Settings Drawer
  * @copyright (c) 2016 WP Ninjas
@@ -37,13 +37,13 @@ define( [], function( SettingGroupCollection ) {
 							name: 'mp_duplicate',
 							type: 'html',
 							width: 'one-half',
-							value: '<a href="#" class="nf-duplicate-part button-secondary extra">Duplicate Part</a>'
+							value: '<a href="#" class="nf-duplicate-part nf-button secondary extra">Duplicate Part</a>'
 						},
 						{
 							name: 'mp_remove',
 							type: 'html',
 							width: 'one-half',
-							value: '<a href="#" class="nf-remove-part button-secondary extra">Remove Part</a>'
+							value: '<a href="#" class="nf-remove-part nf-button secondary extra">Remove Part</a>'
 						}
 					]
 				},

@@ -92,4 +92,12 @@
 .mp-top-drag-hover {
   background: #84CC1E !important; }
 
+.nf-remove-part,
+.nf-duplicate-part {
+  width: 100%; }
+
+.nf-remove-part {
+  border: 1px solid red !important;
+  color: red !important; }
+
 /*# sourceMappingURL=builder.css.map */

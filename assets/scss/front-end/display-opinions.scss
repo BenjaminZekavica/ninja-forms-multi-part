@@ -1,0 +1,55 @@
+.nf-next-previous {
+    li {
+        input {
+            font-size: 16px;
+            padding: 12px 18px;
+        }
+    }
+}
+
+.nf-breadcrumbs {
+    margin: 40px 0 !important;
+    .nf-breadcrumb-error {
+        //display: none;
+    }
+    li {
+        a {
+            padding: 12px 18px;
+        }
+        &.active {
+            a {
+                font-weight: normal;
+            }
+        }
+        &.errors {
+            a {
+                position: relative;
+                padding-left: 36px;
+                &::after {
+                    font-family: "FontAwesome";
+                    position: absolute;
+                    content: "\f06a";
+                    left: 12px;
+                }
+            }
+        }
+    }
+}
+
+progress {
+    border: 0;
+    height: 50px;
+    width: 100%;
+    &::-webkit-progress-bar {
+        background-color: #f1f1f1;
+    }
+    &::-webkit-progress-value {
+        background-color: #329ad1;
+    }
+    &::-moz-progress-bar {
+        background-color: #f1f1f1;
+    }
+    &::-moz-progress-value {
+        background-color: #329ad1;
+    }
+}

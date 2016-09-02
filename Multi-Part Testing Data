@@ -1,0 +1,243 @@
+NOTE: To use the 3.0 branch of MP Forms, you'll need to checkout the formContent branch of core!
+
+How to use the MP Test form:
+
+1) Import the form normally.
+2) Open the form for editing, make a change, undo the change, and Publish.
+3) Make a note of the form ID.
+4) Go to phpMyAdmin->wp_nf3_form_meta. Search for:
+	parent_id 	== FORM ID
+	key 		== formContentData
+5) Update the value it finds with the serialised data below.
+	a) If Layout & Styles is NOT active, use the first string.
+	b) If Layout & Styles IS active, use the second string.
+6) Preview your form.
+7) If you update/publish/change your form in any way, you'll need to repeat step 5.
+
+*
+* NO LAYOUTS
+*
+
+a:3:{i:0;a:2:{s:5:"title";s:13:"Personal Info";s:15:"formContentData";a:3:{i:0;s:8:"checkbox";i:1;s:9:"firstname";i:2;s:8:"lastname";}}i:1;a:2:{s:5:"title";s:12:"Address Info";s:15:"formContentData";a:4:{i:0;s:7:"address";i:1;s:4:"city";i:2;s:9:"liststate";i:3;s:3:"zip";}}i:2;a:2:{s:5:"title";s:10:"Order Info";s:15:"formContentData";a:5:{i:0;s:10:"checkbox_1";i:1;s:4:"date";i:2;s:6:"number";i:3;s:12:"listcheckbox";i:4;s:6:"submit";}}}
+
+array(
+	array(
+		'title'							=> 'Personal Info',
+		'formContentData'				=> array(
+			'checkbox',
+			'firstname',
+			'lastname',
+		),
+	),
+	array(
+		'title'							=> 'Address Info',
+		'formContentData'				=> array(
+			'address',
+			'city',
+			'liststate',
+			'zip',
+		),
+		'visible'						=> false,
+	),
+	array(
+		'title'							=> 'Order Info',
+		'formContentData'				=> array(
+			'checkbox_1',
+			'date',
+			'number',
+			'listcheckbox',
+			'submit',
+		),
+	)
+)
+
+
+
+*
+* WITH LAYOUTS ACTIVE
+
+a:3:{i:0;a:2:{s:5:"title";s:13:"Personal Info";s:15:"formContentData";a:2:{i:0;a:2:{s:5:"order";i:1;s:5:"cells";a:1:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:8:"checkbox";}s:5:"width";s:3:"100";}}}i:1;a:2:{s:5:"order";i:2;s:5:"cells";a:2:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:9:"firstname";}s:5:"width";i:50;}i:1;a:3:{s:5:"order";i:1;s:6:"fields";a:1:{i:0;s:8:"lastname";}s:5:"width";i:50;}}}}}i:1;a:2:{s:5:"title";s:12:"Address Info";s:15:"formContentData";a:2:{i:0;a:2:{s:5:"order";i:4;s:5:"cells";a:1:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:7:"address";}s:5:"width";s:3:"100";}}}i:1;a:2:{s:5:"order";i:5;s:5:"cells";a:3:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:4:"city";}s:5:"width";i:33;}i:1;a:3:{s:5:"order";i:1;s:6:"fields";a:1:{i:0;s:9:"liststate";}s:5:"width";i:33;}i:2;a:3:{s:5:"order";i:2;s:6:"fields";a:1:{i:0;s:3:"zip";}s:5:"width";i:33;}}}}}i:2;a:2:{s:5:"title";s:10:"Order Info";s:15:"formContentData";a:4:{i:0;a:2:{s:5:"order";i:8;s:5:"cells";a:2:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:10:"checkbox_1";}s:5:"width";i:50;}i:1;a:3:{s:5:"order";i:1;s:6:"fields";a:1:{i:0;s:4:"date";}s:5:"width";i:50;}}}i:1;a:2:{s:5:"order";i:10;s:5:"cells";a:1:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:6:"number";}s:5:"width";s:3:"100";}}}i:2;a:2:{s:5:"order";i:11;s:5:"cells";a:1:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:12:"listcheckbox";}s:5:"width";s:3:"100";}}}i:3;a:2:{s:5:"order";i:12;s:5:"cells";a:1:{i:0;a:3:{s:5:"order";i:0;s:6:"fields";a:1:{i:0;s:6:"submit";}s:5:"width";s:3:"100";}}}}}}
+
+array(
+	array(
+		'title'							=> 'Personal Info',
+		'formContentData'				=> array (
+			  0 => 
+			  array (
+			    'order' => 1,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'checkbox',
+			        ),
+			        'width' => '100',
+			      ),
+			    ),
+			  ),
+			  1 => 
+			  array (
+			    'order' => 2,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'firstname',
+			        ),
+			        'width' => 50,
+			      ),
+			      1 => 
+			      array (
+			        'order' => 1,
+			        'fields' => 
+			        array (
+			          0 => 'lastname',
+			        ),
+			        'width' => 50,
+			      ),
+			    ),
+			  ),
+			)
+	),
+	array(
+		'title'							=> 'Address Info',
+		'formContentData'				=> array(
+			  0 => 
+			  array (
+			    'order' => 4,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'address',
+			        ),
+			        'width' => '100',
+			      ),
+			    ),
+			  ),
+			  1 => 
+			  array (
+			    'order' => 5,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'city',
+			        ),
+			        'width' => 33,
+			      ),
+			      1 => 
+			      array (
+			        'order' => 1,
+			        'fields' => 
+			        array (
+			          0 => 'liststate',
+			        ),
+			        'width' => 33,
+			      ),
+			      2 => 
+			      array (
+			        'order' => 2,
+			        'fields' => 
+			        array (
+			          0 => 'zip',
+			        ),
+			        'width' => 33,
+			      ),
+			    ),
+			  ),
+			),
+	),
+	array(
+		'title'							=> 'Order Info',
+		'formContentData'				=> array(
+			  0 => 
+			  array (
+			    'order' => 8,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'checkbox_1',
+			        ),
+			        'width' => 50,
+			      ),
+			      1 => 
+			      array (
+			        'order' => 1,
+			        'fields' => 
+			        array (
+			          0 => 'date',
+			        ),
+			        'width' => 50,
+			      ),
+			    ),
+			  ),
+			  1 => 
+			  array (
+			    'order' => 10,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'number',
+			        ),
+			        'width' => '100',
+			      ),
+			    ),
+			  ),
+			  2 => 
+			  array (
+			    'order' => 11,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'listcheckbox',
+			        ),
+			        'width' => '100',
+			      ),
+			    ),
+			  ),
+			  3 => 
+			  array (
+			    'order' => 12,
+			    'cells' => 
+			    array (
+			      0 => 
+			      array (
+			        'order' => 0,
+			        'fields' => 
+			        array (
+			          0 => 'submit',
+			        ),
+			        'width' => '100',
+			      ),
+			    ),
+			  ),
+			),
+	)
+)
+
+

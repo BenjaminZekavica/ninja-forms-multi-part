@@ -33,23 +33,25 @@ define( [ 'views/formContent', 'models/partCollection' ], function( FormContentV
 		 * @param  array formContentData current value of our formContentData.
 		 * @return Backbone.Collection
 		 */
-		formContentLoad: function( partData, formModel ) {
-			var partCollection = new PartCollection();
-			partCollection.formModel = formModel;
-			_.each( partData, function( part ) {
-				var formContentLoadFilters = nfRadio.channel( 'formContent' ).request( 'get:loadFilters' );
-				
-				/* 
-				* Get our second filter, this will be the one with the highest priority after MP Forms.
-				*/
-				var sortedArray = _.without( formContentLoadFilters, undefined );
-				var callback = sortedArray[ 1 ];
-				part.formContentData = callback( part.formContentData, formModel, this );
-			} );
-
-			partCollection.add( partData );
-
-			
+		formContentLoad: function( formContentData, formModel ) {
+			/*
+			 * If the data has already been converted, just return it.
+			 */
+			if ( true === formContentData instanceof PartCollection ) return formContentData;
+			/*
+			 * If the data isn't converted, but is an array, let's make sure it's part data.
+			 */
+			if ( _.isArray( formContentData ) && 0 != _.isArray( formContentData ).length  && 'undefined' != typeof _.first( formContentData ) && 'part' == _.first( formContentData ).type ) {
+				/*
+				 * We have multi-part data. Let's convert it to a collection.
+				 */
+				var partCollection = new PartCollection( formContentData, { formModel: formModel } );
+			} else {
+				/*
+				 * We have unknown data. Create a new part collection and use the data as the content.
+				 */
+				var partCollection = new PartCollection( { formContentData: formContentData }, { formModel: formModel } );
+			}
 
 			return partCollection;
 		}

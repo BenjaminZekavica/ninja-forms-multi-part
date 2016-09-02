@@ -3,8 +3,8 @@ define( [ 'models/partModel' ], function( PartModel ) {
 		model: PartModel,
 		currentElement: false,
 
-		initialize: function(){
-			
+		initialize: function( models, options ){
+			this.formModel = options.formModel;
 		},
 		
 		getElement: function() {

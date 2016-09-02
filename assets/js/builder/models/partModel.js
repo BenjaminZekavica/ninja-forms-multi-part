@@ -68,8 +68,15 @@ define( [], function() {
 			 * If our formContentData is an empty array, we want to pass the "empty" flag as true so that filters know it's purposefully empty.
 			 */
 			var empty = ( 0 == this.get( 'formContentData' ).length ) ? true : false;
+			/*
+			 * TODO: This is a bandaid fix to prevent forms with layouts and parts from freaking out of layouts & styles are deactivated.
+			 * If Layouts is deactivated, it will send the field keys.
+			 */
+			if ( 'undefined' == typeof formContentLoadFilters[4] && _.isArray( this.get( 'formContentData' ) ) && 0 != this.get( 'formContentData' ).length && 'undefined' != typeof this.get( 'formContentData' )[0].cells ) {
+				this.set( 'formContentData', nfRadio.channel( 'fields' ).request( 'get:collection' ).pluck( 'key' ) );
+			}
 
-			this.set( 'formContentData', callback( this.get( 'formContentData' ), empty ) );
+			this.set( 'formContentData', callback( this.get( 'formContentData' ), empty, this.get( 'formContentData' ) ) );
 		}
 
 	} );

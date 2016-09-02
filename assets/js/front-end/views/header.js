@@ -21,14 +21,22 @@ define( [], function() {
 				renderBreadcrumbs: function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
 					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
-					return template( { parts: parts, currentIndex: that.collection.getVisibleParts().indexOf( that.model ) } );
+					if ( 1 < parts.length ) {
+						return template( { parts: parts, currentIndex: that.collection.getVisibleParts().indexOf( that.model ) } );
+					} else {
+						return ''; 
+					}
 				},
 
 				renderProgressBar: function() {
 					var template = _.template( jQuery( '#nf-tmpl-mp-progress-bar' ).html() );
 					var currentIndex = that.collection.getVisibleParts().indexOf( that.model );
 					var percent = ( that.fullProgressBar ) ? 100 : currentIndex / that.collection.getVisibleParts().length * 100;
-					return template( { percent: percent } );
+					if ( 1 < that.collection.getVisibleParts().length ) {
+						return template( { percent: percent } );
+					} else {
+						return '';
+					}
 				}
 			}
 		},

@@ -19,6 +19,8 @@ define( [], function() {
 			var that = this;
 			return {
 				renderBreadcrumbs: function() {
+					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_breadcrumbs || 0 == that.collection.formModel.get( 'settings' ).mp_breadcrumbs ) return '';
+					
 					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
 					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
 					if ( 1 < parts.length ) {
@@ -29,6 +31,8 @@ define( [], function() {
 				},
 
 				renderProgressBar: function() {
+					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_progressbar || 0 == that.collection.formModel.get( 'settings' ).mp_progressbar ) return '';
+					
 					var template = _.template( jQuery( '#nf-tmpl-mp-progress-bar' ).html() );
 					var currentIndex = that.collection.getVisibleParts().indexOf( that.model );
 					var percent = ( that.fullProgressBar ) ? 100 : currentIndex / that.collection.getVisibleParts().length * 100;

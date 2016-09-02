@@ -40,15 +40,15 @@ define( [], function() {
 		},
 
 		undoFieldChangePart: function( change, undoAll ) {
-			var newPart = change.get( 'model' );
 			var data = change.get( 'data' );
 			var oldPart = data.oldPart;
 			var fieldModel = data.fieldModel;
 			var oldOrder = data.oldOrder;
+			var newPart = data.newPart;
 
 			newPart.get( 'formContentData' ).trigger( 'remove:field', fieldModel );
-			oldPart.get( 'formContentData' ).trigger( 'append:field', fieldModel );
-			
+			oldPart.get( 'formContentData' ).trigger( 'add:field', fieldModel );
+						
 			fieldModel.set( 'order', oldOrder );
 
 			this.maybeRemoveChange( change, undoAll );

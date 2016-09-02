@@ -32,6 +32,7 @@ define( [], function() {
 			if ( ! this.get( 'key' ) ) {
 				this.set( 'key', Math.random().toString( 36 ).replace( /[^a-z]+/g, '' ).substr( 0, 8 ) );
 			}
+			console.log( 'init part model - ' + this.get( 'key' ) );
 		},
 
 		unclean: function() {
@@ -50,6 +51,8 @@ define( [], function() {
 		},
 
 		filterFormContentData: function() {
+			if ( ! this.get( 'formContentData' ) ) return;
+
 			/*
 			 * Update our formContentData by running it through our fromContentData filter
 			 */

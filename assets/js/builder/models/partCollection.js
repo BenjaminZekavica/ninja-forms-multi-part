@@ -9,7 +9,6 @@ define( [ 'models/partModel' ], function( PartModel ) {
 
 			this.on( 'remove', this.afterRemove );
 			this.on( 'add', this.afterAdd );
-
 			this.maybeChangeBuilderClass( models.length );
 		},
 
@@ -114,13 +113,6 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			}
 		},
 
-		append: function( data ) {
-			data = data || {};
-			var order = this.length - 1;
-			data = _.extend( { order: order }, data );
-			return this.add( data );
-		},
-		
 		getElement: function() {
 			/*
 			 * If we haven't set an element yet, set it to the first one.

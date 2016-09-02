@@ -10,6 +10,7 @@ define( [], function() {
 		initialize: function() {
 			this.listenTo( this.get( 'formContentData' ), 'change:errors', this.maybeChangeActivePart );
 			this.fieldErrors[ this.cid ] = [];
+			this.on( 'change:visible', this.changeVisible, this );
 		},
 
 		maybeChangeActivePart: function( fieldModel ) {
@@ -39,6 +40,14 @@ define( [], function() {
 
 		validateFields: function() {
 			this.get( 'formContentData' ).validateFields();
+		},
+
+		changeVisible: function() {
+			if ( this.get( 'visible' ) ) {
+				this.get( 'formContentData' ).showFields();
+			} else {
+				this.get( 'formContentData' ).hideFields();
+			}
 		}
 	} );
 

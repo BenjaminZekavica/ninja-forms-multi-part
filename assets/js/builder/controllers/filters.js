@@ -66,7 +66,7 @@ define(
 			/*
 			 * If the data isn't converted, but is an array, let's make sure it's part data.
 			 */
-			if ( _.isArray( formContentData ) && 'part' == _.first( formContentData ).type ) {
+			if ( _.isArray( formContentData ) && 0 != _.isArray( formContentData ).length  && 'undefined' != typeof _.first( formContentData ) && 'part' == _.first( formContentData ).type ) {
 				/*
 				 * We have multi-part data. Let's convert it to a collection.
 				 */

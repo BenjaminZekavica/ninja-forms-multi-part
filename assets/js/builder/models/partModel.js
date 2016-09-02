@@ -17,6 +17,9 @@ define( [], function() {
 		},
 
 		initialize: function() {
+			/*
+			 * TODO: For some reason, each part model is being initialized when you add a new part.
+			 */
 			this.on( 'change:title', this.unclean );
 			this.filterFormContentData();
 			this.listenTo( this.get( 'formContentData' ), 'change:order', this.sortFormContentData );
@@ -32,7 +35,6 @@ define( [], function() {
 			if ( ! this.get( 'key' ) ) {
 				this.set( 'key', Math.random().toString( 36 ).replace( /[^a-z]+/g, '' ).substr( 0, 8 ) );
 			}
-			console.log( 'init part model - ' + this.get( 'key' ) );
 		},
 
 		unclean: function() {
@@ -62,8 +64,12 @@ define( [], function() {
 			*/
 			var sortedArray = _.without( formContentLoadFilters, undefined );
 			var callback = sortedArray[ 1 ];
+			/*
+			 * If our formContentData is an empty array, we want to pass the "empty" flag as true so that filters know it's purposefully empty.
+			 */
+			var empty = ( 0 == this.get( 'formContentData' ).length ) ? true : false;
 
-			this.set( 'formContentData', callback( this.get( 'formContentData' ) ) );
+			this.set( 'formContentData', callback( this.get( 'formContentData' ), empty ) );
 		}
 
 	} );

@@ -12,7 +12,7 @@ define( [ 'views/header', 'views/footer' ], function( HeaderView, FooterView ) {
 			this.formModel = options.formModel;
 			this.collection = options.data;
 			this.listenTo( this.collection, 'change:part', this.changePart );
-			this.listenTo( this.collection, 'change:visible', this.render );
+			this.listenTo( this.collection, 'change:visible', this.renderHeaderFooter );
 		},
 
 		onRender: function() {
@@ -32,6 +32,13 @@ define( [ 'views/header', 'views/footer' ], function( HeaderView, FooterView ) {
 			this.formContentView = callback();
 			
 			this.body.show(  new this.formContentView( { collection: this.collection.getElement().get( 'formContentData' ) } ) );
+			this.footer.show( new FooterView( { collection: this.collection, model: this.collection.getElement() } ) );
+		},
+
+		renderHeaderFooter: function() {
+			this.header.empty();
+			this.header.show( new HeaderView( { collection: this.collection, model: this.collection.getElement() } ) );
+			this.footer.empty();
 			this.footer.show( new FooterView( { collection: this.collection, model: this.collection.getElement() } ) );
 		},
 

@@ -72,6 +72,9 @@
 .nf-has-parts .nf-master-control {
   bottom: 80px; }
 
+.nf-has-parts .nf-fields-sortable {
+  padding-bottom: 60px; }
+
 .nf-drawer-opened #nf-mp-drawer {
   right: 50%; }
 

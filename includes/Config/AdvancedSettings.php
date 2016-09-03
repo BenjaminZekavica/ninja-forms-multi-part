@@ -26,7 +26,7 @@ return array(
             'label'         => __( 'Show Progress Bar ', 'ninja-forms-multi-part' ),
             'width'         => 'full',
             'group'         => 'primary',
-            'value'			=> 1,
+            'value'         => 1,
         ),
     )
 );

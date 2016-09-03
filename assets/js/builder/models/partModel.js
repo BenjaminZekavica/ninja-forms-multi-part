@@ -55,6 +55,7 @@ define( [], function() {
 		filterFormContentData: function() {
 			if ( ! this.get( 'formContentData' ) ) return;
 
+			var formContentData = this.get( 'formContentData' );
 			/*
 			 * Update our formContentData by running it through our fromContentData filter
 			 */
@@ -67,16 +68,40 @@ define( [], function() {
 			/*
 			 * If our formContentData is an empty array, we want to pass the "empty" flag as true so that filters know it's purposefully empty.
 			 */
-			var empty = ( 0 == this.get( 'formContentData' ).length ) ? true : false;
+			var empty = ( 0 == formContentData.length ) ? true : false;
 			/*
 			 * TODO: This is a bandaid fix to prevent forms with layouts and parts from freaking out of layouts & styles are deactivated.
-			 * If Layouts is deactivated, it will send the field keys.
+			 * If Layouts is deactivated, it will try to grab the layout data and show the fields on the appropriate parts.
 			 */
-			if ( 'undefined' == typeof formContentLoadFilters[4] && _.isArray( this.get( 'formContentData' ) ) && 0 != this.get( 'formContentData' ).length && 'undefined' != typeof this.get( 'formContentData' )[0].cells ) {
-				this.set( 'formContentData', nfRadio.channel( 'fields' ).request( 'get:collection' ).pluck( 'key' ) );
+			if ( 'undefined' == typeof formContentLoadFilters[4] && _.isArray( formContentData ) && 0 != formContentData.length && 'undefined' != typeof formContentData[0].cells ) {
+				/*
+				 * We need to get our field keys from our layout data.
+				 * Layout data looks like:
+				 * Rows
+				 *   Row
+				 *     Cells
+				 *       Cell
+				 *         Fields
+				 *       Cell
+				 *         Fields
+				 *   Row
+				 *     Cells
+				 *       Cell
+				 *         Fields  
+				 */
+				var partFields = [];
+				var cells = _.pluck( formContentData, 'cells' );
+				_.each( cells, function( cell ) {
+					var fields = _.flatten( _.pluck( cell, 'fields' ) );
+					partFields = _.union( partFields, fields );
+				} );
+
+				formContentData = partFields;
+
+				this.set( 'formContentData', formContentData );
 			}
 
-			this.set( 'formContentData', callback( this.get( 'formContentData' ), empty, this.get( 'formContentData' ) ) );
+			this.set( 'formContentData', callback( formContentData, empty, formContentData ) );
 		}
 
 	} );

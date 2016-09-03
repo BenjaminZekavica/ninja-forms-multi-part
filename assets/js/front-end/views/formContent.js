@@ -36,15 +36,19 @@ define( [ 'views/header', 'views/footer' ], function( HeaderView, FooterView ) {
 		},
 
 		renderHeaderFooter: function() {
-			this.header.empty();
 			this.header.show( new HeaderView( { collection: this.collection, model: this.collection.getElement() } ) );
-			this.footer.empty();
 			this.footer.show( new FooterView( { collection: this.collection, model: this.collection.getElement() } ) );
 		},
 
 		changePart: function() {
-			this.body.empty();
 			this.body.show(  new this.formContentView( { collection: this.collection.getElement().get( 'formContentData' ) } ) );
+			/*
+			 * Scroll the page to the top of the form.
+			 */
+			var formTop = jQuery( this.body.el ).closest( '.nf-form-cont' ).offset().top;
+			if ( jQuery( window ).scrollTop() > formTop - 50 ) {
+				jQuery( window ).scrollTop( formTop - 50 );
+			}
 		},
 
 		events: {

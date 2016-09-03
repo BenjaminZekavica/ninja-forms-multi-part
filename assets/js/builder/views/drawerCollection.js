@@ -24,7 +24,6 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 			 * If our new part title is off screen in the drawer, scroll to it.
 			 */
 			this.listenTo( this.collection, 'change:part', this.maybeScroll );
-				
 		},
 
 		maybeScroll: function( partCollection ) {

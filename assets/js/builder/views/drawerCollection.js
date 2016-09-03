@@ -28,12 +28,12 @@ define( [ 'views/drawerItem' ], function( DrawerItemView ) {
 		},
 
 		maybeScroll: function( partCollection ) {
-			var li = jQuery( this.el ).children( '#' + partCollection.getElement().cid );
+			var li = jQuery( this.el ).children( '#' + partCollection.getElement().get( 'key' ) );
 			if ( 0 == jQuery( li ).length ) return false;
 			var marginLeft = parseInt( jQuery( li ).css( 'marginLeft' ).replace( 'px', '' ) );
 			var viewportWidth = jQuery( this.drawerLayoutView.viewport.el ).width();
 			var diff = jQuery( li ).offset().left + jQuery( li ).outerWidth() + marginLeft - viewportWidth;
-		
+
 			jQuery( this.drawerLayoutView.viewport.el ).animate( {
 				scrollLeft: '+=' + diff
 			}, 100 );

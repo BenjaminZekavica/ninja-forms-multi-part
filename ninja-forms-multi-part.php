@@ -16,9 +16,17 @@ require_once 'lib/conversion.php';
 
 if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) || get_option( 'ninja_forms_load_deprecated', FALSE ) ) {
 
-    define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR . '/' . basename( dirname( __FILE__ ) ) . '/deprecated' );
-    define("NINJA_FORMS_MP_URL", plugins_url() . '/' .basename( dirname( __FILE__ ) ) . '/deprecated' );
-    define("NINJA_FORMS_MP_VERSION", "3.0.0");
+    if( ! defined( 'NINJA_FORMS_MP_DIR' ) ) {
+        define("NINJA_FORMS_MP_DIR", WP_PLUGIN_DIR . '/' . basename(dirname(__FILE__)) . '/deprecated');
+    }
+
+    if( ! defined( 'NINJA_FORMS_MP_URL' ) ) {
+        define("NINJA_FORMS_MP_URL", plugins_url() . '/' . basename(dirname(__FILE__)) . '/deprecated');
+    }
+
+    if( ! defined( 'NINJA_FORMS_MP_VERSION' ) ) {
+        define("NINJA_FORMS_MP_VERSION", "3.0.0");
+    }
 
     include 'deprecated/multi-part.php';
 

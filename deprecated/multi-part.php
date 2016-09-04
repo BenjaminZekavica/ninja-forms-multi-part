@@ -1,9 +1,12 @@
 <?php
 
-function ninja_forms_mp_setup_license() {
-	if ( class_exists( 'NF_Extension_Updater' ) ) {
-		$NF_Extension_Updater = new NF_Extension_Updater( 'Multi-Part Forms', NINJA_FORMS_MP_VERSION, 'WP Ninjas', __FILE__, 'mp' );
-	}
+if( ! function_exists( 'ninja_forms_mp_setup_license' ) ) {
+    function ninja_forms_mp_setup_license()
+    {
+        if (class_exists('NF_Extension_Updater')) {
+            $NF_Extension_Updater = new NF_Extension_Updater('Multi-Part Forms', NINJA_FORMS_MP_VERSION, 'WP Ninjas', __FILE__, 'mp');
+        }
+    }
 }
 
 add_action( 'admin_init', 'ninja_forms_mp_setup_license' );
@@ -12,28 +15,31 @@ add_action( 'admin_init', 'ninja_forms_mp_setup_license' );
  * Load translations for add-on.
  * First, look in WP_LANG_DIR subfolder, then fallback to add-on plugin folder.
  */
-function ninja_forms_mp_load_translations() {
+if( ! function_exists( 'ninja_forms_mp_load_translations' ) ) {
+    function ninja_forms_mp_load_translations()
+    {
 
-  /** Set our unique textdomain string */
-  $textdomain = 'ninja-forms-mp';
+        /** Set our unique textdomain string */
+        $textdomain = 'ninja-forms-mp';
 
-  /** The 'plugin_locale' filter is also used by default in load_plugin_textdomain() */
-  $locale = apply_filters( 'plugin_locale', get_locale(), $textdomain );
+        /** The 'plugin_locale' filter is also used by default in load_plugin_textdomain() */
+        $locale = apply_filters('plugin_locale', get_locale(), $textdomain);
 
-  /** Set filter for WordPress languages directory */
-  $wp_lang_dir = apply_filters(
-    'ninja_forms_mp_wp_lang_dir',
-    trailingslashit( WP_LANG_DIR ) . 'ninja-forms-mp/' . $textdomain . '-' . $locale . '.mo'
-  );
+        /** Set filter for WordPress languages directory */
+        $wp_lang_dir = apply_filters(
+            'ninja_forms_mp_wp_lang_dir',
+            trailingslashit(WP_LANG_DIR) . 'ninja-forms-mp/' . $textdomain . '-' . $locale . '.mo'
+        );
 
-  /** Translations: First, look in WordPress' "languages" folder = custom & update-secure! */
-  load_textdomain( $textdomain, $wp_lang_dir );
+        /** Translations: First, look in WordPress' "languages" folder = custom & update-secure! */
+        load_textdomain($textdomain, $wp_lang_dir);
 
-  /** Translations: Secondly, look in plugin's "lang" folder = default */
-  $plugin_dir = trailingslashit( basename( dirname( __FILE__ ) ) );
-  $lang_dir = apply_filters( 'ninja_forms_mp_lang_dir', $plugin_dir . 'lang/' );
-  load_plugin_textdomain( $textdomain, FALSE, $lang_dir );
+        /** Translations: Secondly, look in plugin's "lang" folder = default */
+        $plugin_dir = trailingslashit(basename(dirname(__FILE__)));
+        $lang_dir = apply_filters('ninja_forms_mp_lang_dir', $plugin_dir . 'lang/');
+        load_plugin_textdomain($textdomain, FALSE, $lang_dir);
 
+    }
 }
 add_action( 'plugins_loaded', 'ninja_forms_mp_load_translations' );
 

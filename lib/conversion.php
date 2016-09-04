@@ -1,5 +1,7 @@
 <?php
 
+if( class_exists( 'NF_MultiPart_Conversion' ) ) return;
+
 final class NF_MultiPart_Conversion
 {
     public function __construct()

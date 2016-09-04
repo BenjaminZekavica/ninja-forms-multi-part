@@ -28,5 +28,14 @@ return array(
             'group'         => 'primary',
             'value'         => 1,
         ),
+
+        'mp_showtitles'       => array(
+            'name'          => 'mp_showtitles',
+            'type'          => 'toggle',
+            'label'         => __( 'Show Part Titles ', 'ninja-forms-multi-part' ),
+            'width'         => 'full',
+            'group'         => 'primary',
+            'value'         => 0,
+        ),
     )
 );

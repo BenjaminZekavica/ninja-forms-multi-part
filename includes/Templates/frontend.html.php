@@ -9,18 +9,24 @@
 <?php if( $update_templates ): ?>
 	<script id="nf-tmpl-mp-header" type="text/template">
 		{{{ data.renderProgressBar() }}}
-		{{ data.renderBreadcrumbs() }}}
-		<h3>
-			{{{ data.title }}}
-		</h3>
+		{{{ data.renderBreadcrumbs() }}}
+		{{{ data.renderPartTitle() }}}
 	</script>
 <?php else: ?>
 	<script id="nf-tmpl-mp-header" type="text/template">
 		<%= renderProgressBar() %>
 		<%= renderBreadcrumbs() %>
-		<h3>
-			<%= title %>
-		</h3>
+		<%= renderPartTitle() %>
+	</script>
+<?php endif; ?>
+
+<?php if( $update_templates ): ?>
+	<script id="nf-tmpl-mp-part-title" type="text/template">
+		<h3>{{{ data.title }}}</h3>
+	</script>
+<?php else: ?>
+	<script id="nf-tmpl-mp-part-title" type="text/template">
+		<h3><%= title %></h3>
 	</script>
 <?php endif; ?>
 

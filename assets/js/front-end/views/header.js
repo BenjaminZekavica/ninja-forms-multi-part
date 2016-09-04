@@ -18,6 +18,18 @@ define( [], function() {
 		templateHelpers: function() {
 			var that = this;
 			return {
+				renderPartTitle: function() {
+					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_showtitles || 0 == that.collection.formModel.get( 'settings' ).mp_showtitles ) return '';
+					
+					var template = _.template( jQuery( '#nf-tmpl-mp-part-title' ).html() );
+					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
+					if ( 1 < parts.length ) {
+						return template( { title: this.title } );
+					} else {
+						return ''; 
+					}
+				},
+
 				renderBreadcrumbs: function() {
 					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_breadcrumbs || 0 == that.collection.formModel.get( 'settings' ).mp_breadcrumbs ) return '';
 					

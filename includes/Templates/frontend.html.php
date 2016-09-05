@@ -10,9 +10,7 @@
 	<script id="nf-tmpl-mp-header" type="text/template">
 		{{{ data.renderProgressBar() }}}
 		{{{ data.renderBreadcrumbs() }}}
-		<h3>
-			{{{ data.title }}}
-		</h3>
+		{{{ data.renderPartTitle() }}}
 	</script>
 <?php else: ?>
 	<script id="nf-tmpl-mp-header" type="text/template">

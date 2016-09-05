@@ -77,7 +77,6 @@ define(
 				 */
 				var partCollection = new PartCollection( { formContentData: formContentData } );
 			}
-			
 			nfRadio.channel( 'mp' ).request( 'init:partCollection', partCollection );
 			return partCollection;
 		},

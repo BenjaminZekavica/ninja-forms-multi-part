@@ -9,7 +9,7 @@
 <?php if( $update_templates ): ?>
 	<script id="nf-tmpl-mp-header" type="text/template">
 		{{{ data.renderProgressBar() }}}
-		{{ data.renderBreadcrumbs() }}}
+		{{{ data.renderBreadcrumbs() }}}
 		<h3>
 			{{{ data.title }}}
 		</h3>

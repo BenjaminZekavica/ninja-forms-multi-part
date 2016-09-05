@@ -5,7 +5,7 @@
 final class NF_MultiPart_Conversion
 {
 	var $part_array = array();
-	var $part_count = - 1;
+    var $part_count = - 1;
     var $conditions = array();
 
     public function __construct()
@@ -16,7 +16,7 @@ final class NF_MultiPart_Conversion
     public function upgrade_field_settings( $form_data )
     {
         if ( isset( $form_data[ 'settings' ][ 'formContentData' ] ) ) return $form_data;
-        
+
         if ( isset ( $form_data[ 'settings' ][ 'conditions' ] ) ) {
             $this->conditions = $form_data[ 'settings' ][ 'conditions' ];
         }
@@ -24,9 +24,9 @@ final class NF_MultiPart_Conversion
         /*
          * Add our fields to the appropriate part.
          */
-    	array_walk( $form_data[ 'fields' ], array( $this, 'divider_check' ), $form_data );
+        array_walk( $form_data[ 'fields' ], array( $this, 'divider_check' ), $form_data );
 
-    	/*
+        /*
          * If we have parts, set our formContentData to the parts array.
          */
         if ( -1 != $this->part_count ) {
@@ -61,30 +61,30 @@ final class NF_MultiPart_Conversion
 
     public function divider_check( $field, $index, $form_data )
     {
-    	if ( 'page_divider' == $field[ 'type' ] ) {
-    		$this->part_count++;
+        if ( 'page_divider' == $field[ 'type' ] ) {
+            $this->part_count++;
 
-    		$this->part_array[ $this->part_count ] = array(
-    			'title' 			=> ( isset( $field[ 'label' ] ) && ! empty( $field[ 'label' ] ) ) ? $field[ 'label' ] : 'Part ' . ( $this->part_count + 1 ),
-    			'order' 			=> $this->part_count,
-    			'type'				=> 'part',
+            $this->part_array[ $this->part_count ] = array(
+                'title'             => ( isset( $field[ 'label' ] ) && ! empty( $field[ 'label' ] ) ) ? $field[ 'label' ] : 'Part ' . ( $this->part_count + 1 ),
+                'order'             => $this->part_count,
+                'type'              => 'part',
                 'key'               => uniqid(),
-    			'formContentData'	=> array(),
-    		);
+                'formContentData'   => array(),
+            );
 
             /* 
              * Check to see if this page divider is referenced in any conditions. If it is, update those references.
              */
             $this->check_conditions( $field, $this->part_array[ $this->part_count ] );
         } else if ( ! isset ( $field[ 'style' ] ) ) {
-    		$this->part_array[ $this->part_count ][ 'formContentData' ][] = $field[ 'key' ];
-    	} else {
+            $this->part_array[ $this->part_count ][ 'formContentData' ][] = $field[ 'key' ];
+        } else {
             $this->part_array[ $this->part_count ][ 'formContentData' ][] = $field;
         }
     }
 
     public function remove_dividers( $field ) {
-    	return 'page_divider' != $field[ 'type' ];
+        return 'page_divider' != $field[ 'type' ];
     }
 
     public function layout_check( &$part, $index, $form_data ) {
@@ -119,8 +119,8 @@ final class NF_MultiPart_Conversion
              */
             if ( $fields[ $i ][ 'style' ][ 'colspan' ] + $coltrack <= $cols ) {
                 
-                if( ! isset( $field[ 'key' ] ) ){
-                    $fields[ $i ][ 'key' ] = ltrim( $fields[ $i ][ 'type' ], '_' ) . '_' . $fields[ $i ][ 'id' ];
+                if( ! isset( $fields[ $i ][ 'key' ] ) ){
+                    $fields[ $i ][ 'key' ] = ltrim( $fields[ $i ][ 'type' ], '_' ) . '_asdf' . $fields[ $i ][ 'id' ];
                 }
 
                 if( '_text' == $fields[ $i ][ 'type' ] && isset( $fields[ $i ][ 'datepicker' ] ) && $fields[ $i ][ 'datepicker' ] ){
@@ -200,7 +200,11 @@ final class NF_MultiPart_Conversion
                 /*
                  * If we have a colspan of 2, either it's 100%, which is handled above, or 50%.
                  */
-                $width = 50;
+                if ( 2 == $width ) {
+                    $width = 100;
+                } else {
+                   $width = 50; 
+                }
                 break;
             
             case 3:
@@ -285,7 +289,6 @@ final class NF_MultiPart_Conversion
             );
         }
     }
-
 } // End of Class
 
 new NF_MultiPart_Conversion();

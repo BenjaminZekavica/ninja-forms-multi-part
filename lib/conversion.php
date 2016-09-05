@@ -267,6 +267,7 @@ final class NF_MultiPart_Conversion
     private function conditions_add_else( &$condition, $index )
     {
         foreach( $condition[ 'then' ] as $tindex => $then ) {
+            if ( 'part' != $then[ 'type' ] ) continue;
             if ( 'show_part' == $then[ 'trigger' ] ) {
                 $opposite = 'hide_part';
             } else {

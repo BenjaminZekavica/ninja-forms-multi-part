@@ -15,8 +15,8 @@ final class NF_MultiPart_Conversion
 
     public function upgrade_field_settings( $form_data )
     {
-        if ( $form_data[ 'settings' ][ 'formContentData' ] ) return $form_data;
-
+        if ( isset( $form_data[ 'settings' ][ 'formContentData' ] ) ) return $form_data;
+        
         if ( isset ( $form_data[ 'settings' ][ 'conditions' ] ) ) {
             $this->conditions = $form_data[ 'settings' ][ 'conditions' ];
         }

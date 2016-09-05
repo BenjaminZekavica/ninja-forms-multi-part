@@ -9,7 +9,7 @@
 define( [], function() {
 	var model = Backbone.Model.extend( {
 		defaults: {
-			// formContentData: [],
+			formContentData: [],
 			order: 0,
 			type: 'part',
 			clean: true,
@@ -53,7 +53,7 @@ define( [], function() {
 		},
 
 		filterFormContentData: function() {
-			if ( ! this.get( 'formContentData' ) ) {
+			if ( 0 == this.get( 'formContentData' ).length ) {
 				this.set( 'formContentData', nfRadio.channel( 'fields' ).request( 'get:collection' ).pluck( 'key' ) );
 			}
 

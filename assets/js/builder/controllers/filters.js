@@ -63,15 +63,18 @@ define(
 			 * If the data has already been converted, just return it.
 			 */
 			if ( true === formContentData instanceof PartCollection ) return formContentData;
+
 			/*
 			 * If the data isn't converted, but is an array, let's make sure it's part data.
 			 */
-			if ( _.isArray( formContentData ) && 0 != _.isArray( formContentData ).length  && 'undefined' != typeof _.first( formContentData ) && 'part' == _.first( formContentData ).type ) {
+			if ( _.isArray( formContentData ) && ! _.isEmpty( formContentData )  && 'undefined' != typeof _.first( formContentData ) && 'part' == _.first( formContentData ).type ) {
 				/*
 				 * We have multi-part data. Let's convert it to a collection.
 				 */
 				var partCollection = new PartCollection( formContentData );
 			} else {
+				formContentData = ( 'undefined' == typeof formContentData ) ? nfRadio.channel( 'fields' ).request( 'get:collection' ).pluck( 'key' ) : formContentData; 
+
 				/*
 				 * We have unknown data. Create a new part collection and use the data as the content.
 				 */

@@ -53,9 +53,7 @@ define( [], function() {
 		},
 
 		filterFormContentData: function() {
-			if ( 0 == this.get( 'formContentData' ).length ) {
-				this.set( 'formContentData', nfRadio.channel( 'fields' ).request( 'get:collection' ).pluck( 'key' ) );
-			}
+			if ( ! this.get( 'formContentData' ) ) return;
 
 			var formContentData = this.get( 'formContentData' );
 			/*

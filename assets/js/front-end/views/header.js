@@ -19,7 +19,7 @@ define( [], function() {
 			var that = this;
 			return {
 				renderPartTitle: function() {
-					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_showtitles || 0 == that.collection.formModel.get( 'settings' ).mp_showtitles ) return '';
+					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_display_titles || 0 == that.collection.formModel.get( 'settings' ).mp_display_titles ) return '';
 					
 					var template = _.template( jQuery( '#nf-tmpl-mp-part-title' ).html() );
 					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
@@ -31,8 +31,8 @@ define( [], function() {
 				},
 
 				renderBreadcrumbs: function() {
-					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_breadcrumbs || 0 == that.collection.formModel.get( 'settings' ).mp_breadcrumbs ) return '';
-					
+					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_breadcrumb || 0 == that.collection.formModel.get( 'settings' ).mp_breadcrumb ) return '';
+
 					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
 					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
 					if ( 1 < parts.length ) {
@@ -43,7 +43,7 @@ define( [], function() {
 				},
 
 				renderProgressBar: function() {
-					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_progressbar || 0 == that.collection.formModel.get( 'settings' ).mp_progressbar ) return '';
+					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_progress_bar || 0 == that.collection.formModel.get( 'settings' ).mp_progress_bar ) return '';
 					
 					var template = _.template( jQuery( '#nf-tmpl-mp-progress-bar' ).html() );
 					var currentIndex = that.collection.getVisibleParts().indexOf( that.model );

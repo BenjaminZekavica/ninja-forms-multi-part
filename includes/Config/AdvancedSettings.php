@@ -11,8 +11,8 @@ return array(
             'group'         => 'primary',
         ),
 
-        'mp_breadcrumbs'       => array(
-            'name'          => 'mp_breadcrumbs',
+        'mp_breadcrumb'       => array(
+            'name'          => 'mp_breadcrumb',
             'type'          => 'toggle',
             'label'         => __( 'Show Breadcrumbs', 'ninja-forms-multi-part' ),
             'width'         => 'full',
@@ -20,8 +20,8 @@ return array(
             'value'			=> 1,
         ),
 
-        'mp_progressbar'       => array(
-            'name'          => 'mp_progressbar',
+        'mp_progress_bar'       => array(
+            'name'          => 'mp_progress_bar',
             'type'          => 'toggle',
             'label'         => __( 'Show Progress Bar ', 'ninja-forms-multi-part' ),
             'width'         => 'full',
@@ -29,8 +29,8 @@ return array(
             'value'         => 1,
         ),
 
-        'mp_showtitles'       => array(
-            'name'          => 'mp_showtitles',
+        'mp_display_titles'       => array(
+            'name'          => 'mp_display_titles',
             'type'          => 'toggle',
             'label'         => __( 'Show Part Titles ', 'ninja-forms-multi-part' ),
             'width'         => 'full',

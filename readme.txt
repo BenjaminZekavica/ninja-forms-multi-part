@@ -26,6 +26,10 @@ For help and video tutorials, please visit our website: [Ninja Forms Documentati
 
 == Changelog ==
 
+= 3.0.1 (06 September 2016) =
+
+* Updated with Ninja Forms v3.x compatibility
+
 = 3.0.0 (06 September 2016) =
 
 * Updated with Ninja Forms v3.x compatibility

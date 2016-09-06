@@ -4,7 +4,7 @@
 
 final class NF_MultiPart_Conversion
 {
-	var $part_array = array();
+	   var $part_array = array();
     var $part_count = - 1;
     var $conditions = array();
 
@@ -192,10 +192,16 @@ final class NF_MultiPart_Conversion
 
     private function convert_width( $width, $cols, $cells )
     {
+
         /*
          * width will be set to the colspan of our initial cell.
          */
         switch ( $cols ) {
+            case 1:
+                if ( 1 == $width ) {
+                    $width = 100;
+                }
+                break;
             case 2:
                 /*
                  * If we have a colspan of 2, either it's 100%, which is handled above, or 50%.
@@ -203,7 +209,7 @@ final class NF_MultiPart_Conversion
                 if ( 2 == $width ) {
                     $width = 100;
                 } else {
-                   $width = 50; 
+                    $width = 50; 
                 }
                 break;
             

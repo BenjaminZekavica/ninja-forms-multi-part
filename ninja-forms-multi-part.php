@@ -32,6 +32,8 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) 
 
 } else {
 
+    if( class_exists( 'NF_MultiPart', false ) ) return;
+
     /**
      * Class NF_MultiPart
      */

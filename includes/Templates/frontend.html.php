@@ -12,6 +12,11 @@
 		{{{ data.renderBreadcrumbs() }}}
 		{{{ data.renderPartTitle() }}}
 	</script>
+	<script id="tmpl-nf-mp-part-title" type="text/template">
+		<h3>
+			{{{ data.title }}}
+		</h3>
+	</script>
 <?php else: ?>
 	<script id="tmpl-nf-mp-header" type="text/template">
 		<%= renderProgressBar() %>

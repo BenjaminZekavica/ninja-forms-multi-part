@@ -1,6 +1,6 @@
 define( [], function() {
 	var view = Marionette.ItemView.extend( {
-		template: "#nf-tmpl-mp-header",
+		template: "#tmpl-nf-mp-header",
  		fullProgressBar: false,
 
  		initialize: function( options ) {
@@ -21,7 +21,7 @@ define( [], function() {
 				renderPartTitle: function() {
 					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_display_titles || 0 == that.collection.formModel.get( 'settings' ).mp_display_titles ) return '';
 					
-					var template = _.template( jQuery( '#nf-tmpl-mp-part-title' ).html() );
+					var template = Backbone.Radio.channel( 'app' ).request( 'get:template', '#tmpl-nf-mp-part-title' );
 					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
 					if ( 1 < parts.length ) {
 						return template( { title: this.title } );
@@ -33,7 +33,7 @@ define( [], function() {
 				renderBreadcrumbs: function() {
 					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_breadcrumb || 0 == that.collection.formModel.get( 'settings' ).mp_breadcrumb ) return '';
 
-					var template = _.template( jQuery( '#nf-tmpl-mp-breadcrumbs' ).html() );
+					var template = Backbone.Radio.channel( 'app' ).request( 'get:template', '#tmpl-nf-mp-breadcrumbs' );
 					var parts = _.invoke( that.collection.getVisibleParts(), 'pick', [ 'title', 'errors', 'visible' ] )
 					if ( 1 < parts.length ) {
 						return template( { parts: parts, currentIndex: that.collection.getVisibleParts().indexOf( that.model ) } );
@@ -45,7 +45,7 @@ define( [], function() {
 				renderProgressBar: function() {
 					if ( 'undefined' == typeof that.collection.formModel.get( 'settings' ).mp_progress_bar || 0 == that.collection.formModel.get( 'settings' ).mp_progress_bar ) return '';
 					
-					var template = _.template( jQuery( '#nf-tmpl-mp-progress-bar' ).html() );
+					var template = Backbone.Radio.channel( 'app' ).request( 'get:template', '#tmpl-nf-mp-progress-bar' );
 					var currentIndex = that.collection.getVisibleParts().indexOf( that.model );
 					var percent = ( that.fullProgressBar ) ? 100 : currentIndex / that.collection.getVisibleParts().length * 100;
 					if ( 1 < that.collection.getVisibleParts().length ) {

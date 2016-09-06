@@ -1,6 +1,6 @@
 define( [ 'views/header', 'views/footer' ], function( HeaderView, FooterView ) {
 	var view = Marionette.LayoutView.extend( {
-		template: "#nf-tmpl-mp-form-content",
+		template: "#tmpl-nf-mp-form-content",
 
 		regions: {
 			header: '.nf-mp-header',

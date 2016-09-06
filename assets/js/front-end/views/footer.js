@@ -1,6 +1,6 @@
 define( [], function() {
 	var view = Marionette.ItemView.extend( {
-		template: "#nf-tmpl-mp-footer",
+		template: "#tmpl-nf-mp-footer",
 
 		initialize: function( options ) {
 			this.listenTo( this.collection, 'change:part', this.reRender );
@@ -15,7 +15,7 @@ define( [], function() {
 			var that = this;
 			return {
 				renderNextPrevious: function() {
-					var template = _.template( jQuery( '#nf-tmpl-mp-next-previous' ).html() );
+					var template = Backbone.Radio.channel( 'app' ).request( 'get:template', '#tmpl-nf-mp-next-previous' );
 					var showNext = false;
 					var showPrevious = false;
 					var visibleParts = that.collection.where( { visible: true } );

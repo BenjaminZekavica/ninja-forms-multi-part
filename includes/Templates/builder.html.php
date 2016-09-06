@@ -1,4 +1,4 @@
-<?php $update_templates = version_compare( get_option( 'ninja_forms_version', '0' ), '3', '>' ); ?>
+<?php $update_templates = version_compare( get_option( 'ninja_forms_version', '0' ), '3.0', '>' ); ?>
 <?php if( $update_templates ): ?>
 	<script id="nf-tmpl-mp-gutter-left" type="text/template">
 		<# if ( data.hasPrevious() ) { #>

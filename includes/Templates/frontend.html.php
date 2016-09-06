@@ -1,4 +1,4 @@
-<?php $update_templates = version_compare( get_option( 'ninja_forms_version', '0' ), '3', '>' ); ?>
+<?php $update_templates = version_compare( get_option( 'ninja_forms_version', '0' ), '3.0', '>' ); ?>
 
 <script id="tmpl-nf-mp-form-content" type="text/template">
 	<div class="nf-mp-header"></div>

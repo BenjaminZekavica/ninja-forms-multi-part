@@ -14,7 +14,7 @@
 
 require_once 'lib/conversion.php';
 
-if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3.0', '>' ) || get_option( 'ninja_forms_load_deprecated', FALSE ) ) {
+if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) || get_option( 'ninja_forms_load_deprecated', FALSE ) ) {
 
     if( ! defined( 'NINJA_FORMS_MP_DIR' ) ) {
         define("NINJA_FORMS_MP_DIR", plugin_dir_path(__FILE__) . '/deprecated');

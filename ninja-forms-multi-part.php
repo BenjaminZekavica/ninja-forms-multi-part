@@ -181,7 +181,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
         {
             if ( ! class_exists( 'NF_Extension_Updater' ) ) return;
 
-            new NF_Extension_Updater( self::NAME, self::VERSION, self::AUTHOR, __FILE__, self::SLUG );
+            new NF_Extension_Updater( 'Multi-Part Forms', self::VERSION, self::AUTHOR, __FILE__, 'mp' );
         }
     }
 

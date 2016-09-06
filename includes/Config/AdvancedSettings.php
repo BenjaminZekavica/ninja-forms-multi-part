@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return apply_filters( 'ninja_forms_multi_part_advanced_settings', array(
 
     'multi_part' => array(
         'mp_validate'       => array(
@@ -37,5 +37,6 @@ return array(
             'group'         => 'primary',
             'value'         => 0,
         ),
+
     )
-);
+) );

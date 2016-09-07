@@ -3,8 +3,8 @@ Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 3.8
-Tested up to: 4.3
-Stable tag: 3.0
+Tested up to: 4.6
+Stable tag: 3.0.1
 
 License: GPLv2 or later
 

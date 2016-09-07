@@ -115,7 +115,8 @@ define( [ 'views/drawerLayout' ], function( DrawerLayoutView ) {
 				that.mainContent.show( new that.formContentView( { collection: that.collection.getFormContentData() } ) );
 			} );
 
-			jQuery( that.mainContent.el ).show( 'slide', { direction: showDir }, 100 );
+			jQuery( this.mainContent.el ).show( 'slide', { direction: showDir }, 100 );
+			jQuery( this.el ).closest( '.nf-app-main' ).scrollTop( 0 );
 		}
 	});
 

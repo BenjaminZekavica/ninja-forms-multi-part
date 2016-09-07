@@ -25,7 +25,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
     }
 
     if( ! defined( 'NINJA_FORMS_MP_VERSION' ) ) {
-        define("NINJA_FORMS_MP_VERSION", "3.0.0");
+        define("NINJA_FORMS_MP_VERSION", "3.0.1");
     }
 
     include 'deprecated/multi-part.php';

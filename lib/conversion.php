@@ -1,7 +1,5 @@
 <?php
 
- if( class_exists( 'NF_MultiPart_Conversion', false ) ) return;
-
 final class NF_MultiPart_Conversion
 {
 	   var $part_array = array();

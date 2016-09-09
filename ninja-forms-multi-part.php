@@ -27,7 +27,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
     }
 
     if( ! defined( 'NINJA_FORMS_MP_VERSION' ) ) {
-        define("NINJA_FORMS_MP_VERSION", "3.0.0");
+        define("NINJA_FORMS_MP_VERSION", "3.0.2");
     }
 
     include 'deprecated/multi-part.php';
@@ -41,7 +41,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
      */
     final class NF_MultiPart
     {
-        const VERSION = '3.0.1';
+        const VERSION = '3.0.2';
         const SLUG    = 'ninja-forms-multi-part';
         const NAME    = 'Multi Part';
         const AUTHOR  = 'The WP Ninjas';

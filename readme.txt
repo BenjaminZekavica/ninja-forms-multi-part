@@ -2,8 +2,8 @@
 Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
-Requires at least: 3.8
-Tested up to: 4.3
+Requires at least: 4.4
+Tested up to: 4.6
 Stable tag: 3.0.2
 
 License: GPLv2 or later
@@ -28,7 +28,11 @@ For help and video tutorials, please visit our website: [Ninja Forms Documentati
 
 = 3.0.2 (06 September 2016) =
 
+<<<<<<< HEAD
 * Fixed a bug with licensing.
+=======
+* Updated with Ninja Forms v3.x compatibility licensing.
+>>>>>>> e92ed0f922eb6fdaece3f1f5da9e9022a4aea32c
 
 = 3.0.1 (06 September 2016) =
 

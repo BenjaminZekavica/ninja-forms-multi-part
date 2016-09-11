@@ -51,7 +51,7 @@ final class NF_MultiPart_Conversion
              * We don't have any parts, so pass the fields through our convert layouts function.
              */
             $cols = ( isset ( $form_data[ 'settings' ][ 'style' ] ) ) ? $form_data[ 'settings' ][ 'style' ][ 'cols' ] : 0;
-            $form_data[ 'settings' ][ 'formContentData' ] = $this->convert_layouts( $cols, $this->part_array[ $this->part_count ][ 'formContentData' ] );
+            $form_data[ 'settings' ][ 'formContentData' ] = $this->convert_layouts( $cols, $form_data[ 'fields' ] );
         }
 
         return $form_data;

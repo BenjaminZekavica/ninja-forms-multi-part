@@ -3,8 +3,8 @@ Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.4
-Tested up to: 4.6
-Stable tag: 3.0.3
+Tested up to: 4.6.1
+Stable tag: 3.0.4
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.4 (12 September 2016) =
+
+*Bugs:*
+
+* Fixed a bug in Layout & Styles conversion.
 
 = 3.0.3 (09 September 2016) =
 

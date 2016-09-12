@@ -1,8 +1,8 @@
 <?php
 
-final class NF_MultiPart_Conversion
+final class NF_Layouts_Conversion
 {
-	   var $part_array = array();
+    var $part_array = array();
     var $part_count = - 1;
     var $conditions = array();
 
@@ -112,6 +112,10 @@ final class NF_MultiPart_Conversion
                 $fields[ $i ][ 'style' ][ 'colspan' ] = 1;
             }
 
+            if ( $fields[ $i ][ 'style' ][ 'colspan' ] > $cols ) {
+                $fields[ $i ][ 'style' ][ 'colspan' ] = $cols;
+            }
+
             /*
              * If our colspan + coltrack is less than or equal to cols, we add this to our cells.
              */
@@ -136,7 +140,7 @@ final class NF_MultiPart_Conversion
                 $coltrack += $fields[ $i ][ 'style' ][ 'colspan' ];
                 $cellorder++;
             } else {
-                $rows[] = $this->layouts_new_row( $cols, $cells, $roworder );
+                $rows[] = $this->layouts_new_row( $cols, $cells, $roworder, $cellorder );
                 
                 $roworder++;
                 $coltrack = 0;
@@ -146,14 +150,14 @@ final class NF_MultiPart_Conversion
             }
 
             if ( $i == count( $fields ) - 1 ) {
-                $rows[] = $this->layouts_new_row( $cols, $cells, $roworder );
+                $rows[] = $this->layouts_new_row( $cols, $cells, $roworder, $cellorder );
             }
 
         } // for field loop
         return $rows;
     }
 
-    private function layouts_new_row( $cols, $cells, $roworder )
+    private function layouts_new_row( $cols, $cells, $roworder, $cellorder )
     {
         /*
          * We're on a new row. We now need to add the previous row, represented by the $cells variable, to our rows array.
@@ -295,4 +299,4 @@ final class NF_MultiPart_Conversion
     }
 } // End of Class
 
-new NF_MultiPart_Conversion();
+new NF_Layouts_Conversion();

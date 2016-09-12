@@ -1,6 +1,6 @@
 <?php
 
-final class NF_Layouts_Conversion
+final class NF_MultiPart_Conversion
 {
     var $part_array = array();
     var $part_count = - 1;
@@ -299,4 +299,4 @@ final class NF_Layouts_Conversion
     }
 } // End of Class
 
-new NF_Layouts_Conversion();
+new NF_MultiPart_Conversion();

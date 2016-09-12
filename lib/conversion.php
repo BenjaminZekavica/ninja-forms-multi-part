@@ -13,6 +13,7 @@ final class NF_MultiPart_Conversion
 
     public function upgrade_field_settings( $form_data )
     {
+
         if ( isset( $form_data[ 'settings' ][ 'formContentData' ] ) ) return $form_data;
 
         if ( isset ( $form_data[ 'settings' ][ 'conditions' ] ) ) {
@@ -74,7 +75,7 @@ final class NF_MultiPart_Conversion
              * Check to see if this page divider is referenced in any conditions. If it is, update those references.
              */
             $this->check_conditions( $field, $this->part_array[ $this->part_count ] );
-        } else if ( ! isset ( $field[ 'style' ] ) ) {
+        } else if ( ! isset ( $form_data[ 'settings' ][ 'style' ] ) ) {
             $this->part_array[ $this->part_count ][ 'formContentData' ][] = $field[ 'key' ];
         } else {
             $this->part_array[ $this->part_count ][ 'formContentData' ][] = $field;

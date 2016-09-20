@@ -53,8 +53,12 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             add_action( 'ninja_forms_loaded', array( $this, 'setup_admin' ) );
 
             add_action( 'admin_init', array( $this, 'setup_license') );
+
             add_action( 'ninja_forms_builder_templates', array( $this, 'builder_templates' ) );
-            add_action( 'ninja_forms_enqueue_scripts', array( $this, 'frontend_templates' ) );
+            add_action( 'ninja_forms_enqueue_scripts',   array( $this, 'frontend_templates' ) );
+
+            add_action( 'nf_admin_enqueue_scripts',   array( $this, 'enqueue_builder' ) );
+            add_action( 'nf_display_enqueue_scripts', array( $this, 'enqueue_display' ) );
         }
 
         public function setup_admin()
@@ -72,6 +76,31 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
         public function frontend_templates()
         {
             self::template( 'frontend.html.php' );
+        }
+
+        public function enqueue_builder()
+        {
+            $ver = self::VERSION;
+            wp_enqueue_style( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/css/builder.css', $ver );
+            wp_enqueue_script( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/js/min/builder.js', array( 'nf-builder', 'jquery-effects-slide', 'jquery-effects-transfer' ), $ver );
+        }
+
+        public function enqueue_display()
+        {
+            $ver = self::VERSION;
+            wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js', array(), $ver );
+
+            if( Ninja_Forms()->get_setting( 'opinionated_styles' ) ) {
+                if( 'light' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){
+                    wp_enqueue_style( 'nf-mp-display', NF_MultiPart::$url . 'assets/css/display-opinions-light.css', $ver );
+                }
+
+                if( 'dark' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){
+                    wp_enqueue_style('nf-mp-display', NF_MultiPart::$url . 'assets/css/display-opinions-dark.css', $ver );
+                }
+            } else {
+                wp_enqueue_style( 'nf-mp-display', NF_MultiPart::$url . 'assets/css/display-structure.css', $ver );
+            }
         }
 
         /*
@@ -203,34 +232,5 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
     }
 
     NF_MultiPart();
-
-    /*
-     * TODO: Move this into the main class.
-     */
-    function nf_mp_enqueue_all_the_display_things( $form_id ) {
-        wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js' );
-        
-        if( Ninja_Forms()->get_setting( 'opinionated_styles' ) ) {
-            if( 'light' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){
-                wp_enqueue_style( 'nf-mp-display', NF_MultiPart::$url . 'assets/css/display-opinions-light.css');
-            }
-
-            if( 'dark' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){
-                wp_enqueue_style('nf-mp-display', NF_MultiPart::$url . 'assets/css/display-opinions-dark.css');
-            }
-        } else {
-            wp_enqueue_style( 'nf-mp-display', NF_MultiPart::$url . 'assets/css/display-structure.css' );
-        }
-
-    }
-
-    add_action( 'nf_display_enqueue_scripts', 'nf_mp_enqueue_all_the_display_things' );
-
-    function nf_mp_enqueue_all_the_builder_things() {
-        wp_enqueue_style( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/css/builder.css' );
-        wp_enqueue_script( 'nf-mp-builder', plugin_dir_url( __FILE__ ) . 'assets/js/min/builder.js', array( 'nf-builder', 'jquery-effects-slide', 'jquery-effects-transfer' ) );
-    }
-
-    add_action( 'nf_admin_enqueue_scripts', 'nf_mp_enqueue_all_the_builder_things' );
 
 }

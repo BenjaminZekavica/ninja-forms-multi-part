@@ -55,6 +55,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             add_action( 'admin_init', array( $this, 'setup_license') );
             add_action( 'ninja_forms_builder_templates', array( $this, 'builder_templates' ) );
             add_action( 'ninja_forms_enqueue_scripts', array( $this, 'frontend_templates' ) );
+            add_filter( 'ninja_forms_styles_setting_groups', array( $this, 'add_plugin_styles') );
         }
 
         public function setup_admin()
@@ -62,6 +63,113 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             if( ! is_admin() ) return;
 
             new NF_MultiPart_Admin_Settings();
+        }
+
+        public function add_plugin_styles( $groups )
+        {
+            if( ! isset( $groups[ 'form_settings' ] ) || ! isset( $groups[ 'form_settings' ][ 'sections' ] ) ) return $groups;
+
+            $sections = $groups[ 'form_settings' ][ 'sections' ];
+
+            $groups[ 'form_settings' ][ 'sections' ] = array_merge( $sections, array(
+                'mp_breadcrumb_container' => array(
+                    'name' => 'mp_breadcrumb_container',
+                    'type' => 'fieldset',
+                    'label' => __( 'Breadcrumb Container Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-breadcrumbs',
+                ),
+
+                'mp_breadcrumb_buttons' => array(
+                    'name' => 'mp_breadcrumb_buttons',
+                    'type' => 'fieldset',
+                    'label' => __( 'Breadcrumb Buttons Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-breadcrumb',
+                ),
+
+                'mp_breadcrumb_active' => array(
+                    'name' => 'mp_breadcrumb_active',
+                    'type' => 'fieldset',
+                    'label' => __( 'Breadcrumb Active Button Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.active .nf-breadcrumb',
+                ),
+
+                'mp_breadcrumb_hover' => array(
+                    'name' => 'mp_breadcrumb_hover',
+                    'type' => 'fieldset',
+                    'label' => __( 'Breadcrumb Button Hover Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => 'nf-breadcrumb:hover',
+                ),
+
+                'mp_progress_container' => array(
+                    'name' => 'mp_progress_container',
+                    'type' => 'fieldset',
+                    'label' => __( 'Progress Bar Container Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-mp-header progress::-webkit-progress-bar, .nf-mp-header progress::-moz-progress-bar',
+                ),
+
+                'mp_progressbar_fill' => array(
+                    'name' => 'mp_progressbar_fill',
+                    'type' => 'fieldset',
+                    'label' => __( 'Progress Bar Fill Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-mp-header progress::-webkit-progress-value, .nf-mp-header progress::-moz-progress-value',
+                ),
+
+                'mp_page_title' => array(
+                    'name' => 'mp_page_title',
+                    'type' => 'fieldset',
+                    'label' => __( 'Part Titles Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-mp-header h3',
+                ),
+
+                'mp_prevnext_container' => array(
+                    'name' => 'mp_prevnext_container',
+                    'type' => 'fieldset',
+                    'label' => __( 'Navigation Container Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-next-previous',
+                ),
+
+                'mp_prev' => array(
+                    'name' => 'mp_prev',
+                    'type' => 'fieldset',
+                    'label' => __( 'Previous Button Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-previous',
+                ),
+
+                'mp_next' => array(
+                    'name' => 'mp_next',
+                    'type' => 'fieldset',
+                    'label' => __( 'Next Button Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-next',
+                ),
+
+                'mp_button_hover' => array(
+                    'name' => 'navigation_hover_styles',
+                    'type' => 'fieldset',
+                    'label' => __( 'Navigation Hover Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '.nf-next-previous input:hover',
+                ),
+
+                'mp_page' => array(
+                    'name' => 'mp_page',
+                    'type' => 'fieldset',
+                    'label' => __( 'Form Part Styles', 'ninja-forms-layout-styles' ),
+                    'width' => 'full',
+                    'selector' => '',
+                ),
+            ) );
+
+            return $groups;
         }
 
         public function builder_templates()

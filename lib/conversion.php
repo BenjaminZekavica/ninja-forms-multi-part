@@ -19,7 +19,7 @@ final class NF_MultiPart_Conversion
         if ( isset ( $form_data[ 'settings' ][ 'conditions' ] ) ) {
             $this->conditions = $form_data[ 'settings' ][ 'conditions' ];
         }
-        
+
         /*
          * Add our fields to the appropriate part.
          */
@@ -44,6 +44,7 @@ final class NF_MultiPart_Conversion
             /*
              * Remove any page_divider types we have in our array.
              */
+            usort( $form_data[ 'fields' ], array( $this, 'sort_fields' ) );
             $form_data[ 'fields' ] = array_filter( $form_data[ 'fields' ], array( $this, 'remove_dividers' ) );
             $form_data[ 'settings' ][ 'formContentData' ] = $this->part_array;
             $form_data[ 'settings' ][ 'conditions' ] = $this->conditions;
@@ -71,7 +72,7 @@ final class NF_MultiPart_Conversion
                 'formContentData'   => array(),
             );
 
-            /* 
+            /*
              * Check to see if this page divider is referenced in any conditions. If it is, update those references.
              */
             $this->check_conditions( $field, $this->part_array[ $this->part_count ] );
@@ -94,7 +95,26 @@ final class NF_MultiPart_Conversion
         /*
          * If we have no columns, return a default formContentData
          */
-        if ( empty( $cols ) ) return $fields;
+        if ( empty( $cols ) ) {
+            usort( $fields, array( $this, 'sort_fields' ) );
+            $formContentData = array();
+            for( $i = 0; $i < count( $fields ); $i++ ){
+                $formContentData[] = array(
+                    'order' => 0,
+                    'cells' => array(
+                        array(
+                            'order' => 0,
+                            'fields' => array(
+                                $fields[ $i ][ 'key' ]
+                            ),
+                            'width' => 100
+                        )
+                    )
+                );
+            }
+
+            return $formContentData;
+        }
 
         /*
          * Try to catch any bad layout errors.
@@ -121,7 +141,7 @@ final class NF_MultiPart_Conversion
              * If our colspan + coltrack is less than or equal to cols, we add this to our cells.
              */
             if ( $fields[ $i ][ 'style' ][ 'colspan' ] + $coltrack <= $cols ) {
-                
+
                 if( ! isset( $fields[ $i ][ 'key' ] ) ){
                     $fields[ $i ][ 'key' ] = ltrim( $fields[ $i ][ 'type' ], '_' ) . '_asdf' . $fields[ $i ][ 'id' ];
                 }
@@ -137,12 +157,12 @@ final class NF_MultiPart_Conversion
                     ),
                     'width'     => $fields[ $i ][ 'style' ][ 'colspan' ],
                 );
-             
+
                 $coltrack += $fields[ $i ][ 'style' ][ 'colspan' ];
                 $cellorder++;
             } else {
                 $rows[] = $this->layouts_new_row( $cols, $cells, $roworder, $cellorder );
-                
+
                 $roworder++;
                 $coltrack = 0;
                 $cellorder = 0;
@@ -166,7 +186,7 @@ final class NF_MultiPart_Conversion
          * 1) Add any blank cells necessary.
          * 1) Add the cells to a new row.
          * 2) Move our $i pointer back one field.
-         * 
+         *
          * We need to add an extra blank cell to make up the difference.
          */
         $diff = 0;
@@ -212,10 +232,10 @@ final class NF_MultiPart_Conversion
                 if ( 2 == $width ) {
                     $width = 100;
                 } else {
-                    $width = 50; 
+                    $width = 50;
                 }
                 break;
-            
+
             case 3:
                 /*
                  * If we have a cols value of 3, either all cells are 33% or one is 75% and the other is 25%.
@@ -231,7 +251,7 @@ final class NF_MultiPart_Conversion
                 }
 
                 break;
-            
+
             case 4:
                 /*
                  * If we have a cols value of 4, we can get our percentages with simple math.
@@ -297,6 +317,10 @@ final class NF_MultiPart_Conversion
                 'type'  => 'part'
             );
         }
+    }
+
+    private function sort_fields($a, $b) {
+        return $a['order'] - $b['order'];
     }
 } // End of Class
 

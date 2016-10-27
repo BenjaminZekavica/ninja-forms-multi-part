@@ -38,5 +38,23 @@ return apply_filters( 'ninja_forms_multi_part_advanced_settings', array(
             'value'         => 0,
         ),
 
+        'mp_prev_label'       => array(
+            'name'          => 'mp_prev_label',
+            'type'          => 'textbox',
+            'label'         => __( 'Previous Button Label ', 'ninja-forms-multi-part' ),
+            'width'         => 'full',
+            'group'         => 'primary',
+            'placeholder'   => __( 'Previous', 'ninja-forms-multi-part' ),
+        ),
+
+        'mp_next_label'       => array(
+            'name'          => 'mp_next_label',
+            'type'          => 'textbox',
+            'label'         => __( 'Next Button Label ', 'ninja-forms-multi-part' ),
+            'width'         => 'full',
+            'group'         => 'primary',
+            'placeholder'   => __( 'Next', 'ninja-forms-multi-part' ),
+        ),
+
     )
 ) );

@@ -89,6 +89,10 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
         {
             $ver = self::VERSION;
             wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js', array(), $ver );
+            wp_localize_script( 'nf-mp-front-end', 'nfMPSettings', array( 
+                'prevLabel' => __( 'Previous', 'ninja-forms-multi-part' ),
+                'nextLabel' => __( 'Next', 'ninja-forms-multi-part' ) ) 
+            );
 
             if( Ninja_Forms()->get_setting( 'opinionated_styles' ) ) {
                 if( 'light' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){

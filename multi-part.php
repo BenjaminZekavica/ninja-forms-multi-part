@@ -4,7 +4,7 @@
  * Plugin Name: Ninja Forms - Multi-Part Forms
  * Plugin URI: https://ninjaforms.com/extensions/multi-part-forms/
  * Description: Multi-Part Forms add-on for Ninja Forms.
- * Version: 3.0.5
+ * Version: 3.0.6
  * Author: The WP Ninjas
  * Author URI: http://ninjaforms.com
  * Text Domain: ninja-forms-multi-part
@@ -27,7 +27,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
     }
 
     if( ! defined( 'NINJA_FORMS_MP_VERSION' ) ) {
-        define("NINJA_FORMS_MP_VERSION", "3.0.5");
+        define("NINJA_FORMS_MP_VERSION", "3.0.6");
     }
 
     include 'deprecated/multi-part.php';
@@ -41,7 +41,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
      */
     final class NF_MultiPart
     {
-        const VERSION = '3.0.5';
+        const VERSION = '3.0.6';
         const SLUG    = 'ninja-forms-multi-part';
         const NAME    = 'Multi Part';
         const AUTHOR  = 'The WP Ninjas';
@@ -89,6 +89,10 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
         {
             $ver = self::VERSION;
             wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js', array(), $ver );
+            wp_localize_script( 'nf-mp-front-end', 'nfMPSettings', array( 
+                'prevLabel' => __( 'Previous', 'ninja-forms-multi-part' ),
+                'nextLabel' => __( 'Next', 'ninja-forms-multi-part' ) ) 
+            );
 
             if( Ninja_Forms()->get_setting( 'opinionated_styles' ) ) {
                 if( 'light' == Ninja_Forms()->get_setting( 'opinionated_styles' ) ){

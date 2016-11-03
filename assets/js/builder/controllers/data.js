@@ -20,9 +20,18 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			nfRadio.channel( 'mp' ).reply( 'get:collection', this.getCollection, this );
 
 			/*
-			 * When we add a field to our field collection, collection, trigger an "add:model"
+			 * If we don't have Layout & Styles active, when we add a field to our field collection, collection, trigger an "add:model"
 			 */
-			this.listenTo( nfRadio.channel( 'fields' ), 'render:newField', this.addField );
+			var formContentLoadFilters = nfRadio.channel( 'formContent' ).request( 'get:loadFilters' );
+
+			/*
+			 * TODO: Bandaid fix for making sure we don't trigger an add field if Layouts is enabled.
+			 * If it is enabled, Layouts handles adding new items.
+			 */
+			var layoutsEnabed = ( 'undefined' != typeof formContentLoadFilters[4] ) ? true : false;
+			if ( ! layoutsEnabed ) {
+				this.listenTo( nfRadio.channel( 'fields' ), 'render:newField', this.addField );
+			}
 		},
 
 		initPartCollection: function( partCollection ) {

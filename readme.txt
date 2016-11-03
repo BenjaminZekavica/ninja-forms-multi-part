@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.4
 Tested up to: 4.6.1
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 
 License: GPLv2 or later
 
@@ -25,6 +25,16 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.6 (03 November 2016) =
+
+*Bugs:*
+
+* Fixed a bug that caused duplicating fields to create multiple duplicates.
+
+*Changes:*
+
+* Added label settings for Previous and Next buttons.
 
 = 3.0.5 (26 September 2016) =
 

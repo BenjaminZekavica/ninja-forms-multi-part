@@ -42,13 +42,13 @@
 		<ul class="nf-next-previous">
 			<# if ( data.showPrevious ) { #>
 			<li class="nf-previous-item">
-				<input type="button" class="nf-previous" value="Previous" />
+				<input type="button" class="nf-previous" value="{{{ data.prevLabel }}}" />
 			</li>
 			<# } #>
 
 			<# if ( data.showNext ) { #>
 			<li class="nf-next-item">
-				<input type="button" class="nf-next" value="Next" />
+				<input type="button" class="nf-next" value="{{{ data.nextLabel }}}" />
 			</li>
 			<# } #>
 		</ul>
@@ -58,13 +58,13 @@
 		<ul class="nf-next-previous">
 			<% if ( showPrevious ) { %>
 			<li class="nf-previous-item">
-				<input type="button" class="nf-previous" value="Previous" />
+				<input type="button" class="nf-previous" value="<%= previousLabel %>" />
 			</li>
 			<% } %>
 
 			<% if ( showNext ) { %>
 			<li class="nf-next-item">
-				<input type="button" class="nf-next" value="Next" />
+				<input type="button" class="nf-next" value="<%= nextLabel %>" />
 			</li>
 			<% } %>
 		</ul>

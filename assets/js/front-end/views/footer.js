@@ -36,8 +36,11 @@ define( [], function() {
 
 					if ( ! showNext && ! showPrevious ) return '';
 
-					return template( { showNext: showNext, showPrevious: showPrevious } );
-				}
+					var prevLabel = that.collection.formModel.get( 'mp_prev_label' ) || nfMPSettings.prevLabel;
+					var nextLabel = that.collection.formModel.get( 'mp_next_label' ) || nfMPSettings.nextLabel;
+
+					return template( { showNext: showNext, showPrevious: showPrevious, prevLabel: prevLabel, nextLabel: nextLabel } );
+				},
 			}
 		}
 

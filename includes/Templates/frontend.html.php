@@ -1,77 +1,50 @@
-<?php $update_templates = version_compare( get_option( 'ninja_forms_version', '0' ), '3.0', '>' ); ?>
-
 <script id="tmpl-nf-mp-form-content" type="text/template">
 	<div class="nf-mp-header"></div>
 	<div class="nf-mp-body"></div>
 	<div class="nf-mp-footer"></div>
 </script>
 
-<?php if( $update_templates ): ?>
-	<script id="tmpl-nf-mp-header" type="text/template">
-		{{{ data.renderProgressBar() }}}
-		{{{ data.renderBreadcrumbs() }}}
-		{{{ data.renderPartTitle() }}}
-	</script>
-	<script id="tmpl-nf-mp-part-title" type="text/template">
-		<h3>
-			{{{ data.title }}}
-		</h3>
-	</script>
-<?php else: ?>
-	<script id="tmpl-nf-mp-header" type="text/template">
-		<%= renderProgressBar() %>
-		<%= renderBreadcrumbs() %>
-		<h3>
-			<%= title %>
-		</h3>
-	</script>
-<?php endif; ?>
+<?php 
+if ( ! version_compare( get_option( 'ninja_forms_version', '0' ), '3.0', '>' ) ) {
+    /* 
+     * If we're using the RC codebase of Ninja Forms, load the older, <% %> style templates.
+     */
+    require_once( NF_MultiPart::$dir . 'includes/Templates/frontend-old.html.php' );
+    return false;
+}
+?>
 
-<?php if( $update_templates ): ?>
-	<script id="tmpl-nf-mp-footer" type="text/template">
-		{{{ data.renderNextPrevious() }}}
-	</script>
-<?php else: ?>
-	<script id="tmpl-nf-mp-footer" type="text/template">
-		<%= renderNextPrevious() %>
-	</script>
-<?php endif; ?>
+<script id="tmpl-nf-mp-header" type="text/template">
+	{{{ data.renderProgressBar() }}}
+	{{{ data.renderBreadcrumbs() }}}
+	{{{ data.renderPartTitle() }}}
+</script>
+<script id="tmpl-nf-mp-part-title" type="text/template">
+	<h3>
+		{{{ data.title }}}
+	</h3>
+</script>
 
-<?php if( $update_templates ): ?>
-	<script id="tmpl-nf-mp-next-previous" type="text/template">
-		<ul class="nf-next-previous">
-			<# if ( data.showPrevious ) { #>
-			<li class="nf-previous-item">
-				<input type="button" class="nf-previous" value="{{{ data.prevLabel }}}" />
-			</li>
-			<# } #>
+<script id="tmpl-nf-mp-footer" type="text/template">
+	{{{ data.renderNextPrevious() }}}
+</script>
 
-			<# if ( data.showNext ) { #>
-			<li class="nf-next-item">
-				<input type="button" class="nf-next" value="{{{ data.nextLabel }}}" />
-			</li>
-			<# } #>
-		</ul>
-	</script>
-<?php else: ?>
-	<script id="tmpl-nf-mp-next-previous" type="text/template">
-		<ul class="nf-next-previous">
-			<% if ( showPrevious ) { %>
-			<li class="nf-previous-item">
-				<input type="button" class="nf-previous" value="<%= previousLabel %>" />
-			</li>
-			<% } %>
+<script id="tmpl-nf-mp-next-previous" type="text/template">
+	<ul class="nf-next-previous">
+		<# if ( data.showPrevious ) { #>
+		<li class="nf-previous-item">
+			<input type="button" class="nf-previous" value="{{{ data.prevLabel }}}" />
+		</li>
+		<# } #>
 
-			<% if ( showNext ) { %>
-			<li class="nf-next-item">
-				<input type="button" class="nf-next" value="<%= nextLabel %>" />
-			</li>
-			<% } %>
-		</ul>
-	</script>
-<?php endif; ?>
+		<# if ( data.showNext ) { #>
+		<li class="nf-next-item">
+			<input type="button" class="nf-next" value="{{{ data.nextLabel }}}" />
+		</li>
+		<# } #>
+	</ul>
+</script>
 
-<?php if( $update_templates ): ?>
 <script id="tmpl-nf-mp-breadcrumbs" type="text/template">
 	<ul class="nf-breadcrumbs">
 		<# _.each( data.parts, function( part, index ) { #>
@@ -81,24 +54,7 @@
 		<# } ); #>
 	</ul>
 </script>
-<?php else: ?>
-<script id="tmpl-nf-mp-breadcrumbs" type="text/template">
-	<ul class="nf-breadcrumbs">
-		<% _.each( parts, function( part, index ) { %>
-		<li class="<%= ( currentIndex == index ) ? 'active' : '' %> <%= ( part.errors ) ? 'errors' : '' %>">
-			<a href="#" class="nf-breadcrumb" data-index="<%= index %>"><%= ( part.errors ) ? '' : '' %> <%= part.title %></a>
-		</li>
-		<% } ); %>
-	</ul>
-</script>
-<?php endif; ?>
 
-<?php if( $update_templates ): ?>
 <script id="tmpl-nf-mp-progress-bar" type="text/template">
 	<progress style="width:100%" value="{{{ data.percent }}}" max="100">{{{ data.percent }}} %</progress>
 </script>
-<?php else: ?>
-<script id="tmpl-nf-mp-progress-bar" type="text/template">
-	<progress style="width:100%" value="<%= percent %>" max="100"><%= percent %> %</progress>
-</script>
-<?php endif; ?>

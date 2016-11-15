@@ -8,6 +8,8 @@
  */
 define( [ 'models/partCollection' ], function ( PartCollection) {
 	var controller = Marionette.Object.extend( {
+		layoutsEnabed: false,
+
 		initialize: function() {
 			/*
 			 * Instantiate our part collection.
@@ -25,13 +27,11 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			var formContentLoadFilters = nfRadio.channel( 'formContent' ).request( 'get:loadFilters' );
 
 			/*
-			 * TODO: Bandaid fix for making sure we don't trigger an add field if Layouts is enabled.
-			 * If it is enabled, Layouts handles adding new items.
+			 * TODO: Super Hacky Bandaid fix for making sure we don't trigger an duplicating a field if Layouts is enabled.
+			 * If it is enabled, Layouts handles adding duplicated items.
 			 */
-			var layoutsEnabed = ( 'undefined' != typeof formContentLoadFilters[4] ) ? true : false;
-			if ( ! layoutsEnabed ) {
-				this.listenTo( nfRadio.channel( 'fields' ), 'render:newField', this.addField );
-			}
+			this.layoutsEnabed = ( 'undefined' != typeof formContentLoadFilters[4] ) ? true : false;
+			this.listenTo( nfRadio.channel( 'fields' ), 'render:newField', this.addField );
 		},
 
 		initPartCollection: function( partCollection ) {
@@ -42,7 +42,15 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			return this.collection;
 		},
 
-		addField: function( fieldModel ) {
+		addField: function( fieldModel, action ) {
+			action = action || '';
+			/*
+			 * TODO: Super Hacky Bandaid fix for making sure we don't trigger an duplicating a field if Layouts is enabled.
+			 * If it is enabled, Layouts handles adding duplicated items.
+			 */
+			if ( this.layoutsEnabed && 'duplicate' == action ) {
+				return false;
+			}
 			this.collection.getFormContentData().trigger( 'add:field', fieldModel );
 			if( 1 == this.collection.getFormContentData().length ) {
 				this.collection.getFormContentData().trigger( 'reset' );

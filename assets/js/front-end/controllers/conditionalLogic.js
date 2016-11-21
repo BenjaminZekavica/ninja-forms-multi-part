@@ -24,8 +24,12 @@ define( [], function() {
 		changePartVisibility: function( conditionModel, then, visible ) {
 			var partCollection = conditionModel.collection.formModel.get( 'formContentData' );
 			partCollection.findWhere( { key: then.key } ).set( 'visible', visible );
+			conditionModel.collection.each( function( model ) {
+				if ( model != conditionModel ) {
+					model.checkWhen();
+				}
+			} );
 		}
-
 	});
 
 	return controller;

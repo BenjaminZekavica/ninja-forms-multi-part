@@ -92,23 +92,27 @@ define(
 			/*
 			 * For each of our part models, call the next save filter for its formContentData
 			 */
-			var collectionClone = nfRadio.channel( 'app' ).request( 'clone:collectionDeep', partCollection );
-			
+			var newCollection = new Backbone.Collection();
 			/*
 			 * If we don't have a filter for our formContentData, default to fieldCollection.
 			 */
 			var formContentSaveFilters = nfRadio.channel( 'formContent' ).request( 'get:saveFilters' );
 			
-			collectionClone.each( function( partModel ) {
+			partCollection.each( function( partModel ) {
+				var attributes = _.clone( partModel.attributes );
+
 				/* 
 				 * Get our first filter, this will be the one with the highest priority.
 				 */
 				var sortedArray = _.without( formContentSaveFilters, undefined );
 				var callback = sortedArray[1];
-				partModel.set( 'formContentData', callback( partModel.get( 'formContentData' ) ) );
+				var formContentData = callback( attributes.formContentData );
+				attributes.formContentData = formContentData;
+
+				newCollection.add( attributes );
 			} );
 
-			return collectionClone.toJSON();
+			return newCollection.toJSON();
 		},
 
 		emptyView: function() {

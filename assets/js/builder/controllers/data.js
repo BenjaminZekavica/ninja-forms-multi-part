@@ -32,6 +32,11 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			 */
 			this.layoutsEnabed = ( 'undefined' != typeof formContentLoadFilters[4] ) ? true : false;
 			this.listenTo( nfRadio.channel( 'fields' ), 'render:newField', this.addField );
+		
+			/*
+			 * After we init our form in the builder, we need to check for items in the field collection that don't appear in the formContentData.
+			 */
+			this.listenTo( nfRadio.channel( 'main' ), 'render:main', this.checkBadData );
 		},
 
 		initPartCollection: function( partCollection ) {
@@ -55,8 +60,36 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			if( 1 == this.collection.getFormContentData().length ) {
 				this.collection.getFormContentData().trigger( 'reset' );
 			}
-		}
+		},
 
+		/**
+		 * Loop through our fields and make sure that they are in our formContentData.
+		 * If they aren't, delete them and update the database.
+		 * 
+		 * @since  3.0.8
+		 * @return void
+		 */
+		checkBadData: function( app ) {
+			var formContentData = nfRadio.channel( 'settings' ).request( 'get:setting', 'formContentData' );
+			var formContentDataString = JSON.stringify( formContentData );
+			var fieldCollection = nfRadio.channel( 'fields' ).request( 'get:collection' );
+			var needToUpdate = false;
+
+			fieldCollection.each( function( fieldModel ) {
+				if ( 'undefined' == typeof fieldModel ) {
+					return false;
+				}
+
+				if ( -1 == formContentDataString.indexOf( '"key":"' + fieldModel.get( 'key' ) + '"' ) ) {
+					fieldCollection.remove( fieldModel );
+					needToUpdate = true;
+				}
+			} );
+
+			if ( needToUpdate ) {
+				nfRadio.channel( 'app' ).request( 'update:db', 'publish' );				
+			}
+		}
 	});
 
 	return controller;

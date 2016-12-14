@@ -60,15 +60,6 @@ define(
 
 		formContentLoad: function( formContentData ) {
 			/*
-			 * If we have any fields that exist on the form, but not in the formContentData, add them to the formContentData
-			 */
-			var fieldCollection = nfRadio.channel( 'fields' ).request( 'get:collection' );
-			var formContentDataString = JSON.stringify( formContentData[0].formContentData );
-			var missingFields = _.filter( fieldCollection.pluck( 'key' ), function( key ) {
-				return -1 == formContentDataString.indexOf( '"' + key + '"' );
-			} );
-
-			/*
 			 * If the data has already been converted, just return it.
 			 */
 			if ( true === formContentData instanceof PartCollection ) return formContentData;
@@ -90,11 +81,8 @@ define(
 				var partCollection = new PartCollection( { formContentData: formContentData } );
 			}
 
-			_.each( missingFields, function( key ) {
-				partCollection.models[ partCollection.models.length - 1 ].get( 'formContentData' ).trigger( 'add:field', fieldCollection.findWhere( { key: key } ) );
-			} );
-
 			nfRadio.channel( 'mp' ).request( 'init:partCollection', partCollection );
+
 			return partCollection;
 		},
 
@@ -103,6 +91,11 @@ define(
 		},
 
 		formContentSave: function( partCollection ) {
+			/*
+			 * If the partCollection is already an object, just return a stringified version of it.
+			 */
+			if ( false === partCollection instanceof Backbone.Collection ) return JSON.stringify( partCollection );
+
 			/*
 			 * For each of our part models, call the next save filter for its formContentData
 			 */

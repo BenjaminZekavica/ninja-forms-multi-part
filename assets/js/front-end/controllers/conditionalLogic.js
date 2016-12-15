@@ -14,19 +14,28 @@ define( [], function() {
 		},
 
 		showPart: function( conditionModel, then ) {
+			conditionModel.set( 'alreadyTriggered', true );
 			this.changePartVisibility( conditionModel, then, true );
+			conditionModel.set( 'alreadyTriggered', false );
 		},
 
 		hidePart: function( conditionModel, then ) {
+			conditionModel.set( 'alreadyTriggered', true );
 			this.changePartVisibility( conditionModel, then, false );
+			conditionModel.set( 'alreadyTriggered', false );
 		},
 
 		changePartVisibility: function( conditionModel, then, visible ) {
 			var partCollection = conditionModel.collection.formModel.get( 'formContentData' );
 			partCollection.findWhere( { key: then.key } ).set( 'visible', visible );
+
+			/*
+			 * Check our conditions again because we have just shown/hidden a part that could have conditions on it.
+			 */
 			conditionModel.collection.each( function( model ) {
-				if ( model != conditionModel ) {
+				if ( model != conditionModel && ! model.get( 'alreadyTriggered' ) ) {
 					model.checkWhen();
+					model.set( 'alreadyTriggered', true );
 				}
 			} );
 		}

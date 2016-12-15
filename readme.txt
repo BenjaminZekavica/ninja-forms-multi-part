@@ -2,9 +2,9 @@
 Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
-Requires at least: 4.4
-Tested up to: 4.6.1
-Stable tag: 3.0.8
+Requires at least: 4.5
+Tested up to: 4.7
+Stable tag: 3.0.9
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.9 (15 December 2016) =
+
+*Bugs:*
+
+* Fixed a bug with Conditional Logic that caused conditionally shown/hidden parts to throw a JS error.
 
 = 3.0.8 (21 November 2016) =
 

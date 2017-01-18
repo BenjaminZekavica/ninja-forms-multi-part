@@ -105,7 +105,7 @@ define(	[],	function () {
 				var newChange = nfRadio.channel( 'changes' ).request( 'register:change', 'fieldChangePart', previousPart, null, label, data );
 
 			} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
-				var type = jQuery( ui.draggable ).data( 'id' );
+				var type = nfRadio.channel( 'fields' ).request( 'get:type', jQuery( ui.draggable ).data( 'id' ) );
 				var fieldModel = this.addField( type, partCollection );
 				/*
 				 * We have a previous part. Add the new field to it.
@@ -213,7 +213,7 @@ define(	[],	function () {
 
 				}
 			} else if ( jQuery( ui.draggable ).hasClass( 'nf-field-type-draggable' ) ) {
-				var type = jQuery( ui.draggable ).data( 'id' );
+				var type = nfRadio.channel( 'fields' ).request( 'get:type', jQuery( ui.draggable ).data( 'id' ) );
 				var fieldModel = this.addField( type, partCollection );
 				if ( partCollection.hasNext() ) {
 					/*

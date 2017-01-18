@@ -114,7 +114,7 @@ define(	[],	function () {
 		},
 
 		dropNewField: function( e, ui, partModel, partView ) {
-			var type = jQuery( ui.draggable ).data( 'id' );
+			var type = nfRadio.channel( 'fields' ).request( 'get:type', jQuery( ui.draggable ).data( 'id' ) );
 			var fieldModel = this.addField( type, partModel.collection );
 			/*
 			 * We have a previous part. Add the new field to it.

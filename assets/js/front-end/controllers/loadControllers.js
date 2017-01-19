@@ -1,15 +1,18 @@
 define( 
 	[
-		'controllers/conditionalLogic'
+		'controllers/conditionalLogic',
+		'controllers/renderRecaptcha'
 	], 
 	function
 	(
-		ConditionalLogic
+		ConditionalLogic,
+		RenderRecaptcha
 	)
 	{
 	var controller = Marionette.Object.extend( {
 		initialize: function() {
 			new ConditionalLogic();
+			new RenderRecaptcha();
 		}
 
 	});

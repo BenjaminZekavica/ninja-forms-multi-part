@@ -3,8 +3,8 @@ Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.5
-Tested up to: 4.7
-Stable tag: 3.0.9
+Tested up to: 4.7.1
+Stable tag: 3.0.10
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.10 (19 January 2017) =
+
+*Bugs:*
+
+* Google Recaptcha fields should now work properly with Multi-Part forms.
 
 = 3.0.9 (15 December 2016) =
 

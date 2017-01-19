@@ -29,6 +29,7 @@ define( [ 'models/partModel' ], function( PartModel ) {
 			this.currentElement = model;
 			if ( ! silent ) {
 				this.trigger( 'change:part', this );
+				console.log( 'trigger change part' );
 				nfRadio.channel( 'nfMP' ).trigger( 'change:part', this );
 			} 
 		},

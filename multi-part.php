@@ -4,7 +4,7 @@
  * Plugin Name: Ninja Forms - Multi-Part Forms
  * Plugin URI: https://ninjaforms.com/extensions/multi-part-forms/
  * Description: Multi-Part Forms add-on for Ninja Forms.
- * Version: 3.0.10
+ * Version: 3.0.11
  * Author: The WP Ninjas
  * Author URI: http://ninjaforms.com
  * Text Domain: ninja-forms-multi-part
@@ -27,7 +27,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
     }
 
     if( ! defined( 'NINJA_FORMS_MP_VERSION' ) ) {
-        define("NINJA_FORMS_MP_VERSION", "3.0.10");
+        define("NINJA_FORMS_MP_VERSION", "3.0.11");
     }
 
     include 'deprecated/multi-part.php';
@@ -41,7 +41,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
      */
     final class NF_MultiPart
     {
-        const VERSION = '3.0.10';
+        const VERSION = '3.0.11';
         const SLUG    = 'ninja-forms-multi-part';
         const NAME    = 'Multi Part';
         const AUTHOR  = 'The WP Ninjas';
@@ -59,6 +59,11 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
 
             add_action( 'nf_admin_enqueue_scripts',   array( $this, 'enqueue_builder' ) );
             add_action( 'nf_display_enqueue_scripts', array( $this, 'enqueue_display' ) );
+
+            /*
+             * We need to sort fields in a different order than core.
+             */
+            add_filter( 'ninja_forms_get_fields_sorted', array( $this, 'filter_field_order' ), 9, 4 );
         }
 
         public function setup_admin()
@@ -89,9 +94,9 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
         {
             $ver = self::VERSION;
             wp_enqueue_script( 'nf-mp-front-end', NF_MultiPart::$url . 'assets/js/min/front-end.js', array(), $ver );
-            wp_localize_script( 'nf-mp-front-end', 'nfMPSettings', array( 
+            wp_localize_script( 'nf-mp-front-end', 'nfMPSettings', array(
                 'prevLabel' => __( 'Previous', 'ninja-forms-multi-part' ),
-                'nextLabel' => __( 'Next', 'ninja-forms-multi-part' ) ) 
+                'nextLabel' => __( 'Next', 'ninja-forms-multi-part' ) )
             );
 
             if( Ninja_Forms()->get_setting( 'opinionated_styles' ) ) {
@@ -177,7 +182,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             $class_name = str_replace( self::PREFIX, '', $class_name );
             $classes_dir = realpath(plugin_dir_path(__FILE__)) . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
             $class_file = str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
-            
+
             if ( file_exists( $classes_dir . $class_file ) ) {
                 require_once $classes_dir . $class_file;
             }
@@ -217,6 +222,48 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             if ( ! class_exists( 'NF_Extension_Updater' ) ) return;
 
             new NF_Extension_Updater( 'Multi-Part Forms', self::VERSION, self::AUTHOR, __FILE__, 'mp' );
+        }
+
+        public function filter_field_order( $order, $fields, $fields_by_key, $form_id ) {
+            /*
+             * We don't want the Layout & Styles filter to run if we are installed.
+             */
+             if( function_exists( 'NF_Layouts' ) ){
+                 remove_filter( 'ninja_forms_get_fields_sorted', array( NF_Layouts(), 'filter_field_order' ) );
+            }
+
+            $form = Ninja_Forms()->form( $form_id )->get();
+            $formContentData = $form->get_setting( 'formContentData' );
+
+            $new_order = array();
+
+            // If Not a Multi-Part Form, return original order.
+            if( ! $formContentData ) return $order;
+
+            foreach( $formContentData as $part ) {
+                $part_content = $part[ 'formContentData' ];
+
+                /*
+                 * If we have part_content['cells'], then we know we're dealing with Layout & Styles data.
+                 */
+                if ( isset ( $part_content[ 0 ][ 'cells' ] ) ) {
+                    foreach ( $part_content as $row ) {
+                        foreach ( $row['cells'] as $cell ) {
+                             foreach ( $cell[ 'fields' ] as $field_key ) {
+                                $field = $fields_by_key[ $field_key ];
+                                $new_order[ $field->get_id() ] = $field;
+                            }
+                        }
+                    }
+                } else {
+                    foreach ( $part_content as $field_key ) {
+                        $field = $fields_by_key[ $field_key ];
+                        $new_order[ $field->get_id() ] = $field;
+                    }
+                }
+            }
+
+            return $new_order;
         }
     }
 

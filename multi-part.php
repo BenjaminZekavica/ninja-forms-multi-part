@@ -4,7 +4,7 @@
  * Plugin Name: Ninja Forms - Multi-Part Forms
  * Plugin URI: https://ninjaforms.com/extensions/multi-part-forms/
  * Description: Multi-Part Forms add-on for Ninja Forms.
- * Version: 3.0.11
+ * Version: 3.0.12
  * Author: The WP Ninjas
  * Author URI: http://ninjaforms.com
  * Text Domain: ninja-forms-multi-part
@@ -27,7 +27,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
     }
 
     if( ! defined( 'NINJA_FORMS_MP_VERSION' ) ) {
-        define("NINJA_FORMS_MP_VERSION", "3.0.11");
+        define("NINJA_FORMS_MP_VERSION", "3.0.12");
     }
 
     include 'deprecated/multi-part.php';
@@ -41,7 +41,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
      */
     final class NF_MultiPart
     {
-        const VERSION = '3.0.11';
+        const VERSION = '3.0.12';
         const SLUG    = 'ninja-forms-multi-part';
         const NAME    = 'Multi Part';
         const AUTHOR  = 'The WP Ninjas';
@@ -241,6 +241,8 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             if( ! $formContentData ) return $order;
 
             foreach( $formContentData as $part ) {
+
+                if( ! isset( $part[ 'formContentData' ] ) ) continue;
                 $part_content = $part[ 'formContentData' ];
 
                 /*
@@ -251,14 +253,16 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
                         foreach ( $row['cells'] as $cell ) {
                              foreach ( $cell[ 'fields' ] as $field_key ) {
                                 $field = $fields_by_key[ $field_key ];
-                                $new_order[ $field->get_id() ] = $field;
+                                $field_id = ( is_object( $field ) ) ? $field->get_id() : $field[ 'id' ];
+                                $new_order[ $field_id ] = $field;
                             }
                         }
                     }
                 } else {
                     foreach ( $part_content as $field_key ) {
                         $field = $fields_by_key[ $field_key ];
-                        $new_order[ $field->get_id() ] = $field;
+                        $field_id = ( is_object( $field ) ) ? $field->get_id() : $field[ 'id' ];
+                        $new_order[ $field_id ] = $field;
                     }
                 }
             }

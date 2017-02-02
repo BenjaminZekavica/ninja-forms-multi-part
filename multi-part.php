@@ -241,6 +241,8 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             if( ! $formContentData ) return $order;
 
             foreach( $formContentData as $part ) {
+
+                if( ! isset( $part[ 'formContentData' ] ) ) continue;
                 $part_content = $part[ 'formContentData' ];
 
                 /*
@@ -251,14 +253,16 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
                         foreach ( $row['cells'] as $cell ) {
                              foreach ( $cell[ 'fields' ] as $field_key ) {
                                 $field = $fields_by_key[ $field_key ];
-                                $new_order[ $field->get_id() ] = $field;
+                                $field_id = ( is_object( $field ) ) ? $field->get_id() : $field[ 'id' ];
+                                $new_order[ $field_id ] = $field;
                             }
                         }
                     }
                 } else {
                     foreach ( $part_content as $field_key ) {
                         $field = $fields_by_key[ $field_key ];
-                        $new_order[ $field->get_id() ] = $field;
+                        $field_id = ( is_object( $field ) ) ? $field->get_id() : $field[ 'id' ];
+                        $new_order[ $field_id ] = $field;
                     }
                 }
             }

@@ -33,12 +33,12 @@ define( [], function( SettingGroupCollection ) {
 							label: 'Part Title',
 							width: 'full',
 						},
-						{
-							name: 'mp_duplicate',
-							type: 'html',
-							width: 'one-half',
-							value: '<a href="#" class="nf-duplicate-part nf-button secondary extra">Duplicate Part</a>'
-						},
+						// {
+						// 	name: 'mp_duplicate',
+						// 	type: 'html',
+						// 	width: 'one-half',
+						// 	value: '<a href="#" class="nf-duplicate-part nf-button secondary extra">Duplicate Part</a>'
+						// },
 						{
 							name: 'mp_remove',
 							type: 'html',

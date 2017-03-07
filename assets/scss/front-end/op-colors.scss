@@ -27,17 +27,6 @@
     }
 }
 
-progress {
-    &::-webkit-progress-bar {
-        background-color: $field-background;
-    }
-    &::-webkit-progress-value {
-        background-color: $accent;
-    }
-    &::-moz-progress-bar {
-        background-color: $field-background;
-    }
-    &::-moz-progress-value {
-        background-color: $accent;
-    }
+.nf-progress {
+    background-color: $field-background;
 }

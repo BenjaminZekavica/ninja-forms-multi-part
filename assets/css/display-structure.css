@@ -40,8 +40,13 @@
   .nf-breadcrumbs li.active a {
     font-weight: bold; }
 
-progress {
+.nf-progress-container {
   margin-top: 20px;
-  width: 100%; }
+  width: 100%;
+  border: 1px solid #bbbbbb; }
+
+.nf-progress {
+  height: 20px;
+  background-color: #329ad1; }
 
 /*# sourceMappingURL=display-structure.css.map */

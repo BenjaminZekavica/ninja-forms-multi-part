@@ -40,9 +40,14 @@
   .nf-breadcrumbs li.active a {
     font-weight: bold; }
 
-progress {
+.nf-progress-container {
   margin-top: 20px;
-  width: 100%; }
+  width: 100%;
+  border: 1px solid #bbbbbb; }
+
+.nf-progress {
+  height: 20px;
+  background-color: #329ad1; }
 
 .nf-next-previous li input {
   font-size: 16px;
@@ -63,18 +68,11 @@ progress {
       content: "\f06a";
       left: 12px; }
 
-progress {
+.nf-progress-container,
+.nf-progress {
   border: 0;
   height: 50px;
   width: 100%; }
-  progress::-webkit-progress-bar {
-    background-color: #f1f1f1; }
-  progress::-webkit-progress-value {
-    background-color: #329ad1; }
-  progress::-moz-progress-bar {
-    background-color: #f1f1f1; }
-  progress::-moz-progress-value {
-    background-color: #329ad1; }
 
 /* ---------------------------------
 DEFAULT LIGHT COLORS
@@ -100,17 +98,8 @@ DEFAULT LIGHT COLORS
   color: #fff;
   cursor: help; }
 
-progress::-webkit-progress-bar {
+.nf-progress {
   background-color: #f7f7f7; }
-
-progress::-webkit-progress-value {
-  background-color: #333; }
-
-progress::-moz-progress-bar {
-  background-color: #f7f7f7; }
-
-progress::-moz-progress-value {
-  background-color: #333; }
 
 /* ---------------------------------
 LIGHT COLORS - nf-brown
@@ -136,17 +125,8 @@ LIGHT COLORS - nf-brown
   color: #fff;
   cursor: help; }
 
-.nf-brown progress::-webkit-progress-bar {
+.nf-brown .nf-progress {
   background-color: #F3EFDD; }
-
-.nf-brown progress::-webkit-progress-value {
-  background-color: #736628; }
-
-.nf-brown progress::-moz-progress-bar {
-  background-color: #F3EFDD; }
-
-.nf-brown progress::-moz-progress-value {
-  background-color: #736628; }
 
 /* ---------------------------------
 LIGHT COLORS - nf-red
@@ -172,17 +152,8 @@ LIGHT COLORS - nf-red
   color: #fff;
   cursor: help; }
 
-.nf-red progress::-webkit-progress-bar {
+.nf-red .nf-progress {
   background-color: #F0E3E3; }
-
-.nf-red progress::-webkit-progress-value {
-  background-color: #8A5252; }
-
-.nf-red progress::-moz-progress-bar {
-  background-color: #F0E3E3; }
-
-.nf-red progress::-moz-progress-value {
-  background-color: #8A5252; }
 
 /* ---------------------------------
 LIGHT COLORS - nf-blue
@@ -208,16 +179,7 @@ LIGHT COLORS - nf-blue
   color: #fff;
   cursor: help; }
 
-.nf-blue progress::-webkit-progress-bar {
+.nf-blue .nf-progress {
   background-color: #DFEFF5; }
-
-.nf-blue progress::-webkit-progress-value {
-  background-color: #4F9DBF; }
-
-.nf-blue progress::-moz-progress-bar {
-  background-color: #DFEFF5; }
-
-.nf-blue progress::-moz-progress-value {
-  background-color: #4F9DBF; }
 
 /*# sourceMappingURL=display-opinions-light.css.map */

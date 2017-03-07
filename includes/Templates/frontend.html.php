@@ -56,5 +56,7 @@ if ( ! version_compare( get_option( 'ninja_forms_version', '0' ), '3.0', '>' ) )
 </script>
 
 <script id="tmpl-nf-mp-progress-bar" type="text/template">
-	<progress style="width:100%" value="{{{ data.percent }}}" max="100">{{{ data.percent }}} %</progress>
+    <div class="nf-progress-container">
+        <div class="nf-progress" style="width: {{{ data.percent }}}%;"></div>
+    </div>
 </script>

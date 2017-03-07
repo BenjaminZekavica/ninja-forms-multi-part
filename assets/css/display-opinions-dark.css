@@ -40,9 +40,14 @@
   .nf-breadcrumbs li.active a {
     font-weight: bold; }
 
-progress {
+.nf-progress-container {
   margin-top: 20px;
-  width: 100%; }
+  width: 100%;
+  border: 1px solid #bbbbbb; }
+
+.nf-progress {
+  height: 20px;
+  background-color: #329ad1; }
 
 .nf-next-previous li input {
   font-size: 16px;
@@ -63,18 +68,11 @@ progress {
       content: "\f06a";
       left: 12px; }
 
-progress {
+.nf-progress-container,
+.nf-progress {
   border: 0;
   height: 50px;
   width: 100%; }
-  progress::-webkit-progress-bar {
-    background-color: #f1f1f1; }
-  progress::-webkit-progress-value {
-    background-color: #329ad1; }
-  progress::-moz-progress-bar {
-    background-color: #f1f1f1; }
-  progress::-moz-progress-value {
-    background-color: #329ad1; }
 
 /* ---------------------------------
 DEFAULT DARK COLORS
@@ -100,17 +98,8 @@ DEFAULT DARK COLORS
   color: #fff;
   cursor: help; }
 
-progress::-webkit-progress-bar {
+.nf-progress {
   background-color: #222; }
-
-progress::-webkit-progress-value {
-  background-color: #fff; }
-
-progress::-moz-progress-bar {
-  background-color: #222; }
-
-progress::-moz-progress-value {
-  background-color: #fff; }
 
 /* ---------------------------------
 DARK COLORS - nf-brown
@@ -136,17 +125,8 @@ DARK COLORS - nf-brown
   color: #fff;
   cursor: help; }
 
-.nf-brown progress::-webkit-progress-bar {
+.nf-brown .nf-progress {
   background-color: #3e2b13; }
-
-.nf-brown progress::-webkit-progress-value {
-  background-color: #ea981b; }
-
-.nf-brown progress::-moz-progress-bar {
-  background-color: #3e2b13; }
-
-.nf-brown progress::-moz-progress-value {
-  background-color: #ea981b; }
 
 /* ---------------------------------
 DARK COLORS - nf-red
@@ -172,17 +152,8 @@ DARK COLORS - nf-red
   color: #fff;
   cursor: help; }
 
-.nf-red progress::-webkit-progress-bar {
+.nf-red .nf-progress {
   background-color: #350000; }
-
-.nf-red progress::-webkit-progress-value {
-  background-color: red; }
-
-.nf-red progress::-moz-progress-bar {
-  background-color: #350000; }
-
-.nf-red progress::-moz-progress-value {
-  background-color: red; }
 
 /* ---------------------------------
 DARK COLORS - nf-blue
@@ -208,16 +179,7 @@ DARK COLORS - nf-blue
   color: #fff;
   cursor: help; }
 
-.nf-blue progress::-webkit-progress-bar {
+.nf-blue .nf-progress {
   background-color: #001C33; }
-
-.nf-blue progress::-webkit-progress-value {
-  background-color: #00AEFF; }
-
-.nf-blue progress::-moz-progress-bar {
-  background-color: #001C33; }
-
-.nf-blue progress::-moz-progress-value {
-  background-color: #00AEFF; }
 
 /*# sourceMappingURL=display-opinions-dark.css.map */

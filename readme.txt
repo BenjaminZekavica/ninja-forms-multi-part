@@ -26,7 +26,7 @@ For help and video tutorials, please visit our website: [Ninja Forms Documentati
 
 == Changelog ==
 
-= 3.0.12 (07 March 2017) =
+= 3.0.13 (07 March 2017) =
 
 *Bugs:*
 

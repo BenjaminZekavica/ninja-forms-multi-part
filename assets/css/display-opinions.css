@@ -17,17 +17,10 @@
       content: "\f06a";
       left: 12px; }
 
-progress {
+.nf-progress-container,
+.nf-progress {
   border: 0;
   height: 50px;
   width: 100%; }
-  progress::-webkit-progress-bar {
-    background-color: #f1f1f1; }
-  progress::-webkit-progress-value {
-    background-color: #329ad1; }
-  progress::-moz-progress-bar {
-    background-color: #f1f1f1; }
-  progress::-moz-progress-value {
-    background-color: #329ad1; }
 
 /*# sourceMappingURL=display-opinions.css.map */

@@ -251,7 +251,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
                 if ( isset ( $part_content[ 0 ][ 'cells' ] ) ) {
                     foreach ( $part_content as $row ) {
 
-                        if( ! isset( $rows[ 'cells' ] ) ) continue;
+                        if( ! isset( $row[ 'cells' ] ) ) continue;
                         foreach ( $row['cells'] as $cell ) {
 
                             if( ! isset( $cell[ 'fields' ] ) ) continue;

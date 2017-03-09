@@ -4,7 +4,7 @@
  * Plugin Name: Ninja Forms - Multi-Part Forms
  * Plugin URI: https://ninjaforms.com/extensions/multi-part-forms/
  * Description: Multi-Part Forms add-on for Ninja Forms.
- * Version: 3.0.13
+ * Version: 3.0.14
  * Author: The WP Ninjas
  * Author URI: http://ninjaforms.com
  * Text Domain: ninja-forms-multi-part
@@ -27,7 +27,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
     }
 
     if( ! defined( 'NINJA_FORMS_MP_VERSION' ) ) {
-        define("NINJA_FORMS_MP_VERSION", "3.0.13");
+        define("NINJA_FORMS_MP_VERSION", "3.0.14");
     }
 
     include 'deprecated/multi-part.php';
@@ -41,7 +41,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
      */
     final class NF_MultiPart
     {
-        const VERSION = '3.0.13';
+        const VERSION = '3.0.14';
         const SLUG    = 'ninja-forms-multi-part';
         const NAME    = 'Multi Part';
         const AUTHOR  = 'The WP Ninjas';
@@ -251,7 +251,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
                 if ( isset ( $part_content[ 0 ][ 'cells' ] ) ) {
                     foreach ( $part_content as $row ) {
 
-                        if( ! isset( $rows[ 'cells' ] ) ) continue;
+                        if( ! isset( $row[ 'cells' ] ) ) continue;
                         foreach ( $row['cells'] as $cell ) {
 
                             if( ! isset( $cell[ 'fields' ] ) ) continue;

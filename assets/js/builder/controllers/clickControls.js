@@ -101,6 +101,55 @@ define(	[],	function () {
 
 		clickDuplicate: function( e, settingModel, partModel, settingView ) {
 			var partClone = nfRadio.channel( 'app' ).request( 'clone:modelDeep', partModel );
+            partClone.set( 'key', Math.random().toString( 36 ).replace( /[^a-z]+/g, '' ).substr( 0, 8 ) );
+            
+            //////////////////////
+            
+            var duplicatedFields = [];
+            var formContentLoadFilters = nfRadio.channel( 'formContent' ).request( 'get:loadFilters' );
+            var currentDomain = nfRadio.channel( 'app' ).request( 'get:currentDomain' );
+            var currentDomainID = currentDomain.get( 'id' );
+            
+            // If Layout and Styles is enabled...
+            if( 'undefined' != typeof formContentLoadFilters[4] ) {
+                _.each( partClone.get( 'formContentData' ).models, function( row, rowIndex ) {
+                    duplicatedFields[ rowIndex ] = [];
+                    _.each( row.get( 'cells' ).models, function( cell, cellIndex ) {
+                        duplicatedFields[ rowIndex ][ cellIndex ] = [];
+                        _.each( cell.get( 'fields' ).models, function( field, fieldIndex ) {
+                            var newField = nfRadio.channel( 'app' ).request( 'clone:modelDeep', field );
+
+                            // Update our ID to the new tmp id.
+                            var tmpID = nfRadio.channel( currentDomainID ).request( 'get:tmpID' );
+                            newField.set( 'id', tmpID );
+                            // Add new model.
+                            duplicatedFields[ rowIndex ][ cellIndex ][ fieldIndex ] = nfRadio.channel( currentDomainID ).request( 'add', newField, true, false, 'duplicate' );
+                        } );
+                    } );
+                } );
+                for(var i = 0; i < duplicatedFields.length; i++) {
+                    for(var ii = 0; ii < duplicatedFields[i].length; ii++) {
+                            partClone.get('formContentData').models[i].get('cells').models[ii].get('fields').models = duplicatedFields[i][ii];
+                    }
+                }
+            }
+            // Otherwise (Layout and Styles is not enabled)...
+            else {
+                _.each( partClone.get( 'formContentData' ).models, function( model, index ) {
+                    var newModel = nfRadio.channel( 'app' ).request( 'clone:modelDeep', model );
+
+                    // Update our ID to the new tmp id.
+                    var tmpID = nfRadio.channel( currentDomainID ).request( 'get:tmpID' );
+                    newModel.set( 'id', tmpID );
+                    // Add new model.
+                    // Params are: model, silent, renderTrigger, action
+                    duplicatedFields.push( nfRadio.channel( currentDomainID ).request( 'add', newModel, false, false, 'duplicate' ) );
+                });
+                partClone.get( 'formContentData' ).models = duplicatedFields;
+            }
+            
+            ///////////////////////
+            
 			partModel.collection.add( partClone );
 			partClone.set( 'order', partModel.get( 'order' ) );
 			partModel.collection.updateOrder();

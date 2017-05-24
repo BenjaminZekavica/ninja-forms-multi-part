@@ -1,4 +1,3 @@
-Backbone.Radio.tuneIn('fields');
 /**
  * Holds our part collection.
  * 

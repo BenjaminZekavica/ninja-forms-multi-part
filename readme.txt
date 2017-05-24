@@ -3,8 +3,8 @@ Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.5
-Tested up to: 4.7.2
-Stable tag: 3.0.15
+Tested up to: 4.7
+Stable tag: 3.0.16
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.16 (23 May 2017) =
+
+*Bugs:*
+
+* Help text should now work on parts beyond the first.
 
 = 3.0.15 (17 March 2017) =
 

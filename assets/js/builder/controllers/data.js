@@ -51,6 +51,7 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 		},
 
 		addField: function( fieldModel ) {
+			if ( this.layoutsEnabed && 'duplicate' == action ) return false;
 			this.collection.getFormContentData().trigger( 'add:field', fieldModel );
 			if( 1 == this.collection.getFormContentData().length ) {
 				this.collection.getFormContentData().trigger( 'reset' );

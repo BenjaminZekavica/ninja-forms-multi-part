@@ -35,7 +35,7 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			this.listenTo( nfRadio.channel( 'fields' ), 'render:newField', function( fieldModel, action ){
                 action = action || '';
                 if ( this.layoutsEnabed && 'duplicate' == action ) return false;
-				this.addField( fieldModel );
+				this.addField( fieldModel, action );
 			}, this );
 			/* END Layout & Styles compatibility */
 
@@ -50,7 +50,8 @@ define( [ 'models/partCollection' ], function ( PartCollection) {
 			return this.collection;
 		},
 
-		addField: function( fieldModel ) {
+		addField: function( fieldModel, action ) {
+			if ( this.layoutsEnabed && 'duplicate' == action ) return false;
 			this.collection.getFormContentData().trigger( 'add:field', fieldModel );
 			if( 1 == this.collection.getFormContentData().length ) {
 				this.collection.getFormContentData().trigger( 'reset' );

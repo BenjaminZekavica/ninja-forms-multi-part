@@ -26,18 +26,44 @@ define( [], function() {
 		},
 
 		changePartVisibility: function( conditionModel, then, visible ) {
+
+
+            /**
+			 * Multi-Part Reset Flag
+			 *   Identifies the initial request of a nested loop of conditions
+			 *   so that the alreadyTriggered flags can be cleared.
+             */
+			var mpResetFlag = Date.now();
+			if( ! conditionModel.collection.mpResetFlag ){
+                conditionModel.collection.mpResetFlag = mpResetFlag;
+			}
+
 			var partCollection = conditionModel.collection.formModel.get( 'formContentData' );
 			partCollection.findWhere( { key: then.key } ).set( 'visible', visible );
 
-			/*
-			 * Check our conditions again because we have just shown/hidden a part that could have conditions on it.
-			 */
+			// Check our conditions again because we have just shown/hidden a part that could have conditions on it.
 			conditionModel.collection.each( function( model ) {
-				if ( model != conditionModel && ! model.get( 'alreadyTriggered' ) ) {
-					model.checkWhen();
-					model.set( 'alreadyTriggered', true );
-				}
+				// Avoid triggering a model's own conditions.
+				if( model == conditionModel ) return;
+				// Avoid re-triggering conditions, which may cause an infinite loop.
+				if( model.get( 'alreadyTriggered' ) ) return;
+				// Trigger conditions.
+                model.checkWhen();
+                // Set a flag to avoid re-triggering these conditions.
+                model.set( 'alreadyTriggered', true );
 			} );
+
+            /**
+			 * Reset Flag Check
+			 *   If is the initial request of the nested loop of conditions
+			 *   then clear the previously set alreadyTriggered flags.
+             */
+			if( mpResetFlag == conditionModel.collection.mpResetFlag ){
+				// Clear all alreadyTriggered flags.
+                conditionModel.collection.invoke( 'set', { 'alreadyTriggered': false } );
+                // Clear the Reset Flag.
+                conditionModel.collection.mpResetFlag = false;
+			}
 		}
 	});
 

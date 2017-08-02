@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 3.0.18
+Stable tag: 3.0.19
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.19 (02 August 2017) =
+
+*Bugs:*
+
+* Fixed a bug that could cause conditions setup with Conditional Logic to fail on forms that have multiple parts.
 
 = 3.0.18 (21 June 2017) =
 

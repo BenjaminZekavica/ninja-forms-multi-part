@@ -241,14 +241,13 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             if( ! $formContentData ) return $order;
 
             foreach( $formContentData as $part ) {
-
                 if( ! isset( $part[ 'formContentData' ] ) ) continue;
                 $part_content = $part[ 'formContentData' ];
-
                 /*
                  * If we have part_content['cells'], then we know we're dealing with Layout & Styles data.
                  */
-                if ( isset ( $part_content[ 0 ][ 'cells' ] ) ) {
+                if ( is_array( $part_content[ 0 ] ) && isset ( $part_content[ 0 ][ 'cells' ] ) ) {
+
                     foreach ( $part_content as $row ) {
 
                         if( ! isset( $row[ 'cells' ] ) ) continue;

@@ -88,6 +88,11 @@ final class NF_MultiPart_Conversion
     }
 
     public function layout_check( &$part, $index, $form_data ) {
+
+        // If we have style data on this part...
+        // Set the number of columns to 1 by default.
+        if( ! isset( $form_data[ 'settings' ][ 'style' ][ 'mp' ][ $index + 1 ] ) ) $form_data[ 'settings' ][ 'style' ][ 'mp' ][ $index + 1 ] = array( 'cols' => '1' );
+
         $part[ 'formContentData' ] = $this->convert_layouts( $form_data[ 'settings' ][ 'style' ][ 'mp' ][ $index + 1 ][ 'cols' ], $part[ 'formContentData' ] );
     }
 

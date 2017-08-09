@@ -264,6 +264,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
                     }
                 } else {
                     foreach ( $part_content as $field_key ) {
+                        if( ! isset( $fields_by_key[ $field_key ] ) ) continue;
                         $field = $fields_by_key[ $field_key ];
                         $field_id = ( is_object( $field ) ) ? $field->get_id() : $field[ 'id' ];
                         $new_order[ $field_id ] = $field;

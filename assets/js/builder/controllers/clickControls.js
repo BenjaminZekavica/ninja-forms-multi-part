@@ -101,6 +101,7 @@ define(	[],	function () {
 
 		clickDuplicate: function( e, settingModel, partModel, settingView ) {
 			var partClone = nfRadio.channel( 'app' ).request( 'clone:modelDeep', partModel );
+
             partClone.set( 'key', Math.random().toString( 36 ).replace( /[^a-z]+/g, '' ).substr( 0, 8 ) );
             
             //////////////////////
@@ -136,16 +137,9 @@ define(	[],	function () {
             // Otherwise (Layout and Styles is not enabled)...
             else {
                 _.each( partClone.get( 'formContentData' ).models, function( model, index ) {
-                    var newModel = nfRadio.channel( 'app' ).request( 'clone:modelDeep', model );
-
-                    // Update our ID to the new tmp id.
-                    var tmpID = nfRadio.channel( currentDomainID ).request( 'get:tmpID' );
-                    newModel.set( 'id', tmpID );
-                    // Add new model.
-                    // Params are: model, silent, renderTrigger, action
-                    duplicatedFields.push( nfRadio.channel( currentDomainID ).request( 'add', newModel, false, false, 'duplicate' ) );
+                    // Leverage core's Add/Duplicate to generate a new field key.
+                    nfRadio.channel( currentDomainID ).request( 'add', /* model */ model, /* silent */ false, /* renderTrigger */ false, /* action */ 'duplicate' );
                 });
-                partClone.get( 'formContentData' ).models = duplicatedFields;
             }
             
             ///////////////////////

@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 3.0.19
+Stable tag: 3.0.20
 
 License: GPLv2 or later
 
@@ -25,6 +25,14 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.20 (22 August 2017) =
+
+*Bugs:*
+
+* Duplicating a part should no longer cause fields to incorrectly duplicate.
+* Removed a PHP warning that might be displayed on the front-end.
+* Importing forms with incomplete Layout & Styles data should no longer crash import.
 
 = 3.0.19 (02 August 2017) =
 

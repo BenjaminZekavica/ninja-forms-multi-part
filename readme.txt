@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 3.0.20
+Stable tag: 3.0.21
 
 License: GPLv2 or later
 
@@ -25,6 +25,16 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.21 (15 September 2017) =
+
+*Bugs:*
+
+* Fixed a bug with field duplication when Layout & Styles is also installed.
+
+*Changes:*
+
+* Changed the priority of admin enqueued scripts for loading order compared to Layout & Styles.
 
 = 3.0.20 (22 August 2017) =
 

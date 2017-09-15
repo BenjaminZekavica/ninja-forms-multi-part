@@ -57,7 +57,7 @@ if( version_compare( get_option( 'ninja_forms_version', '0.0.0' ), '3', '<' ) ||
             add_action( 'ninja_forms_builder_templates', array( $this, 'builder_templates' ) );
             add_action( 'ninja_forms_enqueue_scripts',   array( $this, 'frontend_templates' ) );
 
-            add_action( 'nf_admin_enqueue_scripts',   array( $this, 'enqueue_builder' ) );
+            add_action( 'nf_admin_enqueue_scripts',   array( $this, 'enqueue_builder' ), 11 );
             add_action( 'nf_display_enqueue_scripts', array( $this, 'enqueue_display' ) );
 
             /*

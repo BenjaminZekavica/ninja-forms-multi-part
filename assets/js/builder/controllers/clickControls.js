@@ -162,8 +162,6 @@ define(	[],	function () {
                 _.each( partClone.get( 'formContentData' ).models, function( model, index ) {
                     // Leverage core's Add/Duplicate to generate a new field key.
                     nfRadio.channel( currentDomainID ).request( 'add', /* model */ model, /* silent */ false, /* renderTrigger */ false, /* action */ 'duplicate' );
-                    var tmpID = nfRadio.channel( currentDomainID ).request( 'get:tmpID' );
-                    partClone.get( 'formContentData' ).models[ index ].set( 'id', tmpID );
                 });
             }
             

@@ -37,7 +37,7 @@ define( [], function( SettingGroupCollection ) {
 						 	name: 'mp_duplicate',
 						 	type: 'html',
 						 	width: 'one-half',
-						 	value: '<a href="#" class="nf-duplicate-part nf-button secondary extra">Duplicate Part</a>'
+						 	// value: '<a href="#" class="nf-duplicate-part nf-button secondary extra">Duplicate Part</a>'
 						 },
 						{
 							name: 'mp_remove',

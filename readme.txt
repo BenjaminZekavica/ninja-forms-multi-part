@@ -4,7 +4,7 @@ Donate link: http://wpninjas.com
 Tags: form, forms
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 3.0.22
+Stable tag: 3.0.23
 
 License: GPLv2 or later
 
@@ -25,6 +25,12 @@ This section describes how to install the plugin and get it working.
 For help and video tutorials, please visit our website: [Ninja Forms Documentation](http://wpninjas.com/ninja-forms/docs/)
 
 == Changelog ==
+
+= 3.0.23 (23 May 2018) =
+
+*Bugs:*
+
+* Part duplication should no longer be available in situations where it can cause data corruption.
 
 = 3.0.22 (7 November 2017) =
 

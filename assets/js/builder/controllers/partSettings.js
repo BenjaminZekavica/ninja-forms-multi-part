@@ -45,9 +45,7 @@ define( [], function( SettingGroupCollection ) {
 			// only allow part duplication if Layouts & Styles exist
 			var formContentLoadFilters = nfRadio.channel( 'formContent'  ).request( 'get:loadFilters' );
 			if( 'undefined' != typeof formContentLoadFilters[4] ) {
-				console.log( this.collection.models );
 				 var colSettings  = this.collection.models[0].get( 'settings' );
-				 console.log(colSettings);
 					 colSettings.push(
 					{
 						name: 'mp_duplicate',

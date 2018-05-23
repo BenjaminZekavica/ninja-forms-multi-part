@@ -2,8 +2,8 @@
 Contributors: kstover, jameslaws
 Donate link: http://wpninjas.com
 Tags: form, forms
-Requires at least: 4.6
-Tested up to: 4.8
+Requires at least: 4.7
+Tested up to: 4.9
 Stable tag: 3.0.23
 
 License: GPLv2 or later
